@@ -1,4 +1,4 @@
-package com.eliezer.marvel_characters.controllers
+package com.eliezer.marvel_characters.io.retrofit.controllers
 
 import com.eliezer.marvel_characters.io.retrofit.services.CharacterService
 
