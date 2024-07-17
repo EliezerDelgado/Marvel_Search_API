@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+    <variable
+        name="item"
+        type="com.eliezer.marvel_characters.models.response.Character" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="70dp"
+        android:layout_height="100dp"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/item_character_image_view_photo"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@{@drawable/ic_launcher_background}" />
+
+        <TextView
+            android:id="@+id/item_character_text_view_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:textAlignment="center" />
+    </LinearLayout>
+</layout>
