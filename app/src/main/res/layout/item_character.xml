@@ -4,7 +4,7 @@
     <data>
     <variable
         name="item"
-        type="com.eliezer.marvel_characters.models.response.Character" />
+        type="com.eliezer.marvel_characters.models.responses.Character" />
     </data>
 
     <LinearLayout
