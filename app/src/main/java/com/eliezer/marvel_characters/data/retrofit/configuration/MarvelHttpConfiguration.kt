@@ -5,8 +5,9 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class MarvelHttpConfiguration {
+class MarvelHttpConfiguration @Inject constructor() {
     private companion object {
         val BASE_URL = "https://gateway.marvel.com/v1/public/"
     }

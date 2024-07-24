@@ -7,7 +7,7 @@ import com.eliezer.marvel_characters.databinding.FragmentComicsListBinding
 import com.eliezer.marvel_characters.feature.activity.MainActivity
 
 class ComicsListFragment :
-    BaseFragment<MainActivity, FragmentComicsListBinding>(
+    BaseFragment<FragmentComicsListBinding>(
         FragmentComicsListBinding::inflate
     )
 {

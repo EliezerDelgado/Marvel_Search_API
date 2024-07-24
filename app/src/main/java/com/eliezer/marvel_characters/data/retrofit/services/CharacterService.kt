@@ -3,8 +3,9 @@ package com.eliezer.marvel_characters.data.retrofit.services
 import com.eliezer.marvel_characters.data.retrofit.http.MarvelHttpService
 import com.eliezer.marvel_characters.models.responses.CharacterWrapper
 import com.eliezer.marvel_characters.data.retrofit.utils.RetrofitHash
+import javax.inject.Inject
 
-class CharacterService(
+class CharacterService @Inject constructor(
             private val marvelHttpService: MarvelHttpService
             ){
     suspend fun listCharacter(name : String): CharacterWrapper{
