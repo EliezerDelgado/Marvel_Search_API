@@ -27,8 +27,7 @@ class CharactersListController(
     fun setObservesVM() {
         characterViewModel.characterList.observe(owner,::setCharacterList)
     }
+    private fun setCharacterList(characters: List<Character>?) =   adapter?.setCharacters(characters ?: emptyList())
 
-    private fun setCharacterList(characters: List<Character>?) {
-        adapter?.setCharacters(characters ?: emptyList())
-    }
+    fun searchCharacter(name : String) = characterViewModel.loadHotelList(name)
 }

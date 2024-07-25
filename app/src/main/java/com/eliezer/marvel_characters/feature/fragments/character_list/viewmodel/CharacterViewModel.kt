@@ -4,14 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.eliezer.marvel_characters.core.base.BaseViewModel
-import com.eliezer.marvel_characters.domain.usecase.GetListCharactersUseCase
+import com.eliezer.marvel_characters.domain.usecase.gets.GetListCharactersUseCase
 import com.eliezer.marvel_characters.models.dataclass.Character
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class CharacterViewModel @Inject constructor(
     private val charactersUseCase: GetListCharactersUseCase,
 )  : BaseViewModel() {

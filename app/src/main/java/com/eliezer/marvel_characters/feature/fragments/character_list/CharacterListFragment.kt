@@ -10,7 +10,9 @@ import com.eliezer.marvel_characters.core.base.BaseViewModel
 import com.eliezer.marvel_characters.databinding.FragmentCharacterListBinding
 import com.eliezer.marvel_characters.feature.fragments.character_list.controller.CharactersListController
 import com.eliezer.marvel_characters.feature.fragments.character_list.viewmodel.CharacterViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CharacterListFragment :
     BaseFragment<FragmentCharacterListBinding>(
         FragmentCharacterListBinding::inflate

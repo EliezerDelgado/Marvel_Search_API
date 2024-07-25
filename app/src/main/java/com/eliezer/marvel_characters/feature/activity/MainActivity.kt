@@ -8,7 +8,9 @@ import androidx.core.view.WindowInsetsCompat
 import com.eliezer.marvel_characters.io.actions.NavigationMainActions
 import com.eliezer.marvel_characters.R
 import com.eliezer.marvel_characters.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private var _navigationMainActions: NavigationMainActions? = null
     val navigationMainActions get() = _navigationMainActions
