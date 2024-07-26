@@ -1,7 +1,9 @@
+import com.android.build.api.dsl.Packaging
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    id("kotlin-kapt")
+    id("org.jetbrains.kotlin.kapt")
     id("com.google.dagger.hilt.android")
 }
 
@@ -9,6 +11,9 @@ android {
     namespace = "com.eliezer.marvel_characters"
     compileSdk = 34
 
+    packaging {
+        resources.excludes.add("META-INF/*")
+    }
     defaultConfig {
         applicationId = "com.eliezer.marvel_characters"
         minSdk = 24
@@ -35,7 +40,6 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-
     buildFeatures {
         dataBinding = true
         viewBinding = true
@@ -43,6 +47,8 @@ android {
 }
 
 dependencies {
+
+    implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.javax.inject)
     implementation(libs.gson)
     implementation(libs.converter.gson)
@@ -65,11 +71,5 @@ dependencies {
     kapt(libs.dagger.compiler)
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
-
-    implementation(libs.androidx.work.runtime)
-}
-
-// Allow references to generated code
-kapt {
-    correctErrorTypes = true
+    implementation(libs.listenablefuture)
 }

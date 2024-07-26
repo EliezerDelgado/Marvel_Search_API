@@ -5,9 +5,9 @@ import com.eliezer.marvel_characters.core.domain.MainDispatcher
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.*
 import javax.inject.Singleton
-import dagger.hilt.components.SingletonComponent
 
 
 @Module

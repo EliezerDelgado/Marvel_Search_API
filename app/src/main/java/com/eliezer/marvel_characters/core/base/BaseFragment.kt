@@ -32,10 +32,10 @@ open class BaseFragment<VB : ViewBinding>(private val bindingInflater: (layoutIn
 
     private fun observeViewModels()
      {
-         viewModel?.error.also {
+         _viewModel?.error.also {
              it?.observe(viewLifecycleOwner, this::showError)
          }
-        viewModel?.loading?.observe(viewLifecycleOwner,this::loading)
+         _viewModel?.loading?.observe(viewLifecycleOwner,this::loading)
      }
 
     private fun loading(loading: Boolean?) {

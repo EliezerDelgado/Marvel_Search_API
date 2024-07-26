@@ -16,8 +16,7 @@
             android:id="@+id/item_character_image_view_photo"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:background="@{@drawable/ic_launcher_background}" />
+            android:layout_gravity="center" />
 
         <TextView
             android:id="@+id/item_character_text_view_name"

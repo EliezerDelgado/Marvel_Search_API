@@ -19,11 +19,8 @@ class CharacterRepositoryImpl @Inject constructor(
     }
 
 
-    override fun setListCharacters(params: List<Character>): Flow<Int> {
+    override fun setListCharacters(params: List<Character>) {
         list = params
-        return flow {
-            emit(list?.size ?: 0)
-        }
     }
 
 }

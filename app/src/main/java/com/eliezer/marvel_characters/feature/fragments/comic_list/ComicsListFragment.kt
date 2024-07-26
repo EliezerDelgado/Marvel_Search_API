@@ -5,9 +5,7 @@ import android.view.View
 import com.eliezer.marvel_characters.core.base.BaseFragment
 import com.eliezer.marvel_characters.databinding.FragmentComicsListBinding
 import com.eliezer.marvel_characters.feature.activity.MainActivity
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class ComicsListFragment :
     BaseFragment<FragmentComicsListBinding>(
         FragmentComicsListBinding::inflate
