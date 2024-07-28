@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
     <variable
         name="item"
-        type="com.eliezer.marvel_characters.models.responses.Character" />
+        type="com.eliezer.marvel_characters.models.dataclass.Character" />
     </data>
 
     <LinearLayout
@@ -16,13 +17,15 @@
             android:id="@+id/item_character_image_view_photo"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            app:set_background_image_bitmap_with_url="@{item.urlPicture}"/>
 
         <TextView
             android:id="@+id/item_character_text_view_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:text="@{item.name}"/>
     </LinearLayout>
 </layout>

@@ -10,9 +10,14 @@ open class ItemGenericViewHolder<T>(protected val binding: ViewDataBinding) : Re
     fun bind(item: T) {
         binding.apply {
             setVariable(BR.item, item)
+            setMoreVariable(item)
             executePendingBindings()
         }
         onBindMethodCalled(item)
+    }
+    protected open fun setMoreVariable(item: T)
+    {
+
     }
     protected open fun onBindMethodCalled(item: T)
     {

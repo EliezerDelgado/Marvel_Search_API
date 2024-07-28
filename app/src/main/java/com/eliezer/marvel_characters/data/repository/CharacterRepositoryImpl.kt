@@ -10,8 +10,10 @@ import javax.inject.Inject
 class CharacterRepositoryImpl @Inject constructor(
     private val datasource: CharactersDatasource,
 ) : CharactersRepository {
-    var list: List<Character>? = null
-        private set
+    private var list: List<Character>? = null
+    override fun getListTmpCharacters(): List<Character>? {
+        return list
+    }
 
     override fun getListCharacters(name : String): Flow<List<Character>> {
         list = null

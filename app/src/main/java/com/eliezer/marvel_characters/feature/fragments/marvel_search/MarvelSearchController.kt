@@ -24,13 +24,25 @@ class MarvelSearchController(
     }
     private fun searchListCharacters(name:String)
     {
+        disableButtons()
         marvelSearchViewModel.searchCharacterList(name)
     }
+
+    private fun disableButtons() {
+        binding.marvelSearchButtonGoComicsList.isEnabled = false
+        binding.marvelSearchButtonGoCharacterList.isEnabled = false
+    }
+    private fun enableButtons() {
+        binding.marvelSearchButtonGoComicsList.isEnabled = false
+        binding.marvelSearchButtonGoCharacterList.isEnabled = false
+    }
+
     private fun getSizeCharacterList(size: Int){
         if(size>0)
             goCharacterListFragment()
         else
             showError(R.string.marvel_search_button_go_character_list__text)
+        enableButtons()
     }
 
     private fun showError(@StringRes idError: Int) {

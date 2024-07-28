@@ -16,17 +16,11 @@ class CharacterListFragment :
     )
 {
     private var controller : CharactersListController? = null
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        controller = CharactersListController(binding,viewLifecycleOwner)
+        controller = CharactersListController(binding)
         controller?.setAdapter()
+        controller?.getListCharacterRepository()
     }
 
     override fun onDestroyView() {

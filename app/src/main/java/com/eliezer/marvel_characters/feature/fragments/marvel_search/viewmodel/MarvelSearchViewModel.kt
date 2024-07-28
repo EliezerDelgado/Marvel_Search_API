@@ -16,19 +16,18 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MarvelSearchViewModel @Inject constructor(
-    private val getcharactersUseCase: GetListCharactersUseCase,
-    private val setcharactersUseCase: SetCharactersRepository
+    private val getCharactersUseCase: GetListCharactersUseCase,
 )  : BaseViewModel() {
 
     private val _sizecharacterList = MutableLiveData<Int>()
+    private val setCharactersUseCase= SetCharactersRepository()
     val sizecharacterList: LiveData<Int> get() = _sizecharacterList
     fun searchCharacterList(name: String) {
         viewModelScope.launch {
-            getcharactersUseCase.execute(name)
+            getCharactersUseCase.execute(name)
                 .onStart { _loading.value = true }
                 .onCompletion { _loading.value = false }
                 .catch {
-                    val r = it.cause
                     _error.value = it
                 }
                 .collect {
@@ -39,7 +38,7 @@ class MarvelSearchViewModel @Inject constructor(
 
     private fun onResultOfGetListCharacter(characters: List<Character>){
         if(characters.isNotEmpty())
-            setcharactersUseCase.setListRepository(characters)
+            setCharactersUseCase.setListRepository(characters)
         _sizecharacterList.value = characters.size
     }
 }
