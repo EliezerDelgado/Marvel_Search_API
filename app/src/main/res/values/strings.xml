@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Marvel Characters</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="marvel_search_text_input_edit_text__hint">Buscar...</string>
+    <string name="marvel_search_button_go_character_list__text">Personajes</string>
+    <string name="marvel_search_button_go_comics_list__text">Comics</string>
+    <string name="loading_button_cancel__text">Cancelar</string>
+</resources>

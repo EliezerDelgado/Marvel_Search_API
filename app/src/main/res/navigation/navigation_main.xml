@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_main"
+    app:startDestination="@id/marvelSearchFragment">
+
+    <fragment
+        android:id="@+id/marvelSearchFragment"
+        android:name="com.eliezer.marvel_characters.feature.fragments.marvel_search.MarvelSearchFragment"
+        android:label="fragment_marvel_search"
+        tools:layout="@layout/fragment_marvel_search" >
+        <action
+            android:id="@+id/action_marvelSearchFragment_to_characterListFragment"
+            app:destination="@id/characterListFragment" />
+        <action
+            android:id="@+id/action_marvelSearchFragment_to_comicListFragment"
+            app:destination="@id/comicsListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/comicsListFragment"
+        android:name="com.eliezer.marvel_characters.feature.fragments.comic_list.ComicsListFragment"
+        android:label="fragment_comics_list"
+        tools:layout="@layout/fragment_comics_list" />
+    <fragment
+        android:id="@+id/characterListFragment"
+        android:name="com.eliezer.marvel_characters.feature.fragments.character_list.CharacterListFragment"
+        android:label="fragment_characters_list"
+        tools:layout="@layout/fragment_character_list" />
+</navigation>
