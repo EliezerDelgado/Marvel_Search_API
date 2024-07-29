@@ -16,11 +16,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MarvelSearchViewModel @Inject constructor(
+    private val setCharactersUseCase : SetCharactersRepository,
     private val getCharactersUseCase: GetListCharactersUseCase,
 )  : BaseViewModel() {
 
     private val _sizecharacterList = MutableLiveData<Int>()
-    private val setCharactersUseCase= SetCharactersRepository()
     val sizecharacterList: LiveData<Int> get() = _sizecharacterList
     fun searchCharacterList(name: String) {
         viewModelScope.launch {

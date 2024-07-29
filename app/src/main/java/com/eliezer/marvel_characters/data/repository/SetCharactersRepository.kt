@@ -7,7 +7,7 @@ import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
-class SetCharactersRepository (
+class SetCharactersRepository @Inject constructor(
     private val marvelRepository: CharactersRepository
 ){
     fun setListRepository(params: List<Character>){

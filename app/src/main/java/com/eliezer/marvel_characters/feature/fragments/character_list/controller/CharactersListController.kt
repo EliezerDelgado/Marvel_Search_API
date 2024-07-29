@@ -11,7 +11,7 @@ class CharactersListController(
     private val binding: FragmentCharacterListBinding
 ) {
 
-    @Inject private lateinit var getCharactersRepository: GetCharactersRepository
+    @Inject lateinit var getCharactersRepository: GetCharactersRepository
     private var adapter: CharacterListAdapter? = null
     fun navigateBack() {
         //fragment.baseActivity?.navigationMainActions?.navigateUp()
