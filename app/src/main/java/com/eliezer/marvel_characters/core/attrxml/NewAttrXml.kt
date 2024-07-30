@@ -1,12 +1,11 @@
 package com.eliezer.marvel_characters.core.attrxml
 
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.widget.ImageView
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.databinding.BindingAdapter
-import com.eliezer.marvel_characters.core.utils.getImageBitmap
-
-class NewAttrXml {
-    @BindingAdapter("set_background_image_bitmap_with_url")
-    fun setBackgroundImageBitmapWithUrl(imageView: ImageView,url: String) {
-       imageView.setImageBitmap(getImageBitmap(url))
-    }
+@BindingAdapter("set_background_image_bitmap")
+fun AppCompatImageView.setBitmap( bitmap: Bitmap?) {
+    setImageBitmap(bitmap)
 }

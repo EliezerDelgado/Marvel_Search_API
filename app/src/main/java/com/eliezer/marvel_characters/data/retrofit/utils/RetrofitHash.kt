@@ -1,12 +1,12 @@
 package com.eliezer.marvel_characters.data.retrofit.utils
 
+import com.eliezer.marvel_characters.data.const.keys.PRIVATE_KEY
 import com.eliezer.marvel_characters.data.const.keys.PUBLIC_KEY
-import com.eliezer.marvel_characters.data.const.keys.getPrivateKey
 import java.security.MessageDigest
 
 object RetrofitHash {
     var publicKey : String = PUBLIC_KEY
-    private var private_key : String = getPrivateKey()
+    private var private_key : String = PRIVATE_KEY
 
     fun generateHash(ts : Long) : String
     {

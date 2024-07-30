@@ -2,19 +2,17 @@ package com.eliezer.marvel_characters.core.base
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.eliezer.marvel_characters.core.domain.DiffUtilCallback
 
-open class GenericAdapter<T,S: ItemGenericViewHolder<T>>(protected var items: List<T>, protected val binding: (layoutInflater: LayoutInflater) -> ViewDataBinding) : RecyclerView.Adapter<S>() {
+abstract class GenericAdapter<T, S : ItemGenericViewHolder<T>>(protected var items: List<T>) : RecyclerView.Adapter<S>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): S {
-        val holder = binding.invoke(LayoutInflater.from(parent.context)).let {
-            ItemGenericViewHolder<T>(it) as S
-        }
-        return holder
+        val inflater = LayoutInflater.from(parent.context)
+        return setViewHolder(inflater)
     }
+    abstract fun setViewHolder(inflater: LayoutInflater) : S
     override fun getItemCount(): Int {
        return items.size
     }
@@ -30,5 +28,8 @@ open class GenericAdapter<T,S: ItemGenericViewHolder<T>>(protected var items: Li
         items[position].also {
             holder.bind(it)
         }
+        addMoreBindViewHolderFunction(holder)
     }
+
+    open fun addMoreBindViewHolderFunction(holder: S) {}
 }

@@ -4,9 +4,10 @@ import com.eliezer.marvel_characters.data.datasource.CharactersDatasource
 import com.eliezer.marvel_characters.models.dataclass.Character
 import com.eliezer.marvel_characters.domain.repository.CharactersRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class CharacterRepositoryImpl @Inject constructor(
     private val datasource: CharactersDatasource,
 ) : CharactersRepository {
@@ -23,6 +24,7 @@ class CharacterRepositoryImpl @Inject constructor(
 
     override fun setListCharacters(params: List<Character>) {
         list = params
+        list?.sortedBy { it.name }
     }
 
 }
