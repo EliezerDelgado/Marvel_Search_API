@@ -1,11 +1,11 @@
-package com.eliezer.marvel_characters.feature.fragments.character_list.controller
+package com.eliezer.marvel_characters.feature.fragments.character_list.functionImp
 
 import com.eliezer.marvel_characters.data.repository.GetCharactersRepository
 import com.eliezer.marvel_characters.databinding.FragmentCharacterListBinding
 import com.eliezer.marvel_characters.feature.fragments.character_list.adapter.CharacterListAdapter
 import com.eliezer.marvel_characters.models.dataclass.Character
 
-class CharactersListController(
+class CharactersListFunctionImplement(
     private val binding: FragmentCharacterListBinding,
     private val getCharactersRepository : GetCharactersRepository
 ) {

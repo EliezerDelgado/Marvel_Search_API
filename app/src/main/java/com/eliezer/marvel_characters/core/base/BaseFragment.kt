@@ -20,9 +20,9 @@ open class BaseFragment<VB : ViewBinding>(private val bindingInflater: (layoutIn
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setViewModel()
         observeViewModels()
     }
 

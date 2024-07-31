@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.eliezer.marvel_characters.core.base.BaseViewModel
-import com.eliezer.marvel_characters.data.repository.GetCharactersRepository
 import com.eliezer.marvel_characters.domain.usecase.GetListCharactersUseCase
 import com.eliezer.marvel_characters.data.repository.SetCharactersRepository
 import com.eliezer.marvel_characters.models.dataclass.Character
@@ -21,8 +20,8 @@ class MarvelSearchViewModel @Inject constructor(
     private val getCharactersUseCase: GetListCharactersUseCase,
 )  : BaseViewModel() {
 
-    private val _sizecharacterList = MutableLiveData<Int>()
-    val sizecharacterList: LiveData<Int> get() = _sizecharacterList
+    private var _sizeCharacterList  = MutableLiveData<Int>()
+    val sizeCharacterList: LiveData<Int> get() = _sizeCharacterList
     fun searchCharacterList(name: String) {
         viewModelScope.launch {
             getCharactersUseCase.execute(name)
@@ -40,6 +39,10 @@ class MarvelSearchViewModel @Inject constructor(
     private fun onResultOfGetListCharacter(characters: List<Character>){
         if(characters.isNotEmpty())
             setCharactersUseCase.setListRepository(characters)
-        _sizecharacterList.value = characters.size
+        _sizeCharacterList.postValue(characters.size)
+    }
+
+    fun resetSizeCharacterList() {
+        _sizeCharacterList  = MutableLiveData<Int>()
     }
 }

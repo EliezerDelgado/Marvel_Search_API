@@ -5,7 +5,9 @@ import com.eliezer.marvel_characters.models.responses.CharacterWrapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class MarvelController @Inject constructor(
     private var characterService: CharacterService
 ) {

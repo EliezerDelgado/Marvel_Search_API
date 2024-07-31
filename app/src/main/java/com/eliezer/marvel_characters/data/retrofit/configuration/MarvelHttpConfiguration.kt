@@ -6,7 +6,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class MarvelHttpConfiguration @Inject constructor() {
     private companion object {
         val BASE_URL = "https://gateway.marvel.com/v1/public/"

@@ -15,17 +15,19 @@ class MarvelSearchFragment : BaseFragment<FragmentMarvelSearchBinding>(
     FragmentMarvelSearchBinding::inflate
 ) {
     private val searchViewModel: MarvelSearchViewModel by viewModels()
-    private var controller : MarvelSearchController? = null
+    private var funImpl : MarvelSearchFunctionImplement? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        controller = MarvelSearchController(binding,searchViewModel,(activity as MainActivity).navigationMainActions!!,viewLifecycleOwner)
-        controller?.setObservesVM()
-        controller?.buttonListener()
+
+        funImpl = MarvelSearchFunctionImplement(binding,searchViewModel,(activity as MainActivity).navigationMainActions!!,viewLifecycleOwner)
+        funImpl?.buttonListener()
     }
     override fun onDestroyView() {
         super.onDestroyView()
-        controller = null
+        funImpl = null
     }
+
+
     override fun addViewModel(): BaseViewModel {
         return searchViewModel
     }
