@@ -1,6 +1,6 @@
 package com.eliezer.marvel_characters.data.retrofit.configuration
 
-import com.eliezer.marvel_characters.data.retrofit.http.MarvelHttpService
+import com.eliezer.marvel_characters.data.retrofit.api.ApiMarvelHttpService
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -25,5 +25,5 @@ class MarvelHttpConfiguration @Inject constructor() {
         .client(buildCLient())
         .build()
 
-    fun marvelHttpService() = buildRetrofit().create(MarvelHttpService::class.java)
+    fun marvelHttpService() = buildRetrofit().create(ApiMarvelHttpService::class.java)
 }

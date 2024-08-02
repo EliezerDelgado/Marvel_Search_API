@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/marvelSearchFragment"
-        android:name="com.eliezer.marvel_characters.feature.fragments.marvel_search.MarvelSearchFragment"
+        android:name="com.eliezer.marvel_characters.ui.fragments.marvel_search.MarvelSearchFragment"
         android:label="fragment_marvel_search"
         tools:layout="@layout/fragment_marvel_search" >
         <action
@@ -19,12 +19,12 @@
     </fragment>
     <fragment
         android:id="@+id/comicsListFragment"
-        android:name="com.eliezer.marvel_characters.feature.fragments.comic_list.ComicsListFragment"
+        android:name="com.eliezer.marvel_characters.ui.fragments.comic_list.ComicsListFragment"
         android:label="fragment_comics_list"
         tools:layout="@layout/fragment_comics_list" />
     <fragment
         android:id="@+id/characterListFragment"
-        android:name="com.eliezer.marvel_characters.feature.fragments.character_list.CharacterListFragment"
+        android:name="com.eliezer.marvel_characters.ui.fragments.character_list.CharacterListFragment"
         android:label="fragment_characters_list"
         tools:layout="@layout/fragment_character_list" />
 </navigation>

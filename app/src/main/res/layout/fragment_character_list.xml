@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".feature.fragments.character_list.CharacterListFragment">
+    tools:context=".ui.fragments.character_list.CharacterListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/character_list_recycler_view"
