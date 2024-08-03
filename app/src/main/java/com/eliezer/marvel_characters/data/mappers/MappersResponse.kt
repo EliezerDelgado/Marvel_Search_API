@@ -1,7 +1,7 @@
 package com.eliezer.marvel_characters.data.mappers
 
 import com.eliezer.marvel_characters.models.dataclass.Character
-import com.eliezer.marvel_characters.models.responses.DataContainerResponse
+import com.eliezer.marvel_characters.models.responses.character.DataContainerResponse
 
 fun DataContainerResponse.mapToListCharacter() : List<Character> =
     results.map {

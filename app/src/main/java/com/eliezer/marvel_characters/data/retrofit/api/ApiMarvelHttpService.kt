@@ -1,6 +1,6 @@
 package com.eliezer.marvel_characters.data.retrofit.api
 
-import com.eliezer.marvel_characters.models.responses.CharacterWrapperResponse
+import com.eliezer.marvel_characters.models.responses.character.CharacterWrapperResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

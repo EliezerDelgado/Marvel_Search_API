@@ -1,4 +1,4 @@
-package com.eliezer.marvel_characters.models.responses
+package com.eliezer.marvel_characters.models.responses.character
 data class SeriesListResponse(
     val available: String,
     val collectionURI: String,
