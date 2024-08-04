@@ -5,7 +5,7 @@ import com.eliezer.marvel_characters.core.base.BaseAdapter
 import com.eliezer.marvel_characters.databinding.ItemCharacterBinding
 import com.eliezer.marvel_characters.models.dataclass.Character
 
-class CharacterListAdapter(items : List<Character>) : BaseAdapter<Character, ItemCharacterViewHolder>(
+class CharactersListAdapter(items : List<Character>) : BaseAdapter<Character, ItemCharacterViewHolder>(
     items = items) {
     fun setCharacters(characters : List<Character>) =
         setListItems(characters)

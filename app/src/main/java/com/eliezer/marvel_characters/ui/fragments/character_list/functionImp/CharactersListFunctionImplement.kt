@@ -2,7 +2,7 @@ package com.eliezer.marvel_characters.ui.fragments.character_list.functionImp
 
 import com.eliezer.marvel_characters.data.repository.mock.GetCharactersRepository
 import com.eliezer.marvel_characters.databinding.FragmentCharacterListBinding
-import com.eliezer.marvel_characters.ui.fragments.character_list.adapter.CharacterListAdapter
+import com.eliezer.marvel_characters.ui.fragments.character_list.adapter.CharactersListAdapter
 import com.eliezer.marvel_characters.models.dataclass.Character
 
 class CharactersListFunctionImplement(
@@ -10,15 +10,15 @@ class CharactersListFunctionImplement(
     private val getCharactersRepository : GetCharactersRepository
 ) {
 
-    private var adapter: CharacterListAdapter? = null
+    private var adapter: CharactersListAdapter? = null
     fun navigateBack() {
         //fragment.baseActivity?.navigationMainActions?.navigateUp()
     }
 
     fun setAdapter() {
-        adapter = CharacterListAdapter(arrayListOf())
-        binding.characterListRecyclerView.setHasFixedSize(true)
-        binding.characterListRecyclerView.adapter = adapter
+        adapter = CharactersListAdapter(arrayListOf())
+        binding.charactersListRecyclerView.setHasFixedSize(true)
+        binding.charactersListRecyclerView.adapter = adapter
     }
 
     fun getListCharacterRepository()

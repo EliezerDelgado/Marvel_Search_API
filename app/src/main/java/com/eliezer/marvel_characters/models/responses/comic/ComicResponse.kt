@@ -3,7 +3,7 @@ package com.eliezer.marvel_characters.models.responses.comic
 import com.google.gson.annotations.SerializedName
 
 
-data class Comic (
+data class ComicResponse (
 
   @SerializedName("id"                 ) var id                 : Int?                = null,
   @SerializedName("digitalId"          ) var digitalId          : Int?                = null,

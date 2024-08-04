@@ -9,6 +9,6 @@ data class ComicDataContainer (
   @SerializedName("limit"   ) var limit   : Int?               = null,
   @SerializedName("total"   ) var total   : Int?               = null,
   @SerializedName("count"   ) var count   : Int?               = null,
-  @SerializedName("results" ) var results : ArrayList<Comic> = arrayListOf()
+  @SerializedName("results" ) var results : ArrayList<ComicResponse> = arrayListOf()
 
 )
