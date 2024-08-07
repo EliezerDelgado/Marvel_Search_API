@@ -1,6 +1,6 @@
 package com.eliezer.marvel_characters.ui.fragments.character_list.functionImp
 
-import com.eliezer.marvel_characters.data.repository.mock.GetCharactersRepository
+import com.eliezer.marvel_characters.data.repository.characters.mock.GetCharactersRepository
 import com.eliezer.marvel_characters.databinding.FragmentCharacterListBinding
 import com.eliezer.marvel_characters.ui.fragments.character_list.adapter.CharactersListAdapter
 import com.eliezer.marvel_characters.models.dataclass.Character
@@ -21,10 +21,10 @@ class CharactersListFunctionImplement(
         binding.charactersListRecyclerView.adapter = adapter
     }
 
-    fun getListCharacterRepository()
+    fun getListCharactersRepository()
     {
-        val i = getCharactersRepository.getListRepository()
-        setCharacterList(i)
+        val characters = getCharactersRepository.getListRepository()
+        setCharacterList(characters)
     }
 
     private fun setCharacterList(characters: List<Character>?) =

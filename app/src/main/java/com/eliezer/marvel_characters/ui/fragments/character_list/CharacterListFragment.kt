@@ -3,7 +3,7 @@ package com.eliezer.marvel_characters.ui.fragments.character_list
 import android.os.Bundle
 import android.view.View
 import com.eliezer.marvel_characters.core.base.BaseFragment
-import com.eliezer.marvel_characters.data.repository.mock.GetCharactersRepository
+import com.eliezer.marvel_characters.data.repository.characters.mock.GetCharactersRepository
 import com.eliezer.marvel_characters.databinding.FragmentCharacterListBinding
 import com.eliezer.marvel_characters.ui.fragments.character_list.functionImp.CharactersListFunctionImplement
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,7 +22,7 @@ class CharacterListFragment :
         super.onViewCreated(view, savedInstanceState)
         funImpl = CharactersListFunctionImplement(binding,getCharactersRepository)
         funImpl?.setAdapter()
-        funImpl?.getListCharacterRepository()
+        funImpl?.getListCharactersRepository()
     }
 
 

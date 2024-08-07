@@ -1,6 +1,6 @@
-package com.eliezer.marvel_characters.data.repository
+package com.eliezer.marvel_characters.data.repository.characters
 
-import com.eliezer.marvel_characters.data.datasource.CharactersDatasource
+import com.eliezer.marvel_characters.data.datasource.CharactersDataSource
 import com.eliezer.marvel_characters.models.dataclass.Character
 import com.eliezer.marvel_characters.domain.repository.CharactersRepository
 import kotlinx.coroutines.flow.Flow
@@ -9,7 +9,7 @@ import javax.inject.Singleton
 
 @Singleton
 class CharacterRepositoryImpl @Inject constructor(
-    private val datasource: CharactersDatasource,
+    private val datasource: CharactersDataSource,
 ) : CharactersRepository {
     private var list: List<Character>? = null
     override fun getListTmpCharacters(): List<Character>? {
