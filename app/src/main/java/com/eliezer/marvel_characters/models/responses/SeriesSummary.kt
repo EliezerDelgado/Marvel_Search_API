@@ -1,4 +1,4 @@
-package com.eliezer.marvel_characters.models.responses.comic
+package com.eliezer.marvel_characters.models.responses
 
 import com.google.gson.annotations.SerializedName
 

@@ -1,5 +1,10 @@
 package com.eliezer.marvel_characters.models.responses.comic
 
+import com.eliezer.marvel_characters.models.responses.EventList
+import com.eliezer.marvel_characters.models.responses.Image
+import com.eliezer.marvel_characters.models.responses.SeriesSummary
+import com.eliezer.marvel_characters.models.responses.StoryList
+import com.eliezer.marvel_characters.models.responses.Url
 import com.google.gson.annotations.SerializedName
 
 

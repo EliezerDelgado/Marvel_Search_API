@@ -1,6 +1,6 @@
 package com.eliezer.marvel_characters.data.retrofit.api
 
-import com.eliezer.marvel_characters.models.responses.character.CharacterWrapperResponse
+import com.eliezer.marvel_characters.models.responses.character.CharacterDataWrapper
 import com.eliezer.marvel_characters.models.responses.comic.ComicDataWrapper
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -13,7 +13,7 @@ interface ApiMarvelHttpService {
         @Query("apikey") apikey : String,
         @Query("hash") hash : String,
 
-    ) : CharacterWrapperResponse
+    ) : CharacterDataWrapper
 
     @GET(/* value = */ "/v1/public/comics")
     suspend fun  getComics(
