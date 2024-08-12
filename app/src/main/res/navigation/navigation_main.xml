@@ -26,5 +26,17 @@
         android:id="@+id/characterListFragment"
         android:name="com.eliezer.marvel_characters.ui.fragments.character_list.CharacterListFragment"
         android:label="fragment_characters_list"
-        tools:layout="@layout/fragment_character_list" />
+        tools:layout="@layout/fragment_character_list" >
+        <action
+            android:id="@+id/action_characterListFragment_to_characterProfileFragment"
+            app:destination="@id/characterProfileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/characterProfileFragment"
+        android:name="com.eliezer.marvel_characters.ui.fragments.character_profile.CharacterProfileFragment"
+        android:label="CharacterProfileFragment" >
+        <argument
+            android:name="argCharacter"
+            app:argType="com.eliezer.marvel_characters.models.dataclass.Character"/>
+    </fragment>
 </navigation>

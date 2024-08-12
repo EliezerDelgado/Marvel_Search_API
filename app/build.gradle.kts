@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     id("org.jetbrains.kotlin.kapt")
     id("com.google.dagger.hilt.android")
+    id("org.jetbrains.kotlin.plugin.serialization")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -47,7 +49,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.javax.inject)
     implementation(libs.gson)
@@ -67,9 +68,17 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    //Dagger
     implementation(libs.dagger)
     kapt(libs.dagger.compiler)
+
+    //Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
     implementation(libs.listenablefuture)
+
+    //Serialization
+    implementation(libs.kotlinx.serialization.json)
+
 }

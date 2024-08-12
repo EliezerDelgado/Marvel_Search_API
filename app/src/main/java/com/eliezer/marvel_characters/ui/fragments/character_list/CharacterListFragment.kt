@@ -1,7 +1,11 @@
 package com.eliezer.marvel_characters.ui.fragments.character_list
 
+import android.content.Intent.getIntent
 import android.os.Bundle
 import android.view.View
+import androidx.navigation.NavHost
+import androidx.navigation.fragment.NavHostFragment
+import com.eliezer.marvel_characters.R
 import com.eliezer.marvel_characters.core.base.BaseFragment
 import com.eliezer.marvel_characters.data.repository.characters.mock.GetCharactersRepository
 import com.eliezer.marvel_characters.databinding.FragmentCharacterListBinding
@@ -24,8 +28,6 @@ class CharacterListFragment :
         funImpl?.setAdapter()
         funImpl?.getListCharactersRepository()
     }
-
-
 
     override fun onDestroyView() {
         super.onDestroyView()

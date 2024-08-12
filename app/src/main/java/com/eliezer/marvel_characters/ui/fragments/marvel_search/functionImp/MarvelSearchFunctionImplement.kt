@@ -1,4 +1,4 @@
-package com.eliezer.marvel_characters.ui.fragments.marvel_search
+package com.eliezer.marvel_characters.ui.fragments.marvel_search.functionImp
 
 import androidx.annotation.StringRes
 import androidx.lifecycle.LifecycleOwner

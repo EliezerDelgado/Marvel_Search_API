@@ -8,6 +8,7 @@ import com.eliezer.marvel_characters.core.domain.DiffUtilCallback
 
 abstract class BaseAdapter<T, S : BaseItemViewHolder<T>>(protected var items: List<T>) : RecyclerView.Adapter<S>() {
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): S {
         val inflater = LayoutInflater.from(parent.context)
         return setViewHolder(inflater)

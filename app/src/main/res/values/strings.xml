@@ -6,4 +6,5 @@
     <string name="marvel_search_button_go_character_list__text">Personajes</string>
     <string name="marvel_search_button_go_comics_list__text">Comics</string>
     <string name="loading_button_cancel__text">Cancelar</string>
+    <string name="character_profile_text_view_comics_title__text">Lista de comics</string>
 </resources>

@@ -1,9 +1,10 @@
 package com.eliezer.marvel_characters.ui.fragments.character_list.functionImp
 
+import android.content.Intent.getIntent
 import com.eliezer.marvel_characters.data.repository.characters.mock.GetCharactersRepository
 import com.eliezer.marvel_characters.databinding.FragmentCharacterListBinding
-import com.eliezer.marvel_characters.ui.fragments.character_list.adapter.CharactersListAdapter
 import com.eliezer.marvel_characters.models.dataclass.Character
+import com.eliezer.marvel_characters.ui.fragments.character_list.adapter.CharactersListAdapter
 
 class CharactersListFunctionImplement(
     private val binding: FragmentCharacterListBinding,

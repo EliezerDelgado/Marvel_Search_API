@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
         _navigationMainActions = NavigationMainActions(binding!!.navHostFragment)
+
     }
 
     override fun onDestroy() {
