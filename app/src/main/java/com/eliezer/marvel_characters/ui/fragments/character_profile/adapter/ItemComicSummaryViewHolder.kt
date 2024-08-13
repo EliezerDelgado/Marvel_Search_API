@@ -6,12 +6,13 @@ import com.eliezer.marvel_characters.core.utils.loadImageFromWebOperations
 import com.eliezer.marvel_characters.databinding.ItemCharacterBinding
 import com.eliezer.marvel_characters.databinding.ItemComicSummaryBinding
 import com.eliezer.marvel_characters.models.dataclass.Character
+import com.eliezer.marvel_characters.models.dataclass.Comic
 import com.eliezer.marvel_characters.models.responses.character.ComicSummary
 
-class ItemComicSummaryViewHolder(binding: ItemComicSummaryBinding) : BaseItemViewHolder<ComicSummary>(binding = binding ) {
-    override fun onBindMethodCalled(item: ComicSummary) {
+class ItemComicSummaryViewHolder(binding: ItemComicSummaryBinding) : BaseItemViewHolder<Comic>(binding = binding ) {
+    override fun onBindMethodCalled(item: Comic) {
         val t = Thread {
-            binding.setVariable(BR.img, loadImageFromWebOperations(item.resourceURI))
+            binding.setVariable(BR.img, loadImageFromWebOperations(item.urlPicture))
         }
         t.start()
     }

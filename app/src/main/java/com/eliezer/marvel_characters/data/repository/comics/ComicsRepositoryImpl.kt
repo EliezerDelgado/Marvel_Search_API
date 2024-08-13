@@ -27,6 +27,12 @@ class ComicsRepositoryImpl @Inject constructor(
         return datasource.getDataContainer(title)
     }
 
+    override fun getListCharacterComics(characterId: Int): Flow<List<Comic>> {
+
+        list = null
+        return datasource.getDataContainer(characterId)
+    }
+
     override fun setListComics(params: List<Comic>) {
         list = params
         list?.sortedBy { it.title }

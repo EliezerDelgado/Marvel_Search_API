@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.eliezer.marvel_characters.core.domain.DiffUtilCallback
+import com.eliezer.marvel_characters.models.dataclass.Character
 
 abstract class BaseAdapter<T, S : BaseItemViewHolder<T>>(protected var items: List<T>) : RecyclerView.Adapter<S>() {
 
@@ -28,9 +29,9 @@ abstract class BaseAdapter<T, S : BaseItemViewHolder<T>>(protected var items: Li
     override fun onBindViewHolder(holder: S, position: Int) {
         items[position].also {
             holder.bind(it)
+            addMoreBindViewHolderFunction(holder, it )
         }
-        addMoreBindViewHolderFunction(holder)
     }
 
-    open fun addMoreBindViewHolderFunction(holder: S) {}
+    open fun addMoreBindViewHolderFunction(holder: S,item : T) {}
 }

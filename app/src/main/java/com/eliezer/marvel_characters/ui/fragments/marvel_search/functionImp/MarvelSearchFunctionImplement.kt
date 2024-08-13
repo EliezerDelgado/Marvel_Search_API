@@ -9,7 +9,7 @@ import com.eliezer.marvel_characters.ui.fragments.marvel_search.viewmodel.Marvel
 
 class MarvelSearchFunctionImplement(
     private val binding: FragmentMarvelSearchBinding,
-    private val marvelSearchViewModel: MarvelSearchViewModel,
+    private val viewModel: MarvelSearchViewModel,
     private val navigationMainActions: NavigationMainActions,
     private val owner : LifecycleOwner
 ) {
@@ -35,16 +35,16 @@ class MarvelSearchFunctionImplement(
         navigationMainActions.doActionMarvelSearchsFragmentToCharacterListFragment()
     private fun goComicsListFragment() = navigationMainActions.doActionMarvelSearchsFragmentToComicListFragment()
     private fun setObservesVM() {
-        marvelSearchViewModel.sizeResult.observe(owner,::getSizeResultList)
+        viewModel.sizeResult.observe(owner,::getSizeResultList)
     }
     private fun searchListCharacters(name:String)
     {
         disableButtons()
-        marvelSearchViewModel.searchCharactersList(name)
+        viewModel.searchCharactersList(name)
     }
     private fun searchListComics(title: String) {
         disableButtons()
-        marvelSearchViewModel.searchComicsList(title)
+        viewModel.searchComicsList(title)
     }
     private fun disableButtons() {
         binding.marvelSearchButtonGoComicsList.isEnabled = false
@@ -79,8 +79,8 @@ class MarvelSearchFunctionImplement(
     }
 
     private fun setNotObservesVM() {
-        marvelSearchViewModel.resetSizeResult()
-        marvelSearchViewModel.sizeResult.removeObservers(owner)
+        viewModel.sizeResult.removeObservers(owner)
+        viewModel.resetSizeResult()
     }
 }
 

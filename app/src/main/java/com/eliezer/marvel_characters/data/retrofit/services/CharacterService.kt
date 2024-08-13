@@ -33,4 +33,16 @@ class CharacterService @Inject constructor(
             hash = hash
         )
     }
+
+    suspend fun listCharacterComics(characterId: Int): ComicDataWrapper {
+        val ts = System.currentTimeMillis()
+        val apiKey = RetrofitHash.publicKey
+        val hash = RetrofitHash.generateHash(ts)
+        return apiMarvelHttpService.getCharactersComics(
+            characterId = characterId,
+            ts = ts,
+            apikey = apiKey,
+            hash = hash
+        )
+    }
 }

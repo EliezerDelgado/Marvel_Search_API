@@ -8,6 +8,7 @@ import com.eliezer.marvel_characters.models.responses.comic.ComicDataContainer
 fun CharacterDataContainer.mapToListCharacter() : List<Character> =
     results.map {
         Character(
+            id = it.id?: 0,
             name = it.name ?: "",
             urlPicture = it.thumbnail?.path + "." + it.thumbnail?.extension,
             description = it.description?: "",

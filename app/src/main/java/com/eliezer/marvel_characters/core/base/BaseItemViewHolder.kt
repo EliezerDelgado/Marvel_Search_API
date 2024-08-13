@@ -13,6 +13,13 @@ abstract class BaseItemViewHolder<T>(protected val binding: ViewDataBinding) : R
             executePendingBindings()
         }
         onBindMethodCalled(item)
+        itemView.setOnClickListener{
+            onItemCLickListener()
+        }
     }
-    abstract fun onBindMethodCalled(item: T)
+
+    open fun onItemCLickListener(){
+    }
+
+    open fun onBindMethodCalled(item: T) {}
 }
