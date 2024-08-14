@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        _navigationMainActions = NavigationMainActions(binding!!.navHostFragment)
+       _navigationMainActions = NavigationMainActions(binding!!.navHostFragment)
 
     }
 

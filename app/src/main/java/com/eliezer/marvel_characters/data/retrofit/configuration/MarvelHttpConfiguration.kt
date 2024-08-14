@@ -11,10 +11,10 @@ import javax.inject.Singleton
 @Singleton
 class MarvelHttpConfiguration @Inject constructor() {
     private companion object {
-        val BASE_URL = "https://gateway.marvel.com/v1/public/"
+        const val BASE_URL = "https://gateway.marvel.com/v1/public/"
     }
 
-    private fun buildCLient() = OkHttpClient.Builder()
+    private fun buildClient() = OkHttpClient.Builder()
         .connectTimeout(2, TimeUnit.MINUTES)
         .readTimeout(2, TimeUnit.MINUTES)
         .build()
@@ -22,8 +22,8 @@ class MarvelHttpConfiguration @Inject constructor() {
     private fun buildRetrofit() = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
-        .client(buildCLient())
+        .client(buildClient())
         .build()
 
-    fun marvelHttpService() = buildRetrofit().create(ApiMarvelHttpService::class.java)
+    fun marvelHttpService(): ApiMarvelHttpService = buildRetrofit().create(ApiMarvelHttpService::class.java)
 }

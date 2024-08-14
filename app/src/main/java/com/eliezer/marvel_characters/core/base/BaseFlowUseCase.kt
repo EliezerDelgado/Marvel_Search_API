@@ -10,5 +10,5 @@ abstract class BaseFlowUseCase <in P, R>(private val dispatcher: CoroutineDispat
         return execute(parameters).flowOn(dispatcher)
     }
 
-    abstract fun execute(params: P): Flow<R>
+    protected abstract fun execute(params: P): Flow<R>
 }

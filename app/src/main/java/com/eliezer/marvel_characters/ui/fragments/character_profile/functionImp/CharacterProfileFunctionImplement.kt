@@ -1,6 +1,9 @@
 package com.eliezer.marvel_characters.ui.fragments.character_profile.functionImp
 
 import android.os.Bundle
+import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_characters.BR
 import com.eliezer.marvel_characters.core.utils.loadImageFromWebOperations
@@ -10,6 +13,7 @@ import com.eliezer.marvel_characters.models.dataclass.Comic
 import com.eliezer.marvel_characters.ui.fragments.character_profile.CharacterProfileFragmentArgs
 import com.eliezer.marvel_characters.ui.fragments.character_profile.adapter.CharacterProfileComicsListAdapter
 import com.eliezer.marvel_characters.ui.fragments.character_profile.viewmodel.CharacterProfileViewModel
+
 
 class CharacterProfileFunctionImplement(
     private val binding: FragmentCharacterProfileBinding,

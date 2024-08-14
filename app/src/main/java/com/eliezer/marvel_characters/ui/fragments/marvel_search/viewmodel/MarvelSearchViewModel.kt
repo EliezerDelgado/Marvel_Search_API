@@ -30,7 +30,7 @@ class MarvelSearchViewModel @Inject constructor(
 
     fun searchCharactersList(name: String) {
         viewModelScope.launch {
-            getCharactersUseCase.execute(name)
+            getCharactersUseCase.invoke(name)
                 .onStart { _loading.value = true }
                 .onCompletion { _loading.value = false }
                 .catch {
@@ -43,7 +43,7 @@ class MarvelSearchViewModel @Inject constructor(
     }
     fun searchComicsList(title: String) {
         viewModelScope.launch {
-            getComicsUseCase.execute(title)
+            getComicsUseCase.invoke(title)
                 .onStart { _loading.value = true }
                 .onCompletion { _loading.value = false }
                 .catch {

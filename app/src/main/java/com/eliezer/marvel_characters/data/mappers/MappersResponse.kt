@@ -11,8 +11,7 @@ fun CharacterDataContainer.mapToListCharacter() : List<Character> =
             id = it.id?: 0,
             name = it.name ?: "",
             urlPicture = it.thumbnail?.path + "." + it.thumbnail?.extension,
-            description = it.description?: "",
-            comics = it.comics?.items ?: arrayListOf()
+            description = it.description?: ""
         )
     }
 fun ComicDataContainer.mapToListComic() : List<Comic> =

@@ -27,7 +27,7 @@ class CharacterProfileViewModel @Inject constructor(
     val listComic: LiveData<List<Comic>> get() = _listComic
     fun searchComicsList(characterId: Int) {
         viewModelScope.launch {
-            getComicsUseCase.execute(characterId)
+            getComicsUseCase.invoke(characterId)
                 .onStart { _loading.value = true }
                 .onCompletion { _loading.value = false }
                 .catch {
