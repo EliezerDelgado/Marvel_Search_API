@@ -4,12 +4,13 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.eliezer.marvel_characters.models.responses.character.ComicSummary
 
-data class Character(val id : Int,val name: String, val urlPicture: String,val description : String) : Parcelable {
+data class Character(val id : Int,val name: String, val urlPicture: String,val description : String, val numComics : Int) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readString() ?: "",
         parcel.readString() ?: "",
         parcel.readString() ?: "",
+        parcel.readInt()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

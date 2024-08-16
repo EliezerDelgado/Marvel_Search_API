@@ -58,7 +58,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/character_profile_recycler_view_comics"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@{item.numComics*70,default=wrap_content}"
             app:layout_constrainedHeight="true"
             android:layout_margin="10dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
