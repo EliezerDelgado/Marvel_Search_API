@@ -5,4 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface CharactersDataSource {
     fun getDataContainer(name : String): Flow<List<Character>>
+    fun getDataContainer(idComic : Int): Flow<List<Character>>
 }

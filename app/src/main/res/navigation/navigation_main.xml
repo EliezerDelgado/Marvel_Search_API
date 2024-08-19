@@ -21,7 +21,11 @@
         android:id="@+id/comicsListFragment"
         android:name="com.eliezer.marvel_characters.ui.fragments.comic_list.ComicsListFragment"
         android:label="fragment_comics_list"
-        tools:layout="@layout/fragment_comics_list" />
+        tools:layout="@layout/fragment_comics_list" >
+        <action
+            android:id="@+id/action_comicsListFragment_to_comicDescriptionFragment"
+            app:destination="@id/comicDescriptionFragment" />
+    </fragment>
     <fragment
         android:id="@+id/characterListFragment"
         android:name="com.eliezer.marvel_characters.ui.fragments.character_list.CharacterListFragment"
@@ -38,5 +42,14 @@
         <argument
             android:name="argCharacter"
             app:argType="com.eliezer.marvel_characters.models.dataclass.Character"/>
+    </fragment>
+    <fragment
+        android:id="@+id/comicDescriptionFragment"
+        android:name="com.eliezer.marvel_characters.ui.fragments.comic_description.ComicDescriptionFragment"
+        android:label="fragment_comic_description"
+        tools:layout="@layout/fragment_comic_description" >
+        <argument
+            android:name="argComic"
+            app:argType="com.eliezer.marvel_characters.models.dataclass.Comic"/>
     </fragment>
 </navigation>

@@ -14,10 +14,10 @@ class ComicsDataSourceImpl  @Inject constructor(
     private val marvelController: MarvelController
 ): ComicsDataSource {
 
-    override fun getDataContainer(data :String): Flow<List<Comic>> =
-        marvelController.findComics(data).map { it.data?.mapToListComic() ?: emptyList() }
+    override fun getDataContainer(title :String): Flow<List<Comic>> =
+        marvelController.findComics(title).map { it.data?.mapToListComic() ?: emptyList() }
 
-    override fun getDataContainer(id: Int): Flow<List<Comic>> =
-        marvelController.findCharacterComics(id).map { it.data?.mapToListComic() ?: emptyList() }
+    override fun getDataContainer(idChararcter: Int): Flow<List<Comic>> =
+        marvelController.findCharacterComics(idChararcter).map { it.data?.mapToListComic() ?: emptyList() }
 
 }

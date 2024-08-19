@@ -6,5 +6,5 @@ interface ComicsRepository {
     fun getListTmpComics() : List<Comic>?
     fun getListComics(title : String): Flow<List<Comic>>
     fun getListCharacterComics(characterId : Int): Flow<List<Comic>>
-    fun setListComics(params: List<Comic>)
+    fun setListComics(id :Int,params: List<Comic>)
 }

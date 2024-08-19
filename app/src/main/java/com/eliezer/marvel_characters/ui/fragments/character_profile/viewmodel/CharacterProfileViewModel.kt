@@ -1,14 +1,12 @@
 package com.eliezer.marvel_characters.ui.fragments.character_profile.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.eliezer.marvel_characters.core.base.BaseViewModel
-import com.eliezer.marvel_characters.data.repository.characters.mock.SetCharactersRepository
 import com.eliezer.marvel_characters.data.repository.comics.mock.SetComicsRepository
 import com.eliezer.marvel_characters.domain.usecase.GetListCharacterComicsUseCase
-import com.eliezer.marvel_characters.domain.usecase.GetListCharactersUseCase
-import com.eliezer.marvel_characters.domain.usecase.GetListComicsUseCase
 import com.eliezer.marvel_characters.models.dataclass.Comic
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -19,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CharacterProfileViewModel @Inject constructor(
-    private val setComicsUseCase : SetComicsRepository,
+    private val setComicsRepository : SetComicsRepository,
     private val getComicsUseCase: GetListCharacterComicsUseCase,
 ): BaseViewModel()  {
 
@@ -34,13 +32,14 @@ class CharacterProfileViewModel @Inject constructor(
                     _error.value = it
                 }
                 .collect {
-                    onResultOfGetListComics(it)
+                    onResultOfGetListComics(characterId,it)
                 }
         }
     }
 
-    private fun onResultOfGetListComics(comics: List<Comic>) {
-        setComicsUseCase.setListRepository(comics)
+    private fun onResultOfGetListComics(characterId : Int,comics: List<Comic>) {
+        setComicsRepository.setListRepository(characterId,comics)
+        Log.d("ComicsVM","Llego")
         _listComic.postValue(comics)
     }
 

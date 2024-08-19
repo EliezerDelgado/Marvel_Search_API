@@ -4,6 +4,8 @@ import com.eliezer.marvel_characters.data.retrofit.api.ApiMarvelHttpService
 import com.eliezer.marvel_characters.models.responses.character.CharacterDataWrapper
 import com.eliezer.marvel_characters.data.retrofit.utils.RetrofitHash
 import com.eliezer.marvel_characters.models.responses.comic.ComicDataWrapper
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -40,6 +42,18 @@ class CharacterService @Inject constructor(
         val hash = RetrofitHash.generateHash(ts)
         return apiMarvelHttpService.getCharactersComics(
             characterId = characterId,
+            ts = ts,
+            apikey = apiKey,
+            hash = hash
+        )
+    }
+    suspend fun listComicCharacters(comicId: Int): CharacterDataWrapper {
+
+        val ts = System.currentTimeMillis()
+        val apiKey = RetrofitHash.publicKey
+        val hash = RetrofitHash.generateHash(ts)
+        return apiMarvelHttpService.getComicCharacters(
+            comicId = comicId,
             ts = ts,
             apikey = apiKey,
             hash = hash

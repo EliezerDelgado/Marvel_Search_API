@@ -1,6 +1,7 @@
 package com.eliezer.marvel_characters.ui.fragments.character_profile.functionImp
 
 import android.os.Bundle
+import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
@@ -47,7 +48,15 @@ class CharacterProfileFunctionImplement(
             if (it.isNotEmpty())
                 adapter?.setComics(it)
         }
+        resetRecyclerView()
         setNotObservesVM()
+    }
+
+    private fun resetRecyclerView() {
+        binding.characterProfileRecyclerViewComics.apply {
+            visibility = View.GONE
+            visibility = View.VISIBLE
+        }
     }
 
 

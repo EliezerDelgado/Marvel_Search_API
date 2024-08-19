@@ -8,17 +8,18 @@ import com.eliezer.marvel_characters.models.responses.comic.ComicDataContainer
 fun CharacterDataContainer.mapToListCharacter() : List<Character> =
     results.map {
         Character(
-            id = it.id?: 0,
+            id = it.id?: -1,
             name = it.name ?: "",
             urlPicture = it.thumbnail?.path + "." + it.thumbnail?.extension,
-            description = it.description?: "",
-            numComics = it.comics?.items?.size ?: 0
+            description = it.description?: ""
         )
     }
 fun ComicDataContainer.mapToListComic() : List<Comic> =
     results.map {
         Comic(
+            id = it.id?: -1,
             title = it.title ?: "",
-            urlPicture = it.thumbnail?.path + "." + it.thumbnail?.extension
+            urlPicture = it.thumbnail?.path + "." + it.thumbnail?.extension,
+            description = it.description ?: ""
         )
     }

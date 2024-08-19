@@ -63,7 +63,7 @@ class MarvelSearchViewModel @Inject constructor(
 
     private fun onResultOfGetListComics(comics: List<Comic>){
         if(comics.isNotEmpty())
-           setComicsUseCase.setListRepository(comics)
+           setComicsUseCase.setListRepository(0,comics)
         _sizeResult.postValue(comics.size)
     }
 

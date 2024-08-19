@@ -14,9 +14,9 @@ class CharacterProfileFragment :
     BaseFragment<FragmentCharacterProfileBinding>(
         FragmentCharacterProfileBinding::inflate
     ) {
-        private  var funImpl : CharacterProfileFunctionImplement? = null
-
+    private  var funImpl : CharacterProfileFunctionImplement? = null
     private val characterProfileViewModel: CharacterProfileViewModel by viewModels()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         funImpl = CharacterProfileFunctionImplement(binding,characterProfileViewModel,this)

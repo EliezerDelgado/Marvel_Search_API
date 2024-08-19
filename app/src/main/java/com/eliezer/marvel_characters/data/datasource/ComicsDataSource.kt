@@ -4,6 +4,6 @@ import com.eliezer.marvel_characters.models.dataclass.Comic
 import kotlinx.coroutines.flow.Flow
 
 interface ComicsDataSource {
-    fun getDataContainer(data : String): Flow<List<Comic>>
-    fun getDataContainer(id : Int): Flow<List<Comic>>
+    fun getDataContainer(title : String): Flow<List<Comic>>
+    fun getDataContainer(idCharacter : Int): Flow<List<Comic>>
 }

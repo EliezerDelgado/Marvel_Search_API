@@ -32,8 +32,8 @@ class MarvelSearchFunctionImplement(
 
 
     private fun goCharacterListFragment()=
-        navigationMainActions.doActionMarvelSearchsFragmentToCharacterListFragment()
-    private fun goComicsListFragment() = navigationMainActions.doActionMarvelSearchsFragmentToComicListFragment()
+        navigationMainActions.doActionMarvelSearchFragmentToCharacterListFragment()
+    private fun goComicsListFragment() = navigationMainActions.doActionMarvelSearchFragmentToComicListFragment()
     private fun setObservesVM() {
         viewModel.sizeResult.observe(owner,::getSizeResultList)
     }

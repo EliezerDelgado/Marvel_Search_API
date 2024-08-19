@@ -7,7 +7,7 @@ import javax.inject.Inject
 class SetCharactersRepository @Inject constructor(
     private val charactersRepository: CharactersRepository
 ){
-    fun setListRepository(params: List<Character>){
-        charactersRepository.setListCharacters(params)
+    fun setListRepository(id :Int,params: List<Character>){
+        charactersRepository.setListCharacters(id,params)
     }
 }

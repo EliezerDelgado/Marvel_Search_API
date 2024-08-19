@@ -28,5 +28,10 @@ class MarvelController @Inject constructor(
             emit(        characterService.listCharacterComics(characterId)
             )
         }
+    fun findComicCharacters(comicId: Int):  Flow<CharacterDataWrapper> =
+        flow {
+            emit(        characterService.listComicCharacters(comicId)
+            )
+        }
 
 }

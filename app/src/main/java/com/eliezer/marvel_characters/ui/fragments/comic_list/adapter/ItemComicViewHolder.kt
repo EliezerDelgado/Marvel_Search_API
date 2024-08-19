@@ -6,7 +6,7 @@ import com.eliezer.marvel_characters.core.utils.loadImageFromWebOperations
 import com.eliezer.marvel_characters.databinding.ItemComicBinding
 import com.eliezer.marvel_characters.models.dataclass.Comic
 
-class ItemComicViewHolder (binding: ItemComicBinding) : BaseItemViewHolder<Comic>(binding = binding ) {
+open class ItemComicViewHolder (binding: ItemComicBinding) : BaseItemViewHolder<Comic>(binding = binding ) {
     override fun onBindMethodCalled(item: Comic) {
         val t = Thread {
             binding.setVariable(BR.img, loadImageFromWebOperations(item.urlPicture))

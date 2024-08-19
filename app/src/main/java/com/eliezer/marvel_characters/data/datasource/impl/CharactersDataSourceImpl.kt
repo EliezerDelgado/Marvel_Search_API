@@ -17,4 +17,8 @@ class CharactersDataSourceImpl @Inject constructor(
     override fun getDataContainer(name :String): Flow<List<Character>> =
      marvelController.findCharacters(name).map { it.data?.mapToListCharacter() ?: emptyList() }
 
+    override fun getDataContainer(idComic: Int): Flow<List<Character>> =
+        marvelController.findComicCharacters(idComic).map { it.data?.mapToListCharacter() ?: emptyList() }
+
+
 }

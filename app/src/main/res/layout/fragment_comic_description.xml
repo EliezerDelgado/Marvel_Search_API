@@ -6,11 +6,12 @@
     <data>
         <variable
             name="item"
-            type="com.eliezer.marvel_characters.models.dataclass.Character" />
+            type="com.eliezer.marvel_characters.models.dataclass.Comic" />
         <variable
             name="img"
             type="android.graphics.drawable.Drawable" />
     </data>
+
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -18,45 +19,45 @@
         tools:context=".ui.fragments.character_profile.CharacterProfileFragment">
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/character_profile_text_view_name"
+            android:id="@+id/comic_description_text_view_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             style="@style/TextAppearance.AppCompat.Title"
             android:textSize="30sp"
-            android:text="@{item.name}"/>
+            android:text="@{item.title}"/>
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/character_profile_image_view_picture"
+            android:id="@+id/comic_description_image_view_picture"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_below="@+id/character_profile_text_view_name"
+            android:layout_below="@+id/comic_description_text_view_name"
             android:src="@{img}"/>
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/character_profile_text_view_description"
+            android:id="@+id/comic_description_text_view_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             style="@style/TextAppearance.AppCompat.Body1"
             android:textSize="20sp"
             android:text="@{item.description}"
-            android:layout_below="@+id/character_profile_image_view_picture"/>
+            android:layout_below="@+id/comic_description_image_view_picture"/>
 
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/character_profile_text_view_comics_title"
+            android:id="@+id/comic_description_text_view_comics_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             style="@style/TextAppearance.AppCompat.Title"
             android:textSize="26sp"
             android:text="@string/character_profile_text_view_comics_title__text"
-            android:layout_below="@+id/character_profile_text_view_description"/>
+            android:layout_below="@+id/comic_description_text_view_description"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/character_profile_recycler_view_comics"
+            android:id="@+id/comic_description_recycler_view_comics"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constrainedHeight="true"
@@ -66,7 +67,7 @@
             tools:listitem="@layout/item_comic"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:layout_below="@+id/character_profile_text_view_comics_title"/>
+            android:layout_below="@+id/comic_description_text_view_comics_title"/>
 
     </RelativeLayout>
 </layout>

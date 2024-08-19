@@ -7,7 +7,7 @@ import javax.inject.Inject
 class SetComicsRepository @Inject constructor(
     private val comicsRepository: ComicsRepository
 ){
-    fun setListRepository(params: List<Comic>){
-        comicsRepository.setListComics(params)
+    fun setListRepository(id : Int,params: List<Comic>){
+        comicsRepository.setListComics(id,params)
     }
 }
