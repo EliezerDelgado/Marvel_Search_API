@@ -57,7 +57,7 @@ class MarvelSearchViewModel @Inject constructor(
 
     private fun onResultOfGetListCharacter(characters: List<Character>){
         if(characters.isNotEmpty())
-            setCharactersUseCase.setListRepository(characters)
+            setCharactersUseCase.setListRepository(0,characters)
         _sizeResult.postValue(characters.size)
     }
 

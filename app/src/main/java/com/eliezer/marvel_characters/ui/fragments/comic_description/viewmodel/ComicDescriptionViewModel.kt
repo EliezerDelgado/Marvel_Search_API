@@ -1,5 +1,6 @@
 package com.eliezer.marvel_characters.ui.fragments.comic_description.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -38,6 +39,7 @@ class ComicDescriptionViewModel @Inject constructor(
 
     private fun onResultOfGetListCharacters(comicId: Int, character: List<Character>) {
         setCharactersRepository.setListRepository(comicId,character)
+        Log.d("CharacterVM","Llego")
         _listCharacter.postValue(character)
     }
 

@@ -30,7 +30,7 @@ class CharacterRepositoryImpl @Inject constructor(
     }
 
     override fun getListComicCharacters(comicId: Int): Flow<List<Character>> {
-        if(list[comicId]== null)
+        if(list[comicId]!= null)
             return flow {
                 emit(
                     list[comicId]!!.toList()
