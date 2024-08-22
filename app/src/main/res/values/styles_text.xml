@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="EliezerMarvel"/>
+
+    <style name="EliezerMarvel.TextView.Title" parent="TextAppearance.MaterialComponents.Headline2">
+        <item name="android:textColor">?attr/textColorTitle</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:backgroundTint">@android:color/transparent</item>
+    </style>
+    <style name="EliezerMarvel.TextView.SubTitle" parent="TextAppearance.MaterialComponents.Headline4">
+        <item name="android:textColor">?attr/textColorSubTitle</item>
+        <item name="android:backgroundTint">@android:color/transparent</item>
+    </style>
+    <style name="EliezerMarvel.TextView.Body" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textColor">?attr/textColorBody</item>
+        <item name="android:backgroundTint">@android:color/transparent</item>
+    </style>
+    <style name="EliezerMarvel.Button">
+        <item name="android:textColor">?attr/colorSecondary</item>
+        <item name="backgroundTint">?attr/colorTertiary</item>
+    </style>
+    <style name="EliezerMarvel.Button.Round">
+        <item name="backgroundTintMode">multiply</item>
+        <item name="android:background">@drawable/rectangle_rounded_shape</item>
+    </style>
+    <style name="EliezerMarvel.Button.Round.Big">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+    <style name="EliezerMarvel.Button.Round.Half">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="EliezerMarvel.TextInput">
+        <item name="android:textColor">?attr/colorTertiary</item>
+        <item name="android:textColorHint">?attr/colorTertiary</item>
+        <item name="boxStrokeColor">@color/mtrl_textinput_default_box_stroke_color</item>
+    </style>
+</resources>
