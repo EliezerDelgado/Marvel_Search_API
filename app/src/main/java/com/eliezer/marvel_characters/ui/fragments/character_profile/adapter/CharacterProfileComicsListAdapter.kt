@@ -7,6 +7,7 @@ import com.eliezer.marvel_characters.models.dataclass.Comic
 
 class CharacterProfileComicsListAdapter(items : List<Comic>) : BaseAdapter<Comic, ItemComicHorizontalViewHolder>(
     items = items) {
+
     fun setComics(listComic : List<Comic>) =
         setListItems(listComic)
 

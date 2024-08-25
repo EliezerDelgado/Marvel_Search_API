@@ -1,13 +1,14 @@
 package com.eliezer.marvel_characters.ui.activity
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.eliezer.marvel_characters.domain.actions.NavigationMainActions
 import com.eliezer.marvel_characters.R
 import com.eliezer.marvel_characters.databinding.ActivityMainBinding
+import com.eliezer.marvel_characters.domain.actions.NavigationMainActions
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -28,6 +29,10 @@ class MainActivity : AppCompatActivity() {
         }
        _navigationMainActions = NavigationMainActions(binding!!.navHostFragment)
 
+    }
+    fun setToolbarView(visibility : Boolean)
+    {
+        binding?.mainToolbar?.visibility = if(visibility) View.VISIBLE else View.GONE
     }
 
     override fun onDestroy() {

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import com.eliezer.marvel_characters.core.base.BaseFragment
 import com.eliezer.marvel_characters.core.base.BaseViewModel
+import com.eliezer.marvel_characters.data.mappers.mainActivity
 import com.eliezer.marvel_characters.data.repository.comics.mock.GetComicsRepository
 import com.eliezer.marvel_characters.databinding.FragmentComicsListBinding
 import com.eliezer.marvel_characters.ui.activity.MainActivity
@@ -24,12 +25,12 @@ class ComicsListFragment :
     lateinit var getCharactersRepository: GetComicsRepository
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        funImpl = ComicsListFunctionImplement(binding,getMainActivity().navigationMainActions!!,getCharactersRepository)
+        funImpl = ComicsListFunctionImplement(binding,mainActivity(requireActivity()).navigationMainActions!!,getCharactersRepository)
+
+        funImpl?.getIntentExtras(requireArguments())
         funImpl?.setAdapter()
         funImpl?.getListComicsRepository()
     }
-
-    private fun getMainActivity() = activity as MainActivity
 
     override fun onDestroyView() {
         super.onDestroyView()

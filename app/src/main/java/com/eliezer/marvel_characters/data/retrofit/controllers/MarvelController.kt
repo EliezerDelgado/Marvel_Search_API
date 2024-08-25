@@ -1,7 +1,9 @@
 package com.eliezer.marvel_characters.data.retrofit.controllers
 
 import com.eliezer.marvel_characters.data.retrofit.services.CharacterService
+import com.eliezer.marvel_characters.models.responses.character.CharacterDataContainer
 import com.eliezer.marvel_characters.models.responses.character.CharacterDataWrapper
+import com.eliezer.marvel_characters.models.responses.comic.ComicDataContainer
 import com.eliezer.marvel_characters.models.responses.comic.ComicDataWrapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -12,25 +14,25 @@ import javax.inject.Singleton
 class MarvelController @Inject constructor(
     private var characterService: CharacterService
 ) {
-    fun findCharacters(name : String): Flow<CharacterDataWrapper> =
+    fun findCharacters(name : String,limit : Int, offset : Int): Flow<CharacterDataWrapper> =
         flow {
-            emit(        characterService.listCharacter(name)
+            emit(        characterService.listCharacter(name,limit,offset)
             )
         }
-    fun findComics(title : String): Flow<ComicDataWrapper> =
+    fun findComics(title : String,limit : Int, offset : Int): Flow<ComicDataWrapper> =
         flow {
-            emit(        characterService.listComics(title)
+            emit(        characterService.listComics(title,limit,offset)
             )
         }
 
-    fun findCharacterComics(characterId: Int):  Flow<ComicDataWrapper> =
+    fun findCharacterComics(characterId: Int,limit : Int, offset : Int):  Flow<ComicDataWrapper> =
         flow {
-            emit(        characterService.listCharacterComics(characterId)
+            emit(        characterService.listCharacterComics(characterId,limit,offset)
             )
         }
-    fun findComicCharacters(comicId: Int):  Flow<CharacterDataWrapper> =
+    fun findComicCharacters(comicId: Int,limit : Int, offset : Int):  Flow<CharacterDataWrapper> =
         flow {
-            emit(        characterService.listComicCharacters(comicId)
+            emit(        characterService.listComicCharacters(comicId,limit,offset)
             )
         }
 

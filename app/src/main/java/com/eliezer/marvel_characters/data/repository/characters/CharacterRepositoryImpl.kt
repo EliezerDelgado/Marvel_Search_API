@@ -1,11 +1,10 @@
 package com.eliezer.marvel_characters.data.repository.characters
 
+import com.eliezer.marvel_characters.data.const.API_SEARCH_LIMIT
 import com.eliezer.marvel_characters.data.datasource.CharactersDataSource
-import com.eliezer.marvel_characters.models.dataclass.Character
 import com.eliezer.marvel_characters.domain.repository.CharactersRepository
-import com.eliezer.marvel_characters.models.dataclass.Comic
+import com.eliezer.marvel_characters.models.dataclass.Characters
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -13,31 +12,26 @@ import javax.inject.Singleton
 class CharacterRepositoryImpl @Inject constructor(
     private val datasource: CharactersDataSource,
 ) : CharactersRepository {
-    private var list: HashMap<Int, List<Character>?> = HashMap()
-    override fun getListTmpCharacters(): List<Character>? {
-        return list[0]
+    private var list: HashMap<String, Characters?> = HashMap()
+    override fun getListTmpCharacters(name : String): Characters? =
+         list.get(name)
+
+    override fun getListCharacters(name : String): Flow<Characters> {
+        var s = list[name]?.listCharacters?.size ?: 0
+       return datasource.getDataContainer(name, API_SEARCH_LIMIT,s)
+
     }
 
-    override fun getListCharacters(name : String): Flow<List<Character>> {
-        list[0] = null
-        return datasource.getDataContainer(name)
+
+   override fun getListComicCharacters(comicId: Int): Flow<Characters> =
+         datasource.getDataContainer(comicId, API_SEARCH_LIMIT,list[comicId.toString()]?.listCharacters?.size ?: 0)
+
+    override fun setListCharacters(id : String,params: Characters) {
+        list[id.toString()]?.apply {
+            total = params.total
+            listCharacters.addAll(params.listCharacters)
+        } ?: apply {
+            list[id] = params
+        }
     }
-
-
-    override fun setListCharacters(id : Int,params: List<Character>) {
-        list[id] = params
-        list[id]?.sortedBy { it.name }
-    }
-
-    override fun getListComicCharacters(comicId: Int): Flow<List<Character>> {
-        if(list[comicId]!= null)
-            return flow {
-                emit(
-                    list[comicId]!!.toList()
-                )
-            }
-        else
-            return datasource.getDataContainer(comicId)
-    }
-
 }

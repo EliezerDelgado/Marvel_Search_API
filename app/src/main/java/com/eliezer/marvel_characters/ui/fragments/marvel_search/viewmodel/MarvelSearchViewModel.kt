@@ -8,8 +8,8 @@ import com.eliezer.marvel_characters.data.repository.characters.mock.SetCharacte
 import com.eliezer.marvel_characters.domain.usecase.GetListCharactersUseCase
 import com.eliezer.marvel_characters.data.repository.comics.mock.SetComicsRepository
 import com.eliezer.marvel_characters.domain.usecase.GetListComicsUseCase
-import com.eliezer.marvel_characters.models.dataclass.Character
-import com.eliezer.marvel_characters.models.dataclass.Comic
+import com.eliezer.marvel_characters.models.dataclass.Characters
+import com.eliezer.marvel_characters.models.dataclass.Comics
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
@@ -37,7 +37,7 @@ class MarvelSearchViewModel @Inject constructor(
                     _error.value = it
                 }
                 .collect {
-                    onResultOfGetListCharacter(it)
+                    onResultOfGetListCharacter(it,name)
                 }
         }
     }
@@ -50,21 +50,21 @@ class MarvelSearchViewModel @Inject constructor(
                     _error.value = it
                 }
                 .collect {
-                    onResultOfGetListComics(it)
+                    onResultOfGetListComics(it,title)
                 }
         }
     }
 
-    private fun onResultOfGetListCharacter(characters: List<Character>){
-        if(characters.isNotEmpty())
-            setCharactersUseCase.setListRepository(0,characters)
-        _sizeResult.postValue(characters.size)
+    private fun onResultOfGetListCharacter(characters: Characters,name: String){
+        if(characters.listCharacters.isNotEmpty())
+            setCharactersUseCase.setListRepository(name,characters)
+        _sizeResult.postValue(characters.listCharacters.size)
     }
 
-    private fun onResultOfGetListComics(comics: List<Comic>){
-        if(comics.isNotEmpty())
-           setComicsUseCase.setListRepository(0,comics)
-        _sizeResult.postValue(comics.size)
+    private fun onResultOfGetListComics(comics: Comics, title: String){
+        if(comics.listComics.isNotEmpty())
+           setComicsUseCase.setListRepository(title,comics)
+        _sizeResult.postValue(comics.listComics.size)
     }
 
     fun resetSizeResult() {

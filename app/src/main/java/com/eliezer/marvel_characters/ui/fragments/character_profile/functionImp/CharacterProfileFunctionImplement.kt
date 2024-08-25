@@ -2,15 +2,13 @@ package com.eliezer.marvel_characters.ui.fragments.character_profile.functionImp
 
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_characters.BR
 import com.eliezer.marvel_characters.core.utils.loadImageFromWebOperations
+import com.eliezer.marvel_characters.data.repository.comics.mock.GetComicsRepository
 import com.eliezer.marvel_characters.databinding.FragmentCharacterProfileBinding
 import com.eliezer.marvel_characters.models.dataclass.Character
-import com.eliezer.marvel_characters.models.dataclass.Comic
+import com.eliezer.marvel_characters.models.dataclass.Comics
 import com.eliezer.marvel_characters.ui.fragments.character_profile.CharacterProfileFragmentArgs
 import com.eliezer.marvel_characters.ui.fragments.character_profile.adapter.CharacterProfileComicsListAdapter
 import com.eliezer.marvel_characters.ui.fragments.character_profile.viewmodel.CharacterProfileViewModel
@@ -19,6 +17,7 @@ import com.eliezer.marvel_characters.ui.fragments.character_profile.viewmodel.Ch
 class CharacterProfileFunctionImplement(
     private val binding: FragmentCharacterProfileBinding,
     private val viewModel: CharacterProfileViewModel,
+    private val getComicsRepository : GetComicsRepository,
     private val owner : LifecycleOwner
 ) {
     private var character: Character? = null
@@ -33,20 +32,28 @@ class CharacterProfileFunctionImplement(
         t.start()
     }
     private fun setObservesVM() {
-        viewModel.listComic.observe(owner,::getListComics)
+        viewModel.listComic.observe(owner,::setListComics)
     }
 
-    fun searchListComics() {
+    fun getListComics() {
+        val comics = getComicsRepository.getListRepository(character?.id.toString())
+        if(comics==null)
+            searchComics()
+        else
+            setListComics(comics)
+    }
+
+    private fun searchComics() {
         character?.id?.also {
             setObservesVM()
             viewModel.searchComicsList(it)
         }
     }
 
-    private fun getListComics(comics: List<Comic>?) {
+    private fun setListComics(comics: Comics?) {
         comics?.also {
-            if (it.isNotEmpty())
-                adapter?.setComics(it)
+            if (it.listComics.isNotEmpty())
+                adapter?.setComics(it.listComics)
         }
         resetRecyclerView()
         setNotObservesVM()

@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_marvel_search" >
         <action
             android:id="@+id/action_marvelSearchFragment_to_characterListFragment"
-            app:destination="@id/characterListFragment" />
+            app:destination="@id/charactersListFragment" />
         <action
             android:id="@+id/action_marvelSearchFragment_to_comicListFragment"
             app:destination="@id/comicsListFragment" />
@@ -22,15 +22,21 @@
         android:name="com.eliezer.marvel_characters.ui.fragments.comic_list.ComicsListFragment"
         android:label="fragment_comics_list"
         tools:layout="@layout/fragment_comics_list" >
+        <argument
+            android:name="argSearchComic"
+            app:argType="string"/>
         <action
             android:id="@+id/action_comicsListFragment_to_comicDescriptionFragment"
             app:destination="@id/comicDescriptionFragment" />
     </fragment>
     <fragment
-        android:id="@+id/characterListFragment"
-        android:name="com.eliezer.marvel_characters.ui.fragments.character_list.CharacterListFragment"
+        android:id="@+id/charactersListFragment"
+        android:name="com.eliezer.marvel_characters.ui.fragments.character_list.CharactersListFragment"
         android:label="fragment_characters_list"
-        tools:layout="@layout/fragment_character_list" >
+        tools:layout="@layout/fragment_characters_list" >
+        <argument
+            android:name="argSearchCharacter"
+            app:argType="string"/>
         <action
             android:id="@+id/action_characterListFragment_to_characterProfileFragment"
             app:destination="@id/characterProfileFragment" />

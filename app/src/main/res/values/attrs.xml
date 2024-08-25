@@ -3,4 +3,5 @@
     <attr name="textColorBody" format="color"/>
     <attr name="textColorTitle" format="color"/>
     <attr name="textColorSubTitle" format="color"/>
+    <attr name="toolbarTheme" format="reference"/>
 </resources>

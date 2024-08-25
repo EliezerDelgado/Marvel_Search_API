@@ -8,6 +8,7 @@ import com.eliezer.marvel_characters.core.base.BaseViewModel
 import com.eliezer.marvel_characters.data.repository.comics.mock.SetComicsRepository
 import com.eliezer.marvel_characters.domain.usecase.GetListCharacterComicsUseCase
 import com.eliezer.marvel_characters.models.dataclass.Comic
+import com.eliezer.marvel_characters.models.dataclass.Comics
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
@@ -21,8 +22,8 @@ class CharacterProfileViewModel @Inject constructor(
     private val getComicsUseCase: GetListCharacterComicsUseCase,
 ): BaseViewModel()  {
 
-    private var _listComic  = MutableLiveData<List<Comic>>()
-    val listComic: LiveData<List<Comic>> get() = _listComic
+    private var _listComic  = MutableLiveData<Comics>()
+    val listComic: LiveData<Comics> get() = _listComic
     fun searchComicsList(characterId: Int) {
         viewModelScope.launch {
             getComicsUseCase.invoke(characterId)
@@ -37,13 +38,13 @@ class CharacterProfileViewModel @Inject constructor(
         }
     }
 
-    private fun onResultOfGetListComics(characterId : Int,comics: List<Comic>) {
-        setComicsRepository.setListRepository(characterId,comics)
+    private fun onResultOfGetListComics(characterId : Int,comics: Comics) {
+        setComicsRepository.setListRepository(characterId.toString(),comics)
         Log.d("ComicsVM","Llego")
         _listComic.postValue(comics)
     }
 
     fun resetComics() {
-        _listComic  = MutableLiveData<List<Comic>>()
+        _listComic  = MutableLiveData<Comics>()
     }
 }

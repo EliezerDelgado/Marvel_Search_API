@@ -4,6 +4,7 @@ import com.eliezer.marvel_characters.core.base.BaseFlowUseCase
 import com.eliezer.marvel_characters.core.domain.IoDispatcher
 import com.eliezer.marvel_characters.domain.repository.ComicsRepository
 import com.eliezer.marvel_characters.models.dataclass.Comic
+import com.eliezer.marvel_characters.models.dataclass.Comics
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -11,8 +12,8 @@ import javax.inject.Inject
 class GetListCharacterComicsUseCase @Inject constructor(
     @IoDispatcher dispatcher: CoroutineDispatcher,
     private val comicsRepository: ComicsRepository
-): BaseFlowUseCase<Int, List<Comic>>(dispatcher)  {
-    override fun execute(params: Int): Flow<List<Comic>> {
+): BaseFlowUseCase<Int, Comics>(dispatcher)  {
+    override fun execute(params: Int): Flow<Comics> {
         return comicsRepository.getListCharacterComics(params)
     }
 }

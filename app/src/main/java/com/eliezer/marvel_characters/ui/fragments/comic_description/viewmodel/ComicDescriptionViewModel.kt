@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.eliezer.marvel_characters.models.dataclass.Character
+import com.eliezer.marvel_characters.models.dataclass.Characters
 
 @HiltViewModel
 class ComicDescriptionViewModel @Inject constructor(
@@ -21,8 +22,8 @@ class ComicDescriptionViewModel @Inject constructor(
     private val getCharacterUseCase: GetListComicCharactersUseCase,
 ): BaseViewModel()  {
 
-    private var _listCharacter  = MutableLiveData<List<Character>>()
-    val listCharacter: LiveData<List<Character>> get() = _listCharacter
+    private var _listCharacter  = MutableLiveData<Characters>()
+    val listCharacter: LiveData<Characters> get() = _listCharacter
     fun searchCharactersList(comicId: Int) {
         viewModelScope.launch {
             getCharacterUseCase.invoke(comicId)
@@ -37,13 +38,12 @@ class ComicDescriptionViewModel @Inject constructor(
         }
     }
 
-    private fun onResultOfGetListCharacters(comicId: Int, character: List<Character>) {
-        setCharactersRepository.setListRepository(comicId,character)
-        Log.d("CharacterVM","Llego")
+    private fun onResultOfGetListCharacters(comicId: Int, character: Characters) {
+        setCharactersRepository.setListRepository(comicId.toString(),character)
         _listCharacter.postValue(character)
     }
 
     fun resetCharacters() {
-        _listCharacter  = MutableLiveData<List<Character>>()
+        _listCharacter  = MutableLiveData<Characters>()
     }
 }

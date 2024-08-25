@@ -6,16 +6,20 @@ import androidx.navigation.fragment.NavHostFragment
 import com.eliezer.marvel_characters.R
 import com.eliezer.marvel_characters.models.dataclass.Character
 import com.eliezer.marvel_characters.models.dataclass.Comic
-import com.eliezer.marvel_characters.ui.fragments.character_list.CharacterListFragmentDirections
+import com.eliezer.marvel_characters.ui.fragments.character_list.CharactersListFragmentDirections
 import com.eliezer.marvel_characters.ui.fragments.comic_list.ComicsListFragmentDirections
+import com.eliezer.marvel_characters.ui.fragments.marvel_search.MarvelSearchFragmentDirections
 
 class NavigationMainActions (private val navHostFragment: FragmentContainerView){
-    fun doActionMarvelSearchFragmentToCharacterListFragment() =
+    fun doActionMarvelSearchFragmentToCharacterListFragment(search : String) {
+        val action = MarvelSearchFragmentDirections.actionMarvelSearchFragmentToCharacterListFragment(search)
+        navHostFragment.findNavController().navigate(action)
+    }
 
-        navHostFragment.findNavController().navigate(R.id.action_marvelSearchFragment_to_characterListFragment)
-
-    fun doActionMarvelSearchFragmentToComicListFragment() =
-        navHostFragment.findNavController().navigate(R.id.action_marvelSearchFragment_to_comicListFragment)
+    fun doActionMarvelSearchFragmentToComicListFragment(search : String) {
+        val action = MarvelSearchFragmentDirections.actionMarvelSearchFragmentToComicListFragment(search)
+        navHostFragment.findNavController().navigate(action)
+    }
 
     fun navigateUp()
     {
@@ -23,7 +27,7 @@ class NavigationMainActions (private val navHostFragment: FragmentContainerView)
     }
     fun actionCharacterListFragmentToCharacterProfileFragment(character: Character)
     {
-        val action = CharacterListFragmentDirections.actionCharacterListFragmentToCharacterProfileFragment(character)
+        val action = CharactersListFragmentDirections.actionCharacterListFragmentToCharacterProfileFragment(character)
         navHostFragment.findNavController().navigate(action)
     }
 
