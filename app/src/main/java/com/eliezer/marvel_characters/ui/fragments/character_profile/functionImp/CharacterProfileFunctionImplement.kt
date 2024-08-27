@@ -11,12 +11,12 @@ import com.eliezer.marvel_characters.models.dataclass.Character
 import com.eliezer.marvel_characters.models.dataclass.Comics
 import com.eliezer.marvel_characters.ui.fragments.character_profile.CharacterProfileFragmentArgs
 import com.eliezer.marvel_characters.ui.fragments.character_profile.adapter.CharacterProfileComicsListAdapter
-import com.eliezer.marvel_characters.ui.fragments.character_profile.viewmodel.ComicsListViewModel
+import com.eliezer.marvel_characters.ui.fragments.character_profile.viewmodel.CharacterProfileViewModel
 
 
 class CharacterProfileFunctionImplement(
     private val binding: FragmentCharacterProfileBinding,
-    private val viewModel: ComicsListViewModel,
+    private val viewModel: CharacterProfileViewModel,
     private val getComicsRepository : GetComicsRepository,
     private val owner : LifecycleOwner
 ) {
