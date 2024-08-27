@@ -70,4 +70,9 @@ class MarvelSearchViewModel @Inject constructor(
     fun resetSizeResult() {
         _sizeResult  = MutableLiveData<Int>()
     }
+
+    fun resetLists() {
+        setComicsUseCase.resetListRepository()
+        setCharactersUseCase.resetListRepository()
+    }
 }

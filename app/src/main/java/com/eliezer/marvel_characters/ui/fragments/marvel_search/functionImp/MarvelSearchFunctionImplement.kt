@@ -82,5 +82,9 @@ class MarvelSearchFunctionImplement(
         viewModel.sizeResult.removeObservers(owner)
         viewModel.resetSizeResult()
     }
+
+    fun resetLists() {
+        viewModel.resetLists()
+    }
 }
 

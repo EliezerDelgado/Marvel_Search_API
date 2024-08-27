@@ -7,9 +7,9 @@ import com.eliezer.marvel_characters.BR
 import com.eliezer.marvel_characters.core.utils.loadImageFromWebOperations
 import com.eliezer.marvel_characters.data.repository.characters.mock.GetCharactersRepository
 import com.eliezer.marvel_characters.databinding.FragmentComicDescriptionBinding
-import com.eliezer.marvel_characters.models.dataclass.Character
 import com.eliezer.marvel_characters.models.dataclass.Characters
 import com.eliezer.marvel_characters.models.dataclass.Comic
+import com.eliezer.marvel_characters.ui.fragments.character_list.viewmodel.CharactersListViewModel
 import com.eliezer.marvel_characters.ui.fragments.comic_description.ComicDescriptionFragmentArgs
 import com.eliezer.marvel_characters.ui.fragments.comic_description.adapter.ComicDescriptionCharacterListAdapter
 import com.eliezer.marvel_characters.ui.fragments.comic_description.viewmodel.ComicDescriptionViewModel

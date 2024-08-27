@@ -8,4 +8,5 @@ interface ComicsRepository {
     fun getListComics(title : String): Flow<Comics>
     fun getListCharacterComics(characterId : Int): Flow<Comics>
     fun setListComics(id :String,params: Comics)
+    fun resetList()
 }

@@ -13,7 +13,7 @@ data class ComicResponse (
   @SerializedName("id"                 ) var id                 : Int?                = null,
   @SerializedName("digitalId"          ) var digitalId          : Int?                = null,
   @SerializedName("title"              ) var title              : String?             = null,
-  @SerializedName("issueNumber"        ) var issueNumber        : Int?                = null,
+  @SerializedName("issueNumber"        ) var issueNumber        : Double?                = null,
   @SerializedName("variantDescription" ) var variantDescription : String?             = null,
   @SerializedName("description"        ) var description        : String?             = null,
   @SerializedName("modified"           ) var modified           : String?             = null,

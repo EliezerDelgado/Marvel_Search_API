@@ -11,4 +11,8 @@ class SetCharactersRepository @Inject constructor(
     fun setListRepository(id :String,params: Characters){
         charactersRepository.setListCharacters(id,params)
     }
+    fun resetListRepository()
+    {
+        charactersRepository.resetList()
+    }
 }

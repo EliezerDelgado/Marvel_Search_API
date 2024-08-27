@@ -22,6 +22,7 @@ class MarvelSearchFragment : BaseFragment<FragmentMarvelSearchBinding>(
         super.onViewCreated(view, savedInstanceState)
         mainActivity(requireActivity()).setToolbarView(false)
         funImpl = MarvelSearchFunctionImplement(binding,searchViewModel, mainActivity(requireActivity()).navigationMainActions!!,viewLifecycleOwner)
+        funImpl?.resetLists()
         funImpl?.buttonListener()
     }
     override fun onDestroyView() {

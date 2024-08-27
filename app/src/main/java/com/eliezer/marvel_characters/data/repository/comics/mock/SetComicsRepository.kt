@@ -11,4 +11,8 @@ class SetComicsRepository @Inject constructor(
     fun setListRepository(id : String,params: Comics){
         comicsRepository.setListComics(id,params)
     }
+
+    fun resetListRepository() {
+        comicsRepository.resetList()
+    }
 }

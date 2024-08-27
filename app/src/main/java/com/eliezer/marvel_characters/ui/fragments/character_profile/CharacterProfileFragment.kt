@@ -7,7 +7,7 @@ import com.eliezer.marvel_characters.core.base.BaseFragment
 import com.eliezer.marvel_characters.data.repository.comics.mock.GetComicsRepository
 import com.eliezer.marvel_characters.databinding.FragmentCharacterProfileBinding
 import com.eliezer.marvel_characters.ui.fragments.character_profile.functionImp.CharacterProfileFunctionImplement
-import com.eliezer.marvel_characters.ui.fragments.character_profile.viewmodel.CharacterProfileViewModel
+import com.eliezer.marvel_characters.ui.fragments.character_profile.viewmodel.ComicsListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -17,13 +17,13 @@ class CharacterProfileFragment :
         FragmentCharacterProfileBinding::inflate
     ) {
     private  var funImpl : CharacterProfileFunctionImplement? = null
-    private val characterProfileViewModel: CharacterProfileViewModel by viewModels()
+    private val comicsListViewModel: ComicsListViewModel by viewModels()
     @Inject
     lateinit var getComicsRepository: GetComicsRepository
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        funImpl = CharacterProfileFunctionImplement(binding,characterProfileViewModel,getComicsRepository,this)
+        funImpl = CharacterProfileFunctionImplement(binding,comicsListViewModel,getComicsRepository,this)
         funImpl?.getIntentExtras(requireArguments())
         funImpl?.setBindingVariable()
         funImpl?.setAdapter()

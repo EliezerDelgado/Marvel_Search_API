@@ -17,14 +17,14 @@ class ComicDescriptionFragment :
         FragmentComicDescriptionBinding::inflate
     ) {
     private  var funImpl : ComicDescriptionFunctionImplement? = null
-    private val comicDescriptionViewModel: ComicDescriptionViewModel by viewModels()
+    private val characterListViewModel: ComicDescriptionViewModel by viewModels()
 
     @Inject
     lateinit var getCharactersRepository: GetCharactersRepository
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        funImpl = ComicDescriptionFunctionImplement(binding,comicDescriptionViewModel,getCharactersRepository,this)
+        funImpl = ComicDescriptionFunctionImplement(binding,characterListViewModel,getCharactersRepository,this)
         funImpl?.getIntentExtras(requireArguments())
         funImpl?.setBindingVariable()
         funImpl?.setAdapter()

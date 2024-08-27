@@ -5,7 +5,7 @@ import com.eliezer.marvel_characters.core.base.BaseAdapter
 import com.eliezer.marvel_characters.databinding.ItemComicHorizontalBinding
 import com.eliezer.marvel_characters.models.dataclass.Comic
 
-class CharacterProfileComicsListAdapter(items : List<Comic>) : BaseAdapter<Comic, ItemComicHorizontalViewHolder>(
+class CharacterProfileComicsListAdapter(items : ArrayList<Comic>) : BaseAdapter<Comic, ItemComicHorizontalViewHolder>(
     items = items) {
 
     fun setComics(listComic : List<Comic>) =

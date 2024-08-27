@@ -26,8 +26,12 @@ class CharacterRepositoryImpl @Inject constructor(
    override fun getListComicCharacters(comicId: Int): Flow<Characters> =
          datasource.getDataContainer(comicId, API_SEARCH_LIMIT,list[comicId.toString()]?.listCharacters?.size ?: 0)
 
+    override fun resetList() {
+        list.clear()
+    }
+
     override fun setListCharacters(id : String,params: Characters) {
-        list[id.toString()]?.apply {
+        list[id]?.apply {
             total = params.total
             listCharacters.addAll(params.listCharacters)
         } ?: apply {

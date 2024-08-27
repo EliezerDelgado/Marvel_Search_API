@@ -5,7 +5,7 @@ import com.eliezer.marvel_characters.core.base.BaseAdapter
 import com.eliezer.marvel_characters.databinding.ItemComicBinding
 import com.eliezer.marvel_characters.models.dataclass.Comic
 
-class ComicsListAdapter (items : List<Comic>,private val listener : ComicHolderListener?) : BaseAdapter<Comic, ItemComicViewHolder>(
+class ComicsListAdapter (items : ArrayList<Comic>,private val listener : ComicHolderListener?) : BaseAdapter<Comic, ItemComicViewHolder>(
     items = items) {
     interface ComicHolderListener
     {

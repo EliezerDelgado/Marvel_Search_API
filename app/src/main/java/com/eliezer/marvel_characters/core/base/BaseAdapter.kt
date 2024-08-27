@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.eliezer.marvel_characters.core.domain.DiffUtilCallback
 import com.eliezer.marvel_characters.models.dataclass.Character
 
-abstract class BaseAdapter<T, S : BaseItemViewHolder<T>>(protected var items: List<T>) : RecyclerView.Adapter<S>() {
+abstract class BaseAdapter<T, S : BaseItemViewHolder<T>>(protected var items: ArrayList<T>) : RecyclerView.Adapter<S>() {
 
-
+    fun isListEmpty() : Boolean = items.isEmpty()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): S {
         val inflater = LayoutInflater.from(parent.context)
         return setViewHolder(inflater)
@@ -22,7 +22,7 @@ abstract class BaseAdapter<T, S : BaseItemViewHolder<T>>(protected var items: Li
     {
         val diffCallback = DiffUtilCallback(this.items,items)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
-        this.items = items
+        this.items.addAll(items)
         diffResult.dispatchUpdatesTo(this)
     }
 

@@ -28,12 +28,15 @@ class ComicsRepositoryImpl @Inject constructor(
 
 
     override fun setListComics(id :String,params: Comics) {
-        list[id.toString()]?.apply {
+        list[id]?.apply {
             total = params.total
             listComics.addAll(params.listComics)
         } ?: apply {
             list[id] = params
         }
+    }
+    override fun resetList() {
+        list.clear()
     }
 
 }
