@@ -4,4 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="red"  >#FFFF0000</color>
     <color name="crimson">#FFE51A4c</color>
+    <color name="dark_crimson">#FFA41720</color>
+    <color name="gray">#59505050</color>
+    <color name="dark_gray">#592B2B2B</color>
 </resources>

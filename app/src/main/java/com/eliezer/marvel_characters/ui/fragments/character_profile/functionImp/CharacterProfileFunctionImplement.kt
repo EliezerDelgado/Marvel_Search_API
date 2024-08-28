@@ -7,6 +7,7 @@ import com.eliezer.marvel_characters.BR
 import com.eliezer.marvel_characters.core.utils.loadImageFromWebOperations
 import com.eliezer.marvel_characters.data.repository.comics.mock.GetComicsRepository
 import com.eliezer.marvel_characters.databinding.FragmentCharacterProfileBinding
+import com.eliezer.marvel_characters.domain.listener.MyOnScrolled
 import com.eliezer.marvel_characters.models.dataclass.Character
 import com.eliezer.marvel_characters.models.dataclass.Comics
 import com.eliezer.marvel_characters.ui.fragments.character_profile.CharacterProfileFragmentArgs
@@ -21,8 +22,9 @@ class CharacterProfileFunctionImplement(
     private val owner : LifecycleOwner
 ) {
     private var character: Character? = null
-
     private var adapter: CharacterProfileComicsListAdapter? = null
+    private val myOnScrolled = MyOnScrolled { getListComics()}
+
     fun setBindingVariable()
     {
         binding.setVariable(BR.item,character)
@@ -36,10 +38,11 @@ class CharacterProfileFunctionImplement(
     }
 
     fun getListComics() {
+        binding.characterProfileRecyclerViewComics.removeOnScrollListener(myOnScrolled)
         val comics = getComicsRepository.getListRepository(character?.id.toString())
-        if(comics==null)
+        if(comics==null|| comics.total > comics.listComics.size)
             searchComics()
-        else
+        else if (adapter!!.isListEmpty())
             setListComics(comics)
     }
 
@@ -51,11 +54,13 @@ class CharacterProfileFunctionImplement(
     }
 
     private fun setListComics(comics: Comics?) {
+        val position = myOnScrolled.position
         comics?.also {
             if (it.listComics.isNotEmpty())
                 adapter?.setComics(it.listComics)
         }
         resetRecyclerView()
+        binding.characterProfileRecyclerViewComics.scrollToPosition(position)
         setNotObservesVM()
     }
 
@@ -64,6 +69,7 @@ class CharacterProfileFunctionImplement(
             visibility = View.GONE
             visibility = View.VISIBLE
         }
+        binding.characterProfileRecyclerViewComics.addOnScrollListener(myOnScrolled)
     }
 
 
@@ -76,6 +82,7 @@ class CharacterProfileFunctionImplement(
         adapter = CharacterProfileComicsListAdapter(arrayListOf())
         binding.characterProfileRecyclerViewComics.setHasFixedSize(true)
         binding.characterProfileRecyclerViewComics.adapter = adapter
+        binding.characterProfileRecyclerViewComics.addOnScrollListener(myOnScrolled)
     }
 
     fun getIntentExtras(argument : Bundle) {

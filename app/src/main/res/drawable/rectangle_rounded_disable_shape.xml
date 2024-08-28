@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android"  android:shape="rectangle" >
-    <solid android:color="@android:color/white"/>
+    <solid android:color="?attr/colorBackgroundDisable"/>
     <stroke android:width="6dp"
-        android:color="@color/red"
+        android:color="?attr/colorBackgroundDisable"
         android:dashWidth="10dp"/>
     <corners android:radius="50dp"/>
     <padding

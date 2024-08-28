@@ -16,12 +16,11 @@
         <item name="android:backgroundTint">@android:color/transparent</item>
     </style>
     <style name="EliezerMarvel.Button">
-        <item name="android:textColor">?attr/colorSecondary</item>
-        <item name="backgroundTint">?attr/colorTertiary</item>
+        <item name="android:textColor">@drawable/custom_marvel_button_text</item>
     </style>
     <style name="EliezerMarvel.Button.Round">
         <item name="backgroundTintMode">multiply</item>
-        <item name="android:background">@drawable/rectangle_rounded_shape</item>
+        <item name="android:background">@drawable/custom_marvel_button</item>
     </style>
     <style name="EliezerMarvel.Button.Round.Big">
         <item name="android:textStyle">bold</item>

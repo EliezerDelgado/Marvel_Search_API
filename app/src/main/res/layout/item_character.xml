@@ -12,16 +12,20 @@
             type="android.graphics.drawable.Drawable" />
     </data>
 
-    <LinearLayout
-        android:layout_width="100dp"
-        android:layout_height="130dp"
-        android:orientation="vertical">
+    <androidx.cardview.widget.CardView
+        android:layout_width="130dp"
+        android:layout_height="200dp"
+        android:elevation="0dp"
+        app:cardCornerRadius="25dp"
+        app:cardElevation="4dp"
+        app:cardUseCompatPadding="true"
+        app:shapeAppearance="@null">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/item_character_image_view_photo"
             android:layout_width="90dp"
             android:layout_height="90dp"
-            android:layout_gravity="center"
+            android:layout_gravity="top|center"
             android:src="@{img}"/>
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -33,5 +37,5 @@
             android:layout_marginBottom="20dp"
             android:textAlignment="center"
             android:text="@{item.name}"/>
-    </LinearLayout>
+    </androidx.cardview.widget.CardView>
 </layout>

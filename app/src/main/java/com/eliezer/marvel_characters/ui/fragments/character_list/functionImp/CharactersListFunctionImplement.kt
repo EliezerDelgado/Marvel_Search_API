@@ -1,13 +1,11 @@
 package com.eliezer.marvel_characters.ui.fragments.character_list.functionImp
 
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_characters.data.repository.characters.mock.GetCharactersRepository
 import com.eliezer.marvel_characters.databinding.FragmentCharactersListBinding
 import com.eliezer.marvel_characters.domain.actions.NavigationMainActions
-import com.eliezer.marvel_characters.domain.listener.myOnScrolled
+import com.eliezer.marvel_characters.domain.listener.MyOnScrolled
 import com.eliezer.marvel_characters.models.dataclass.Character
 import com.eliezer.marvel_characters.models.dataclass.Characters
 import com.eliezer.marvel_characters.ui.fragments.character_list.CharactersListFragmentArgs
@@ -24,7 +22,7 @@ class CharactersListFunctionImplement(
 
     private var adapter: CharactersListAdapter? = null
     private var name : String? = null
-    private val myOnScrolled = myOnScrolled { getListCharacters()}
+    private val myOnScrolled = MyOnScrolled { getListCharacters()}
 
     fun setAdapter() {
         adapter = CharactersListAdapter(arrayListOf(),this)
@@ -75,10 +73,12 @@ class CharactersListFunctionImplement(
     }
 
     private fun setListCharacters(characters: Characters?) {
+        val position = myOnScrolled.position
         characters?.apply {
             if (listCharacters.isNotEmpty())
                 adapter?.setCharacters(listCharacters)
         }
+        binding.charactersListRecyclerView.scrollToPosition(position)
         resetRecyclerView()
         setNotObservesVM()
     }
@@ -88,10 +88,6 @@ class CharactersListFunctionImplement(
         viewModel.resetCharacters()
     }
     private fun resetRecyclerView() {
-        binding.charactersListRecyclerView.apply {
-            visibility = View.GONE
-            visibility = View.VISIBLE
-        }
         binding.charactersListRecyclerView.addOnScrollListener(myOnScrolled)
     }
 }

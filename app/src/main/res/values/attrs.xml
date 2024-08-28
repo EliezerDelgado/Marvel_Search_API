@@ -4,4 +4,6 @@
     <attr name="textColorTitle" format="color"/>
     <attr name="textColorSubTitle" format="color"/>
     <attr name="toolbarTheme" format="reference"/>
+    <attr name="colorBackgroundDisable" format="color"/>
+    <attr name="colorTextDisable" format="color"/>
 </resources>

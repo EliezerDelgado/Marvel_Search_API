@@ -1,17 +1,13 @@
 package com.eliezer.marvel_characters.ui.fragments.comic_list.functionImp
 
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_characters.data.repository.comics.mock.GetComicsRepository
 import com.eliezer.marvel_characters.databinding.FragmentComicsListBinding
 import com.eliezer.marvel_characters.domain.actions.NavigationMainActions
-import com.eliezer.marvel_characters.domain.listener.myOnScrolled
-import com.eliezer.marvel_characters.models.dataclass.Characters
+import com.eliezer.marvel_characters.domain.listener.MyOnScrolled
 import com.eliezer.marvel_characters.models.dataclass.Comic
 import com.eliezer.marvel_characters.models.dataclass.Comics
-import com.eliezer.marvel_characters.ui.fragments.character_list.viewmodel.CharactersListViewModel
 import com.eliezer.marvel_characters.ui.fragments.comic_list.ComicsListFragmentArgs
 import com.eliezer.marvel_characters.ui.fragments.comic_list.adapter.ComicsListAdapter
 import com.eliezer.marvel_characters.ui.fragments.comic_list.viewmodel.ComicsListViewModel
@@ -26,7 +22,7 @@ class ComicsListFunctionImplement (
 ) : ComicsListAdapter.ComicHolderListener{
     private var adapter: ComicsListAdapter? = null
     private var title : String? = null
-    private val myOnScrolled = myOnScrolled { getListComics()}
+    private val myOnScrolled = MyOnScrolled { getListComics()}
 
     fun setAdapter() {
         adapter = ComicsListAdapter(arrayListOf(),this)
@@ -75,12 +71,15 @@ class ComicsListFunctionImplement (
     }
 
     private fun setListComics(characters: Comics?) {
+        val position = myOnScrolled.position
         characters?.apply {
             if (listComics.isNotEmpty())
                 adapter?.setComics(listComics)
+
         }
         resetRecyclerView()
         setNotObservesVM()
+        binding.comicsListRecyclerView.scrollToPosition(position)
     }
 
     private fun setNotObservesVM() {
@@ -88,10 +87,6 @@ class ComicsListFunctionImplement (
         viewModel.resetComics()
     }
     private fun resetRecyclerView() {
-        binding.comicsListRecyclerView.apply {
-            visibility = View.GONE
-            visibility = View.VISIBLE
-        }
         binding.comicsListRecyclerView.addOnScrollListener(myOnScrolled)
     }
 
