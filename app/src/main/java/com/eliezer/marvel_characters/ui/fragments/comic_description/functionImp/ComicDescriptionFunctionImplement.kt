@@ -1,6 +1,7 @@
 package com.eliezer.marvel_characters.ui.fragments.comic_description.functionImp
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_characters.BR
@@ -56,8 +57,11 @@ class ComicDescriptionFunctionImplement (
     private fun setListCharacters(characters: Characters?) {
         val position = myOnScrolled.position
         characters?.apply {
-            if (listCharacters.isNotEmpty())
+            if (listCharacters.isNotEmpty()) {
+                Log.d("LLEGOCD",listCharacters.size.toString())
                 adapter?.setCharacters(listCharacters)
+                binding.comicDescriptionTextViewComicsTitle.visibility = View.VISIBLE
+            }
         }
         resetRecyclerView()
         binding.comicDescriptionRecyclerViewComics.scrollToPosition(position)

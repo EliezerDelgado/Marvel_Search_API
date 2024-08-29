@@ -56,8 +56,10 @@ class CharacterProfileFunctionImplement(
     private fun setListComics(comics: Comics?) {
         val position = myOnScrolled.position
         comics?.also {
-            if (it.listComics.isNotEmpty())
+            if (it.listComics.isNotEmpty()) {
                 adapter?.setComics(it.listComics)
+                binding.characterProfileTextViewComicsTitle.visibility = View.VISIBLE
+            }
         }
         resetRecyclerView()
         binding.characterProfileRecyclerViewComics.scrollToPosition(position)

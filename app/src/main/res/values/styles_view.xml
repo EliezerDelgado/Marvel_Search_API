@@ -7,7 +7,7 @@
         <item name="android:textAlignment">center</item>
         <item name="android:backgroundTint">@android:color/transparent</item>
     </style>
-    <style name="EliezerMarvel.TextView.SubTitle" parent="TextAppearance.MaterialComponents.Headline4">
+    <style name="EliezerMarvel.TextView.SubTitle" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="android:textColor">?attr/textColorSubTitle</item>
         <item name="android:backgroundTint">@android:color/transparent</item>
     </style>
