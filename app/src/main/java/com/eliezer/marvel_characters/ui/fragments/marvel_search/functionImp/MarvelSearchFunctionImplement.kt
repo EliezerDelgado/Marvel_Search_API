@@ -28,6 +28,10 @@ class MarvelSearchFunctionImplement(
                 searchListCharacters(it)
             }
         }
+        binding.marvelSearchButtonGoComicsList.setOnClickListener {
+            nameButtonPulse = binding.marvelSearchButtonGoCharacterList.id.toString()
+            moveFragment()
+        }
     }
 
 
@@ -70,8 +74,13 @@ class MarvelSearchFunctionImplement(
         {
             binding.marvelSearchButtonGoComicsList.id.toString() -> goComicsListFragment()
             binding.marvelSearchButtonGoCharacterList.id.toString() -> goCharacterListFragment()
+            binding.marvelSearchImageButtonGoFavorite!!.id.toString() -> goFavoriteFragment()
         }
         nameButtonPulse=null
+    }
+
+    private fun goFavoriteFragment() {
+        navigationMainActions.doActionMarvelSearchFragmentToFavoritesFragment()
     }
 
     private fun showError(@StringRes idError: Int) {

@@ -25,15 +25,19 @@ class NavigationMainActions (private val navHostFragment: FragmentContainerView)
     {
         NavHostFragment.findNavController(navHostFragment.getFragment()).navigateUp()
     }
-    fun actionCharacterListFragmentToCharacterProfileFragment(character: Character)
+    fun doActionCharacterListFragmentToCharacterProfileFragment(character: Character)
     {
         val action = CharactersListFragmentDirections.actionCharacterListFragmentToCharacterProfileFragment(character)
         navHostFragment.findNavController().navigate(action)
     }
 
-    fun actionComicsListFragmentToComicDescriptionFragment(comic: Comic)
+    fun doActionComicsListFragmentToComicDescriptionFragment(comic: Comic)
     {
         val action = ComicsListFragmentDirections.actionComicsListFragmentToComicDescriptionFragment(comic)
         navHostFragment.findNavController().navigate(action)
+    }
+    fun doActionMarvelSearchFragmentToFavoritesFragment()
+    {
+        navHostFragment.findNavController().navigate(R.id.action_marvelSearchFragment_to_favoritesFragment)
     }
 }

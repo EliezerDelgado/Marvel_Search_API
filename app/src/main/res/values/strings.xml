@@ -8,4 +8,5 @@
     <string name="loading_button_cancel__text">Cancelar</string>
     <string name="character_profile_text_view_comics_title__text">Lista de comics</string>
     <string name="comic_description_text_view_comics_title__text">Lista de personajes</string>
+    <string name="marvel_search_image_button_go_favorite__content_description">Va a Favoritos</string>
 </resources>

@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_marvelSearchFragment_to_comicListFragment"
             app:destination="@id/comicsListFragment" />
+        <action
+            android:id="@+id/action_marvelSearchFragment_to_favoritesFragment"
+            app:destination="@id/favoritesFragment" />
     </fragment>
     <fragment
         android:id="@+id/comicsListFragment"
@@ -58,4 +61,9 @@
             android:name="argComic"
             app:argType="com.eliezer.marvel_characters.models.dataclass.Comic"/>
     </fragment>
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.eliezer.marvel_characters.ui.fragments.favorites.FavoritesFragment"
+        android:label="fragment_favorites"
+        tools:layout="@layout/fragment_favorites" />
 </navigation>

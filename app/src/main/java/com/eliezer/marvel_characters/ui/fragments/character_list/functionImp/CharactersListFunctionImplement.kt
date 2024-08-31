@@ -43,7 +43,7 @@ class CharactersListFunctionImplement(
         adapter?.setCharacters(characters?.listCharacters ?: emptyList())
 
     override fun onCharacterItemClickListener(character: Character) {
-        navigationMainActions.actionCharacterListFragmentToCharacterProfileFragment(character =character)
+        navigationMainActions.doActionCharacterListFragmentToCharacterProfileFragment(character =character)
     }
 
     fun getIntentExtras(arguments: Bundle) {

@@ -44,7 +44,7 @@ class ComicsListFunctionImplement (
         adapter?.setComics(comics?.listComics ?: emptyList())
 
     override fun onComicItemClickListener(comic: Comic) {
-        navigationMainActions.actionComicsListFragmentToComicDescriptionFragment(comic =comic)
+        navigationMainActions.doActionComicsListFragmentToComicDescriptionFragment(comic =comic)
     }
 
     fun getIntentExtras(arguments: Bundle) {
