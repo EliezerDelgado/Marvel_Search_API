@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.eliezer.marvel_characters.core.base.BaseFragment
+import com.eliezer.marvel_characters.data.const.FAVORITE_ID
+import com.eliezer.marvel_characters.data.const.SEARCH_ID
 import com.eliezer.marvel_characters.data.mappers.mainActivity
 import com.eliezer.marvel_characters.data.repository.characters.mock.GetCharactersRepository
 import com.eliezer.marvel_characters.databinding.FragmentCharactersListBinding
@@ -22,6 +24,7 @@ class CharactersListFragment :
     lateinit var getCharactersRepository: GetCharactersRepository
     private val characterListViewModel: CharactersListViewModel by viewModels()
     private var funImpl : CharactersListFunctionImplement? = null
+    private var mode : String? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         funImpl = CharactersListFunctionImplement(
@@ -31,10 +34,14 @@ class CharactersListFragment :
             getCharactersRepository,
             this
         )
-        funImpl?.getIntentExtras(requireArguments())
+        mode = funImpl?.getMode(requireArguments())
         funImpl?.setAdapter()
-        funImpl?.getListCharactersRepository()
-
+        if(mode == SEARCH_ID) {
+            funImpl?.getCharactersArg(requireArguments())
+            funImpl?.getListSearchCharactersRepository()
+        }
+        else if(mode == FAVORITE_ID)
+            funImpl?.getListFavoriteCharactersRepository(FAVORITE_ID)
     }
 
 

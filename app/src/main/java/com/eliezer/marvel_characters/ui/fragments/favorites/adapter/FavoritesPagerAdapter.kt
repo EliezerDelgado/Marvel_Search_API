@@ -1,8 +1,10 @@
 package com.eliezer.marvel_characters.ui.fragments.favorites.adapter
 
+import android.os.Bundle
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.eliezer.marvel_characters.data.const.FAVORITE_ID
+
 
 class FavoritesPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
@@ -12,7 +14,11 @@ class FavoritesPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment)
     }
     override fun createFragment(position: Int): Fragment {
         try {
-            return listFragmentClass[position].getDeclaredConstructor().newInstance() as Fragment
+            val fragmentInstance = listFragmentClass[position].getDeclaredConstructor().newInstance() as Fragment
+            val args = Bundle()
+            args.putString("argMode", FAVORITE_ID);
+            fragmentInstance.arguments = args
+            return fragmentInstance
         } catch (e: IllegalAccessException) {
             throw RuntimeException(e)
         } catch (e: InstantiationException) {

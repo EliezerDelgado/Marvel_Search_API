@@ -27,6 +27,11 @@
         tools:layout="@layout/fragment_comics_list" >
         <argument
             android:name="argSearchComic"
+            android:defaultValue="null"
+            app:argType="string"/>
+        <argument
+            android:name="argMode"
+            android:defaultValue="null"
             app:argType="string"/>
         <action
             android:id="@+id/action_comicsListFragment_to_comicDescriptionFragment"
@@ -39,6 +44,11 @@
         tools:layout="@layout/fragment_characters_list" >
         <argument
             android:name="argSearchCharacter"
+            android:defaultValue="null"
+            app:argType="string"/>
+        <argument
+            android:name="argMode"
+            android:defaultValue="null"
             app:argType="string"/>
         <action
             android:id="@+id/action_characterListFragment_to_characterProfileFragment"

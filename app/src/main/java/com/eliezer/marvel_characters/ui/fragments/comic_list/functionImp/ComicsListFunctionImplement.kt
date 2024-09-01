@@ -8,6 +8,7 @@ import com.eliezer.marvel_characters.domain.actions.NavigationMainActions
 import com.eliezer.marvel_characters.domain.listener.MyOnScrolled
 import com.eliezer.marvel_characters.models.dataclass.Comic
 import com.eliezer.marvel_characters.models.dataclass.Comics
+import com.eliezer.marvel_characters.ui.fragments.character_list.CharactersListFragmentArgs
 import com.eliezer.marvel_characters.ui.fragments.comic_list.ComicsListFragmentArgs
 import com.eliezer.marvel_characters.ui.fragments.comic_list.adapter.ComicsListAdapter
 import com.eliezer.marvel_characters.ui.fragments.comic_list.viewmodel.ComicsListViewModel
@@ -31,12 +32,17 @@ class ComicsListFunctionImplement (
         binding.comicsListRecyclerView.addOnScrollListener(myOnScrolled)
     }
 
-    fun getListComicsRepository()
+    fun getListSearchComicsRepository()
     {
         title?.also {
             val comics = getComicsRepository.getListRepository(it)
             setComicsList(comics)
         }
+    }
+    fun getListFavoriteComicsRepository(favoriteId : String)
+    {
+        val comics = getComicsRepository.getListRepository(favoriteId)
+        setComicsList(comics)
     }
 
 
@@ -46,8 +52,8 @@ class ComicsListFunctionImplement (
     override fun onComicItemClickListener(comic: Comic) {
         navigationMainActions.doActionComicsListFragmentToComicDescriptionFragment(comic =comic)
     }
-
-    fun getIntentExtras(arguments: Bundle) {
+    fun getMode(arguments: Bundle) = CharactersListFragmentArgs.fromBundle(arguments).argMode
+    fun getComicsArg(arguments: Bundle) {
         title = ComicsListFragmentArgs.fromBundle(arguments).argSearchComic
     }
 

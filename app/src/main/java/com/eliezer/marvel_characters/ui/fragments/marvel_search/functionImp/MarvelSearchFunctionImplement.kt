@@ -15,22 +15,28 @@ class MarvelSearchFunctionImplement(
 ) {
     private var nameButtonPulse : String? = null
     fun buttonListener(){
-        binding.marvelSearchButtonGoComicsList.setOnClickListener {
-            setObservesVM()
-            nameButtonPulse = binding.marvelSearchButtonGoComicsList.id.toString()
-            binding.marvelSearchTextInputSearch.editText?.text.toString().also {
-                searchListComics(it)
-            } }
-        binding.marvelSearchButtonGoCharacterList.setOnClickListener {
-            setObservesVM()
-            nameButtonPulse = binding.marvelSearchButtonGoCharacterList.id.toString()
-            binding.marvelSearchTextInputSearch.editText?.text.toString().also {
-                searchListCharacters(it)
+        binding.apply {
+            val textSearch  = marvelSearchTextInputSearch.editText?.text.toString()
+            marvelSearchButtonGoComicsList.apply {
+                setOnClickListener {
+                    setObservesVM()
+                    nameButtonPulse = id.toString()
+                    searchListComics(textSearch)
+                }
             }
-        }
-        binding.marvelSearchButtonGoComicsList.setOnClickListener {
-            nameButtonPulse = binding.marvelSearchButtonGoCharacterList.id.toString()
-            moveFragment()
+            marvelSearchButtonGoCharacterList.apply {
+                setOnClickListener {
+                    setObservesVM()
+                    nameButtonPulse = id.toString()
+                    searchListCharacters(textSearch)
+                }
+            }
+            marvelSearchImageButtonGoFavorite.apply {
+                setOnClickListener {
+                    nameButtonPulse = marvelSearchImageButtonGoFavorite.id.toString()
+                    moveFragment()
+                }
+            }
         }
     }
 

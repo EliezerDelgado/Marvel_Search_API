@@ -21,7 +21,7 @@ class CharactersListFunctionImplement(
 ) : CharactersListAdapter.CharacterHolderListener{
 
     private var adapter: CharactersListAdapter? = null
-    private var name : String? = null
+    private var searchCharacter : String? = null
     private val myOnScrolled = MyOnScrolled { getListCharacters()}
 
     fun setAdapter() {
@@ -31,12 +31,17 @@ class CharactersListFunctionImplement(
         binding.charactersListRecyclerView.addOnScrollListener(myOnScrolled)
     }
 
-    fun getListCharactersRepository()
+    fun getListSearchCharactersRepository()
     {
-        name?.also {
+        searchCharacter?.also {
             val characters = getCharactersRepository.getListRepository(it)
             setCharacterList(characters)
         }
+    }
+    fun getListFavoriteCharactersRepository(favoriteId : String)
+    {
+        val characters = getCharactersRepository.getListRepository(favoriteId)
+        setCharacterList(characters)
     }
 
     private fun setCharacterList(characters: Characters?) =
@@ -45,9 +50,10 @@ class CharactersListFunctionImplement(
     override fun onCharacterItemClickListener(character: Character) {
         navigationMainActions.doActionCharacterListFragmentToCharacterProfileFragment(character =character)
     }
+    fun getMode(arguments: Bundle) = CharactersListFragmentArgs.fromBundle(arguments).argMode
 
-    fun getIntentExtras(arguments: Bundle) {
-        name = CharactersListFragmentArgs.fromBundle(arguments).argSearchCharacter
+    fun getCharactersArg(arguments: Bundle) {
+        searchCharacter = CharactersListFragmentArgs.fromBundle(arguments).argSearchCharacter
     }
 
     private fun setObservesVM() {
@@ -56,7 +62,7 @@ class CharactersListFunctionImplement(
 
     private fun getListCharacters() {
         binding.charactersListRecyclerView.removeOnScrollListener(myOnScrolled)
-        val characters = getCharactersRepository.getListRepository(name!!)
+        val characters = getCharactersRepository.getListRepository(searchCharacter!!)
         if(characters==null || characters.total > characters.listCharacters.size)
         {
             searchListCharacters()
@@ -69,7 +75,7 @@ class CharactersListFunctionImplement(
 
     private fun searchListCharacters() {
             setObservesVM()
-            viewModel.searchCharactersList(name!!)
+            viewModel.searchCharactersList(searchCharacter!!)
     }
 
     private fun setListCharacters(characters: Characters?) {
