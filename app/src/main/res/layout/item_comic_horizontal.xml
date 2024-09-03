@@ -46,7 +46,7 @@
             app:layout_constraintBottom_toBottomOf="parent" />
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/item_comic_horizontal_title"
-            android:layout_width="250dp"
+            android:layout_width="0dp"
             android:layout_height="150dp"
             style="@style/EliezerMarvel.TextView.SubTitle"
             android:gravity="center"

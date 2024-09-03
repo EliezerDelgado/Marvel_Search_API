@@ -48,7 +48,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/item_character_horizontal_name"
-                android:layout_width="250dp"
+                android:layout_width="0dp"
                 android:layout_height="150dp"
                 android:text="@{item.name}"
                 style="@style/EliezerMarvel.TextView.SubTitle"

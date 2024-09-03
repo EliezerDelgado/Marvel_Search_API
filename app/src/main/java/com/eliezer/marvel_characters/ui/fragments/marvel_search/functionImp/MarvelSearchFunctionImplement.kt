@@ -14,11 +14,12 @@ class MarvelSearchFunctionImplement(
     private val owner : LifecycleOwner
 ) {
     private var nameButtonPulse : String? = null
+
     fun buttonListener(){
         binding.apply {
-            val textSearch  = marvelSearchTextInputSearch.editText?.text.toString()
             marvelSearchButtonGoComicsList.apply {
                 setOnClickListener {
+                    val textSearch  = marvelSearchTextInputSearch.editText?.text.toString()
                     setObservesVM()
                     nameButtonPulse = id.toString()
                     searchListComics(textSearch)
@@ -26,6 +27,7 @@ class MarvelSearchFunctionImplement(
             }
             marvelSearchButtonGoCharacterList.apply {
                 setOnClickListener {
+                    val textSearch  = marvelSearchTextInputSearch.editText?.text.toString()
                     setObservesVM()
                     nameButtonPulse = id.toString()
                     searchListCharacters(textSearch)

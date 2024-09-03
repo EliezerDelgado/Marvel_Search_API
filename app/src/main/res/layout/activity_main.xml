@@ -11,9 +11,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/mainToolbar"
+            android:id="@+id/main_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            app:theme="?attr/toolbarTheme"
+            app:title="@string/app_name" />
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/main_sub_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:visibility="gone"
             app:theme="?attr/toolbarTheme"
             app:title="@string/app_name" />
     </com.google.android.material.appbar.AppBarLayout>
@@ -22,7 +29,7 @@
         android:layout_height="match_parent"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/navHostFragment"
+        android:id="@+id/main_nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"

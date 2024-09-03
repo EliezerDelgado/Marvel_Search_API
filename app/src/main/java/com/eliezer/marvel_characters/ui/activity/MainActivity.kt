@@ -27,12 +27,13 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-       _navigationMainActions = NavigationMainActions(binding!!.navHostFragment)
+       _navigationMainActions = NavigationMainActions(binding!!.mainNavHostFragment)
 
     }
     fun setToolbarView(visibility : Boolean)
     {
         binding?.mainToolbar?.visibility = if(visibility) View.VISIBLE else View.GONE
+        binding?.mainSubToolbar?.visibility = View.GONE
     }
 
     override fun onDestroy() {

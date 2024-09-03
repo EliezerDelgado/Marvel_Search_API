@@ -5,7 +5,7 @@
         <item name="colorPrimary">@color/red</item>
         <item name="colorSecondary">@color/white</item>
         <item name="colorTertiary">@color/dark_crimson</item>
-        <item name="textColorBody">@color/black</item>
+        <item name="textColorBody">@color/soft_black</item>
         <item name="textColorTitle">@color/red</item>
         <item name="textColorSubTitle">@color/crimson</item>
         <item name="colorAccent">@color/dark_crimson</item>

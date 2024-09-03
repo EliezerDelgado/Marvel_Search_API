@@ -27,6 +27,7 @@ class CharactersListFragment :
     private var mode : String? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mainActivity(requireActivity()).setToolbarView(true)
         funImpl = CharactersListFunctionImplement(
             binding,
             mainActivity(requireActivity()).navigationMainActions!!,
