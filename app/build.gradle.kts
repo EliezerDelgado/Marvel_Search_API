@@ -1,5 +1,3 @@
-import com.android.build.api.dsl.Packaging
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -18,8 +16,7 @@ android {
     }
     defaultConfig {
         applicationId = "com.eliezer.marvel_characters"
-        minSdk = 24
-        targetSdk = 34
+        minSdk = 26
         versionCode = 1
         versionName = "1.0"
 

@@ -3,9 +3,9 @@
     <style name="Base.Theme.MarvelCharacters" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
-        <item name="colorPrimary">@color/red</item>
+        <item name="colorPrimary">@color/dark_crimson</item>
         <item name="colorSecondary">@color/soft_black</item>
-        <item name="colorTertiary">@color/dark_crimson</item>
+        <item name="colorTertiary">@color/red</item>
         <item name="textColorBody">@color/white</item>
         <item name="textColorTitle">@color/red</item>
         <item name="textColorSubTitle">@color/crimson</item>

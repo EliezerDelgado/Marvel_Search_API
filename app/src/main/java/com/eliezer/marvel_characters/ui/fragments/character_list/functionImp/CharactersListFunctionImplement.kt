@@ -5,7 +5,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_characters.data.repository.characters.mock.GetCharactersRepository
 import com.eliezer.marvel_characters.databinding.FragmentCharactersListBinding
 import com.eliezer.marvel_characters.domain.actions.NavigationMainActions
-import com.eliezer.marvel_characters.domain.listener.MyOnScrolled
+import com.eliezer.marvel_characters.domain.listener.MyOnScrolledListener
 import com.eliezer.marvel_characters.models.dataclass.Character
 import com.eliezer.marvel_characters.models.dataclass.Characters
 import com.eliezer.marvel_characters.ui.fragments.character_list.CharactersListFragmentArgs
@@ -22,13 +22,13 @@ class CharactersListFunctionImplement(
 
     private var adapter: CharactersListAdapter? = null
     private var searchCharacter : String? = null
-    private val myOnScrolled = MyOnScrolled { getListCharacters()}
+    private val myOnScrolledListener = MyOnScrolledListener { getListCharacters()}
 
     fun setAdapter() {
         adapter = CharactersListAdapter(arrayListOf(),this)
         binding.charactersListRecyclerView.setHasFixedSize(true)
         binding.charactersListRecyclerView.adapter = adapter
-        binding.charactersListRecyclerView.addOnScrollListener(myOnScrolled)
+        binding.charactersListRecyclerView.addOnScrollListener(myOnScrolledListener)
     }
 
     fun getListSearchCharactersRepository()
@@ -61,7 +61,7 @@ class CharactersListFunctionImplement(
     }
 
     private fun getListCharacters() {
-        binding.charactersListRecyclerView.removeOnScrollListener(myOnScrolled)
+        binding.charactersListRecyclerView.removeOnScrollListener(myOnScrolledListener)
         val characters = getCharactersRepository.getListRepository(searchCharacter!!)
         if(characters==null || characters.total > characters.listCharacters.size)
         {
@@ -79,7 +79,7 @@ class CharactersListFunctionImplement(
     }
 
     private fun setListCharacters(characters: Characters?) {
-        val position = myOnScrolled.position
+        val position = myOnScrolledListener.position
         characters?.apply {
             if (listCharacters.isNotEmpty())
                 adapter?.setCharacters(listCharacters)
@@ -94,6 +94,6 @@ class CharactersListFunctionImplement(
         viewModel.resetCharacters()
     }
     private fun resetRecyclerView() {
-        binding.charactersListRecyclerView.addOnScrollListener(myOnScrolled)
+        binding.charactersListRecyclerView.addOnScrollListener(myOnScrolledListener)
     }
 }

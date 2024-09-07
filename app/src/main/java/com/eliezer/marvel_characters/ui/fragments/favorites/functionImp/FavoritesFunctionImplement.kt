@@ -1,14 +1,7 @@
 package com.eliezer.marvel_characters.ui.fragments.favorites.functionImp
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
-import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.annotation.ColorInt
-import androidx.core.view.size
 import com.eliezer.marvel_characters.R
 import com.eliezer.marvel_characters.databinding.FragmentFavoritesBinding
 import com.eliezer.marvel_characters.ui.fragments.character_list.CharactersListFragment

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/main_sub_toolbar_menu_back" android:title="@string/main_sub_toolbar_menu_back__title"  app:showAsAction="ifRoom" android:icon="@drawable/ic_arrow_back_ios" />
+    <item android:id="@+id/main_sub_toolbar_menu_forward" android:title="@string/main_sub_toolbar_menu_forward__title"  app:showAsAction="ifRoom" android:icon="@drawable/ic_arrow_forward_ios"
+        />
+    <item android:id="@+id/main_sub_toolbar_menu_search" android:title="@string/main_sub_toolbar_menu_search__title"  app:showAsAction="always" android:icon="@drawable/ic_close"
+        />
+</menu>

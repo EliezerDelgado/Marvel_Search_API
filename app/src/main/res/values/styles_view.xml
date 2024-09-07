@@ -27,10 +27,12 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
     <style name="EliezerMarvel.Button.Round.Big">
+        <item name="android:layout_width">200dp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">16sp</item>
     </style>
     <style name="EliezerMarvel.Button.Round.Half">
+        <item name="android:layout_width">120dp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">12sp</item>
     </style>

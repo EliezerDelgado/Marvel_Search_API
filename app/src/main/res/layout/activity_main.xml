@@ -2,7 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/main_coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.activity.MainActivity">
@@ -14,17 +14,27 @@
             android:id="@+id/main_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:theme="?attr/toolbarTheme"
-            app:title="@string/app_name" />
+            app:theme="?attr/toolbarTheme"/>
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/main_sub_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:visibility="gone"
-            app:theme="?attr/toolbarTheme"
-            app:title="@string/app_name" />
+            android:visibility="visible"
+            app:theme="?attr/toolbarTheme">
+            <EditText
+                android:id="@+id/main_sub_toolbar_edit_text"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:autofillHints="name"
+                android:inputType="text"
+                android:hint="@string/main_sub_toolbar_edit_text__hint"
+                android:labelFor="@+id/main_sub_toolbar"
+                android:gravity="start"
+                android:text="@string/main_sub_toolbar_edit_text__text"/>
+        </com.google.android.material.appbar.MaterialToolbar>
     </com.google.android.material.appbar.AppBarLayout>
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main_constraint_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">

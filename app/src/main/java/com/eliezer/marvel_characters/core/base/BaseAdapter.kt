@@ -5,8 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.eliezer.marvel_characters.core.domain.DiffUtilCallback
-import com.eliezer.marvel_characters.models.dataclass.Character
-
 abstract class BaseAdapter<T, S : BaseItemViewHolder<T>>(protected var items: ArrayList<T>) : RecyclerView.Adapter<S>() {
 
     fun isListEmpty() : Boolean = items.isEmpty()

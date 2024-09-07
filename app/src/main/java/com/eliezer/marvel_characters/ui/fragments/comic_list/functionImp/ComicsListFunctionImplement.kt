@@ -5,7 +5,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_characters.data.repository.comics.mock.GetComicsRepository
 import com.eliezer.marvel_characters.databinding.FragmentComicsListBinding
 import com.eliezer.marvel_characters.domain.actions.NavigationMainActions
-import com.eliezer.marvel_characters.domain.listener.MyOnScrolled
+import com.eliezer.marvel_characters.domain.listener.MyOnScrolledListener
 import com.eliezer.marvel_characters.models.dataclass.Comic
 import com.eliezer.marvel_characters.models.dataclass.Comics
 import com.eliezer.marvel_characters.ui.fragments.character_list.CharactersListFragmentArgs
@@ -23,13 +23,13 @@ class ComicsListFunctionImplement (
 ) : ComicsListAdapter.ComicHolderListener{
     private var adapter: ComicsListAdapter? = null
     private var title : String? = null
-    private val myOnScrolled = MyOnScrolled { getListComics()}
+    private val myOnScrolledListener = MyOnScrolledListener { getListComics()}
 
     fun setAdapter() {
         adapter = ComicsListAdapter(arrayListOf(),this)
         binding.comicsListRecyclerView.setHasFixedSize(true)
         binding.comicsListRecyclerView.adapter = adapter
-        binding.comicsListRecyclerView.addOnScrollListener(myOnScrolled)
+        binding.comicsListRecyclerView.addOnScrollListener(myOnScrolledListener)
     }
 
     fun getListSearchComicsRepository()
@@ -63,7 +63,7 @@ class ComicsListFunctionImplement (
     }
 
     private fun getListComics() {
-        binding.comicsListRecyclerView.removeOnScrollListener(myOnScrolled)
+        binding.comicsListRecyclerView.removeOnScrollListener(myOnScrolledListener)
         val comics = getComicsRepository.getListRepository(title!!)
         if(comics==null || comics.total > comics.listComics.size)
             searchListComics()
@@ -77,7 +77,7 @@ class ComicsListFunctionImplement (
     }
 
     private fun setListComics(characters: Comics?) {
-        val position = myOnScrolled.position
+        val position = myOnScrolledListener.position
         characters?.apply {
             if (listComics.isNotEmpty())
                 adapter?.setComics(listComics)
@@ -93,7 +93,7 @@ class ComicsListFunctionImplement (
         viewModel.resetComics()
     }
     private fun resetRecyclerView() {
-        binding.comicsListRecyclerView.addOnScrollListener(myOnScrolled)
+        binding.comicsListRecyclerView.addOnScrollListener(myOnScrolledListener)
     }
 
 }

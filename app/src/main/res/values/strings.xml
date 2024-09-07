@@ -9,4 +9,10 @@
     <string name="character_profile_text_view_comics_title__text">Lista de comics</string>
     <string name="comic_description_text_view_comics_title__text">Lista de personajes</string>
     <string name="marvel_search_image_button_go_favorite__content_description">Va a Favoritos</string>
+    <string name="main_menu_search__title">Search</string>
+    <string name="main_sub_toolbar_edit_text__hint">Buscar...</string>
+    <string name="main_sub_toolbar_edit_text__text" />
+    <string name="main_sub_toolbar_menu_search__title">Search Barra</string>
+    <string name="main_sub_toolbar_menu_back__title">Anterior palabra de la busqueda</string>
+    <string name="main_sub_toolbar_menu_forward__title">Siguiente palabra de la busqueda</string>
 </resources>

@@ -8,7 +8,7 @@ import com.eliezer.marvel_characters.BR
 import com.eliezer.marvel_characters.core.utils.loadImageFromWebOperations
 import com.eliezer.marvel_characters.data.repository.characters.mock.GetCharactersRepository
 import com.eliezer.marvel_characters.databinding.FragmentComicDescriptionBinding
-import com.eliezer.marvel_characters.domain.listener.MyOnScrolled
+import com.eliezer.marvel_characters.domain.listener.MyOnScrolledListener
 import com.eliezer.marvel_characters.models.dataclass.Characters
 import com.eliezer.marvel_characters.models.dataclass.Comic
 import com.eliezer.marvel_characters.ui.fragments.comic_description.ComicDescriptionFragmentArgs
@@ -23,7 +23,7 @@ class ComicDescriptionFunctionImplement (
 ) {
     private var comic: Comic? = null
     private var adapter: ComicDescriptionCharacterListAdapter? = null
-    private val myOnScrolled = MyOnScrolled { getListCharacters() }
+    private val myOnScrolledListener = MyOnScrolledListener { getListCharacters() }
 
     fun setBindingVariable()
     {
@@ -38,7 +38,7 @@ class ComicDescriptionFunctionImplement (
     }
 
     fun getListCharacters() {
-        binding.comicDescriptionRecyclerViewComics.removeOnScrollListener(myOnScrolled)
+        binding.comicDescriptionRecyclerViewComics.removeOnScrollListener(myOnScrolledListener)
         val characters = getCharactersRepository.getListRepository(comic?.id.toString())
         if(characters==null|| characters.total > characters.listCharacters.size)
             searchListCharacters()
@@ -55,7 +55,7 @@ class ComicDescriptionFunctionImplement (
     }
 
     private fun setListCharacters(characters: Characters?) {
-        val position = myOnScrolled.position
+        val position = myOnScrolledListener.position
         characters?.apply {
             if (listCharacters.isNotEmpty()) {
                 Log.d("LLEGOCD",listCharacters.size.toString())
@@ -73,7 +73,7 @@ class ComicDescriptionFunctionImplement (
             visibility = View.GONE
             visibility = View.VISIBLE
         }
-        binding.comicDescriptionRecyclerViewComics.addOnScrollListener(myOnScrolled)
+        binding.comicDescriptionRecyclerViewComics.addOnScrollListener(myOnScrolledListener)
     }
 
 
@@ -86,7 +86,7 @@ class ComicDescriptionFunctionImplement (
         adapter = ComicDescriptionCharacterListAdapter(arrayListOf())
         binding.comicDescriptionRecyclerViewComics.setHasFixedSize(true)
         binding.comicDescriptionRecyclerViewComics.adapter = adapter
-        binding.comicDescriptionRecyclerViewComics.addOnScrollListener(myOnScrolled)
+        binding.comicDescriptionRecyclerViewComics.addOnScrollListener(myOnScrolledListener)
     }
 
     fun getIntentExtras(argument : Bundle) {
