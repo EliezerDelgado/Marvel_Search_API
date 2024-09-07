@@ -4,8 +4,8 @@ fun String.indexOfEncounter(string : String,index : Int) : Int
 {
     var position = 0
     for (i in 0..index) {
+        ++position
         position = indexOf(string, position)
-        position+1
     }
     return position
 }

@@ -1,13 +1,18 @@
 package com.eliezer.marvel_characters.ui.fragments.character_profile.functionImp
 
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Html
+import android.text.SpannableStringBuilder
+import android.text.style.ForegroundColorSpan
 import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_characters.BR
 import com.eliezer.marvel_characters.core.utils.loadImageFromWebOperations
+import com.eliezer.marvel_characters.data.configuration.searchTextResultColor
+import com.eliezer.marvel_characters.data.configuration.selectSearchTextResultColor
 import com.eliezer.marvel_characters.data.expand.indexOfEncounter
 import com.eliezer.marvel_characters.data.repository.comics.mock.GetComicsRepository
 import com.eliezer.marvel_characters.databinding.FragmentCharacterProfileBinding
@@ -133,29 +138,32 @@ class CharacterProfileFunctionImplement(
         binding.characterProfileScrollView.scrollTo(0, searchText.encounter[numLine].scrollPosition)
     }
 
-    private fun colorUnderLineText(numLine: Int,text : String, color: String) : String {
-        val highlighted = "<font color='$color'><u>${searchText.search}</u></font>"
+    private fun colorUnderLineText(highlighted : SpannableStringBuilder,numLine: Int,text : String, color: Int) : SpannableStringBuilder {
+
         val position = text.indexOfEncounter(searchText.search,searchText.encounter[numLine].position)
         val intRange = IntRange(position,position+searchText.search.length-1)
-        return text.replaceRange(intRange, highlighted)
+        highlighted.setSpan(
+            ForegroundColorSpan(color),
+            intRange.first,
+            intRange.last,
+            SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+        return highlighted
     }
 
     private fun colorAllLinesText(textView: AppCompatTextView, normalColor: String,selectColor : String){
-        var text = textView.text.toString()
+        val text = textView.text.toString()
+        var highlighted = SpannableStringBuilder(textView.text.toString())
         for (i in 0..<searchText.encounter.size)
         {
-            text = if (i == numLine && textView.id == searchText.encounter[i].layout.id)
-                colorUnderLineText(i,text,selectColor)
+            highlighted = if (i == numLine && textView.id == searchText.encounter[i].layout.id)
+                colorUnderLineText(highlighted,i,text, selectSearchTextResultColor)
             else if (textView.id == searchText.encounter[i].layout.id)
-                colorUnderLineText(i,text,normalColor)
+                colorUnderLineText(highlighted,i,text,searchTextResultColor)
             else
-                text
+                highlighted
         }
-        setTextColor(textView,text)
-    }
-    private fun setTextColor(textView: AppCompatTextView,newText : String)
-    {
-        textView.text = Html.fromHtml(newText, HtmlCompat.FROM_HTML_MODE_COMPACT)
+        textView.text = highlighted
     }
 
     private fun fillOutListIndexOfEncountersWord(textView: AppCompatTextView) {
@@ -164,7 +172,7 @@ class CharacterProfileFunctionImplement(
             var index = 0
             while (position != -1) {
                 encounter.add(SearchEncounter(textView,index++))
-                val startIndex =  position +1
+                val startIndex =  position + 1
                 position = textView.text.indexOf(search,startIndex)
             }
         }

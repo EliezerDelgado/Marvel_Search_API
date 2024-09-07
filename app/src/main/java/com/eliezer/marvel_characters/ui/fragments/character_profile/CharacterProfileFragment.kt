@@ -1,5 +1,6 @@
 package com.eliezer.marvel_characters.ui.fragments.character_profile
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.view.View
