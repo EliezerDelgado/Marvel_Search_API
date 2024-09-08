@@ -1,24 +1,18 @@
 package com.eliezer.marvel_characters.ui.fragments.character_profile.functionImp
 
 import android.os.Bundle
-import android.text.SpannableStringBuilder
-import android.text.style.ForegroundColorSpan
 import android.view.View
-import android.widget.TextView
-import androidx.annotation.ColorInt
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_characters.BR
 import com.eliezer.marvel_characters.core.utils.loadImageFromWebOperations
 import com.eliezer.marvel_characters.data.configuration.searchTextResultColor
 import com.eliezer.marvel_characters.data.configuration.selectSearchTextResultColor
-import com.eliezer.marvel_characters.data.expand.indexOfEncounter
 import com.eliezer.marvel_characters.data.repository.comics.mock.GetComicsRepository
 import com.eliezer.marvel_characters.databinding.FragmentCharacterProfileBinding
 import com.eliezer.marvel_characters.domain.SearchTextResultUtils
+import com.eliezer.marvel_characters.domain.adapter.SearchTexTViewAdapter
 import com.eliezer.marvel_characters.domain.listener.MyOnScrolledListener
-import com.eliezer.marvel_characters.models.SearchEncounter
-import com.eliezer.marvel_characters.models.SearchTextResult
 import com.eliezer.marvel_characters.models.dataclass.Character
 import com.eliezer.marvel_characters.models.dataclass.Comics
 import com.eliezer.marvel_characters.ui.fragments.character_profile.CharacterProfileFragmentArgs
@@ -33,8 +27,7 @@ class CharacterProfileFunctionImplement(
     private var character: Character? = null
     private var adapter: CharacterProfileComicsListAdapter? = null
     private val myOnScrolledListener = MyOnScrolledListener { getListComics() }
-    private var searchText = SearchTextResult()
-    private var numLine = 0
+    private var searchTextViewAdapter : SearchTexTViewAdapter? = null
 
     fun setBindingVariable() {
         binding.setVariable(BR.item, character)
@@ -105,91 +98,68 @@ class CharacterProfileFunctionImplement(
     }
 
     fun searchWordBack() {
-        --numLine
-        colorAllLinesText(getTextView()!!.id,getTextView()!!.text.toString(),
-            searchTextResultColor, selectSearchTextResultColor)
-        moveToLine(numLine)
+        searchTextViewAdapter?.apply {
+            backNumLine()
+            setColorSearchTextFor(getTextView()!!,
+                searchTextResultColor, selectSearchTextResultColor)
+            moveToLine(numLine)
+        }
     }
 
     fun searchWordForward() {
-        ++numLine
-        colorAllLinesText(getTextView()!!.id,getTextView()!!.text.toString(),
-            searchTextResultColor, selectSearchTextResultColor)
-        moveToLine(numLine)
-    }
-    fun getTextView() : AppCompatTextView?
-    {
-        return when(searchText.encounter[numLine].idTextView)
-        {
-            binding.characterProfileTextViewName.id -> binding.characterProfileTextViewName
-            binding.characterProfileTextViewDescription.id -> binding.characterProfileTextViewDescription
-            binding.characterProfileTextViewComicsTitle.id -> binding.characterProfileTextViewComicsTitle
-            else -> null
+        searchTextViewAdapter?.apply {
+            nextNumLine()
+            setColorSearchTextFor(getTextView()!!,
+                searchTextResultColor, selectSearchTextResultColor)
+            moveToLine(numLine)
         }
     }
+    private fun getTextView() : AppCompatTextView? =
+        searchTextViewAdapter?.run {
+            when( searchText.encounter[searchTextViewAdapter!!.numLine].idTextView)
+            {
+                binding.characterProfileTextViewName.id -> binding.characterProfileTextViewName
+                binding.characterProfileTextViewDescription.id -> binding.characterProfileTextViewDescription
+                binding.characterProfileTextViewComicsTitle.id -> binding.characterProfileTextViewComicsTitle
+                else -> null
+            }
+        }
 
-    fun searchWord(word: String) {
-        searchText = SearchTextResultUtils.createSearchTextResult(word, listOf(
-            binding.characterProfileTextViewName,
-            binding.characterProfileTextViewDescription,
-            binding.characterProfileTextViewDescription
-        ))
-        colorText(binding.characterProfileTextViewName)
-        colorText(binding.characterProfileTextViewDescription)
-        colorText(binding.characterProfileTextViewComicsTitle)
+    fun searchText(text: String) {
+        setSearchTextViewAdapter(text)
+        setTextViewsColor()
         moveToLine(0)
     }
 
-    private fun colorText(textView: AppCompatTextView) {
-        if (textView.text.contains(searchText.search)) {
-            textView.apply {
-                text =colorAllLinesText(id,text.toString(),  searchTextResultColor,selectSearchTextResultColor)
-            }
+    private fun setTextViewsColor() {
+        searchTextViewAdapter?.apply {
+            setColorSearchTextFor(binding.characterProfileTextViewName, searchTextResultColor,
+                selectSearchTextResultColor)
+            setColorSearchTextFor(binding.characterProfileTextViewDescription, searchTextResultColor,
+                selectSearchTextResultColor)
+            setColorSearchTextFor(binding.characterProfileTextViewComicsTitle, searchTextResultColor,
+                selectSearchTextResultColor)
         }
-        else
-            textView.apply {
-                text = resetColor(text.toString(),searchTextResultColor)
-            }
+    }
+
+    private fun setSearchTextViewAdapter(text: String) {
+        searchTextViewAdapter = SearchTexTViewAdapter(
+            SearchTextResultUtils.createSearchTextResult(
+                text,
+                listOf(
+                    binding.characterProfileTextViewName,
+                    binding.characterProfileTextViewDescription,
+                    binding.characterProfileTextViewDescription
+                )
+            )
+        )
     }
 
     private fun moveToLine(numLine: Int) {
-        binding.characterProfileScrollView.scrollTo(0, searchText.encounter[numLine].scrollPosition)
-    }
-
-    private fun colorUnderLineText(highlighted : SpannableStringBuilder,numLine: Int,text : String,@ColorInt color: Int) : SpannableStringBuilder {
-
-        val position = text.indexOfEncounter(searchText.search,searchText.encounter[numLine].position)
-        val intRange = IntRange(position,position+searchText.search.length-1)
-        highlighted.setSpan(
-            ForegroundColorSpan(color),
-            intRange.first,
-            intRange.last,
-            SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE
-        );
-        return highlighted
-    }
-
-    private fun colorAllLinesText(idTextView: Int,text : String,@ColorInt normalColor: Int,@ColorInt selectColor : Int) : SpannableStringBuilder{
-        var highlighted = SpannableStringBuilder(text)
-        for (i in 0..<searchText.encounter.size)
-        {
-            highlighted = if (i == numLine &&  idTextView == searchText.encounter[i].idTextView)
-                colorUnderLineText(highlighted,i,text,normalColor)
-            else if (idTextView == searchText.encounter[i].idTextView)
-                colorUnderLineText(highlighted,i,text,selectColor)
-            else
-                highlighted
+        searchTextViewAdapter?.searchText?.apply {
+            encounter[numLine].apply {
+                binding.characterProfileScrollView.scrollTo(0,scrollPosition)
+            }
         }
-        return highlighted
-    }
-    private fun resetColor(text : String,@ColorInt defaultColor: Int) : SpannableStringBuilder{
-        val highlighted = SpannableStringBuilder(text)
-        highlighted.setSpan(
-            ForegroundColorSpan(defaultColor),
-            0,
-            text.length-1,
-            SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE
-        );
-        return highlighted
     }
 }
