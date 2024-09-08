@@ -1,14 +1,12 @@
 package com.eliezer.marvel_characters.ui.fragments.character_profile.functionImp
 
-import android.graphics.Color
 import android.os.Bundle
-import android.text.Html
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.view.View
+import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.core.text.HtmlCompat
 import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_characters.BR
 import com.eliezer.marvel_characters.core.utils.loadImageFromWebOperations
@@ -17,6 +15,7 @@ import com.eliezer.marvel_characters.data.configuration.selectSearchTextResultCo
 import com.eliezer.marvel_characters.data.expand.indexOfEncounter
 import com.eliezer.marvel_characters.data.repository.comics.mock.GetComicsRepository
 import com.eliezer.marvel_characters.databinding.FragmentCharacterProfileBinding
+import com.eliezer.marvel_characters.domain.SearchTextResultUtils
 import com.eliezer.marvel_characters.domain.listener.MyOnScrolledListener
 import com.eliezer.marvel_characters.models.SearchEncounter
 import com.eliezer.marvel_characters.models.SearchTextResult
@@ -130,8 +129,11 @@ class CharacterProfileFunctionImplement(
     }
 
     fun searchWord(word: String) {
-        searchText.encounter.clear()
-        searchText.search = word
+        searchText = SearchTextResultUtils.createSearchTextResult(word, listOf(
+            binding.characterProfileTextViewName,
+            binding.characterProfileTextViewDescription,
+            binding.characterProfileTextViewDescription
+        ))
         colorText(binding.characterProfileTextViewName)
         colorText(binding.characterProfileTextViewDescription)
         colorText(binding.characterProfileTextViewComicsTitle)
@@ -140,7 +142,6 @@ class CharacterProfileFunctionImplement(
 
     private fun colorText(textView: AppCompatTextView) {
         if (textView.text.contains(searchText.search)) {
-            fillOutListIndexOfEncountersWord(textView)
             textView.apply {
                 text =colorAllLinesText(id,text.toString(),  searchTextResultColor,selectSearchTextResultColor)
             }
@@ -190,23 +191,5 @@ class CharacterProfileFunctionImplement(
             SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE
         );
         return highlighted
-    }
-
-    private fun fillOutListIndexOfEncountersWord(textView: AppCompatTextView) {
-        searchText.apply {
-            var position = textView.text.indexOf(search, 0)
-            var index = 0
-            while (position != -1) {
-                val scrollPosition = textView.layout.run { getLineTop(getLineForOffset(position)) }
-                encounter.add(
-                    SearchEncounter(
-                    idTextView = textView.id,
-                    scrollPosition = scrollPosition,
-                    position = index++)
-                )
-                val startIndex =  position + 1
-                position = textView.text.indexOf(search,startIndex)
-            }
-        }
     }
 }

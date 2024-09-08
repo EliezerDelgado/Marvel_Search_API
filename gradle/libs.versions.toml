@@ -1,5 +1,5 @@
 [versions]
-agp = "8.5.2"
+agp = "8.6.0"
 compiler = "3.1.4"
 converterGson = "2.9.0"
 dagger = "2.49"
