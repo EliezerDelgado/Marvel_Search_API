@@ -6,6 +6,7 @@ import android.text.Html
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.view.View
+import androidx.annotation.ColorInt
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.LifecycleOwner
@@ -106,14 +107,26 @@ class CharacterProfileFunctionImplement(
 
     fun searchWordBack() {
         --numLine
-        colorAllLinesText(searchText.encounter[numLine].layout,"red","blue")
+        colorAllLinesText(getTextView()!!.id,getTextView()!!.text.toString(),
+            searchTextResultColor, selectSearchTextResultColor)
         moveToLine(numLine)
     }
 
     fun searchWordForward() {
         ++numLine
-        colorAllLinesText(searchText.encounter[numLine].layout,"red","blue")
+        colorAllLinesText(getTextView()!!.id,getTextView()!!.text.toString(),
+            searchTextResultColor, selectSearchTextResultColor)
         moveToLine(numLine)
+    }
+    fun getTextView() : AppCompatTextView?
+    {
+        return when(searchText.encounter[numLine].idTextView)
+        {
+            binding.characterProfileTextViewName.id -> binding.characterProfileTextViewName
+            binding.characterProfileTextViewDescription.id -> binding.characterProfileTextViewDescription
+            binding.characterProfileTextViewComicsTitle.id -> binding.characterProfileTextViewComicsTitle
+            else -> null
+        }
     }
 
     fun searchWord(word: String) {
@@ -122,23 +135,27 @@ class CharacterProfileFunctionImplement(
         colorText(binding.characterProfileTextViewName)
         colorText(binding.characterProfileTextViewDescription)
         colorText(binding.characterProfileTextViewComicsTitle)
+        moveToLine(0)
     }
 
     private fun colorText(textView: AppCompatTextView) {
         if (textView.text.contains(searchText.search)) {
             fillOutListIndexOfEncountersWord(textView)
-            colorAllLinesText(textView,"red","blue")
-            moveToLine(0)
+            textView.apply {
+                text =colorAllLinesText(id,text.toString(),  searchTextResultColor,selectSearchTextResultColor)
+            }
         }
         else
-             colorAllLinesText(textView,"white","white")
+            textView.apply {
+                text = resetColor(text.toString(),searchTextResultColor)
+            }
     }
 
     private fun moveToLine(numLine: Int) {
         binding.characterProfileScrollView.scrollTo(0, searchText.encounter[numLine].scrollPosition)
     }
 
-    private fun colorUnderLineText(highlighted : SpannableStringBuilder,numLine: Int,text : String, color: Int) : SpannableStringBuilder {
+    private fun colorUnderLineText(highlighted : SpannableStringBuilder,numLine: Int,text : String,@ColorInt color: Int) : SpannableStringBuilder {
 
         val position = text.indexOfEncounter(searchText.search,searchText.encounter[numLine].position)
         val intRange = IntRange(position,position+searchText.search.length-1)
@@ -151,19 +168,28 @@ class CharacterProfileFunctionImplement(
         return highlighted
     }
 
-    private fun colorAllLinesText(textView: AppCompatTextView, normalColor: String,selectColor : String){
-        val text = textView.text.toString()
-        var highlighted = SpannableStringBuilder(textView.text.toString())
+    private fun colorAllLinesText(idTextView: Int,text : String,@ColorInt normalColor: Int,@ColorInt selectColor : Int) : SpannableStringBuilder{
+        var highlighted = SpannableStringBuilder(text)
         for (i in 0..<searchText.encounter.size)
         {
-            highlighted = if (i == numLine && textView.id == searchText.encounter[i].layout.id)
-                colorUnderLineText(highlighted,i,text, selectSearchTextResultColor)
-            else if (textView.id == searchText.encounter[i].layout.id)
-                colorUnderLineText(highlighted,i,text,searchTextResultColor)
+            highlighted = if (i == numLine &&  idTextView == searchText.encounter[i].idTextView)
+                colorUnderLineText(highlighted,i,text,normalColor)
+            else if (idTextView == searchText.encounter[i].idTextView)
+                colorUnderLineText(highlighted,i,text,selectColor)
             else
                 highlighted
         }
-        textView.text = highlighted
+        return highlighted
+    }
+    private fun resetColor(text : String,@ColorInt defaultColor: Int) : SpannableStringBuilder{
+        val highlighted = SpannableStringBuilder(text)
+        highlighted.setSpan(
+            ForegroundColorSpan(defaultColor),
+            0,
+            text.length-1,
+            SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+        return highlighted
     }
 
     private fun fillOutListIndexOfEncountersWord(textView: AppCompatTextView) {
@@ -171,7 +197,13 @@ class CharacterProfileFunctionImplement(
             var position = textView.text.indexOf(search, 0)
             var index = 0
             while (position != -1) {
-                encounter.add(SearchEncounter(textView,index++))
+                val scrollPosition = textView.layout.run { getLineTop(getLineForOffset(position)) }
+                encounter.add(
+                    SearchEncounter(
+                    idTextView = textView.id,
+                    scrollPosition = scrollPosition,
+                    position = index++)
+                )
                 val startIndex =  position + 1
                 position = textView.text.indexOf(search,startIndex)
             }
