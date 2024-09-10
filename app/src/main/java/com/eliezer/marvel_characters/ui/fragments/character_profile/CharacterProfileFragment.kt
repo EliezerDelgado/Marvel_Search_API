@@ -61,7 +61,9 @@ class CharacterProfileFragment :
     }
 
     private fun closeMenuSearch() {
+        mainActivity(requireActivity()).getSubToolBarEditText()?.setText("")
         mainActivity(requireActivity()).setSubToolbarView(false)
+        funImpl?.returnNormalColor()
     }
 
     private fun openMenuSearch() {

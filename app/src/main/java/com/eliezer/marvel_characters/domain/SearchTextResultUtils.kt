@@ -10,13 +10,16 @@ class SearchTextResultUtils {
         fun createSearchTextResult(search:String,listTextView : List<TextView>) : SearchTextResult
         {
             val searchTextResult = SearchTextResult()
+            var num = 0
+            searchTextResult.search = search
             listTextView.forEach {
-                if(it.text.contains(search))
-                    fillOutListSearch(searchTextResult,search,it)
+                num++
+                if(it.text.contains(search) && search.isNotEmpty())
+                    fillOutListSearch(searchTextResult,search,it,num)
             }
             return searchTextResult
         }
-        private fun fillOutListSearch(searchTextResult : SearchTextResult ,search: String,textView: TextView) {
+        private fun fillOutListSearch(searchTextResult : SearchTextResult ,search: String,textView: TextView, numText : Int) {
             searchTextResult.apply {
                 var position = textView.text.indexOf(search, 0)
                 var index = 0
@@ -26,6 +29,7 @@ class SearchTextResultUtils {
                         SearchEncounter(
                             idTextView = textView.id,
                             scrollPosition = scrollPosition,
+                            numText = numText,
                             position = index++)
                     )
                     position = textView.text.indexOf(search,1+position )

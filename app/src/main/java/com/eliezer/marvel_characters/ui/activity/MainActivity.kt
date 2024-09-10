@@ -1,6 +1,7 @@
 package com.eliezer.marvel_characters.ui.activity
 
 import android.os.Bundle
+import android.text.Editable
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity

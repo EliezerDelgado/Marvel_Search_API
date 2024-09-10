@@ -2,7 +2,6 @@ package com.eliezer.marvel_characters.ui.fragments.character_profile.functionImp
 
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_characters.BR
 import com.eliezer.marvel_characters.core.utils.loadImageFromWebOperations
@@ -13,11 +12,13 @@ import com.eliezer.marvel_characters.databinding.FragmentCharacterProfileBinding
 import com.eliezer.marvel_characters.domain.SearchTextResultUtils
 import com.eliezer.marvel_characters.domain.adapter.SearchTexTViewAdapter
 import com.eliezer.marvel_characters.domain.listener.MyOnScrolledListener
+import com.eliezer.marvel_characters.models.SearchTextResult
 import com.eliezer.marvel_characters.models.dataclass.Character
 import com.eliezer.marvel_characters.models.dataclass.Comics
 import com.eliezer.marvel_characters.ui.fragments.character_profile.CharacterProfileFragmentArgs
 import com.eliezer.marvel_characters.ui.fragments.character_profile.adapter.CharacterProfileComicsListAdapter
 import com.eliezer.marvel_characters.ui.fragments.character_profile.viewmodel.CharacterProfileViewModel
+
 class CharacterProfileFunctionImplement(
     private val binding: FragmentCharacterProfileBinding,
     private val viewModel: CharacterProfileViewModel,
@@ -100,8 +101,7 @@ class CharacterProfileFunctionImplement(
     fun searchWordBack() {
         searchTextViewAdapter?.apply {
             backNumLine()
-            setColorSearchTextFor(getTextView()!!,
-                searchTextResultColor, selectSearchTextResultColor)
+            setTextViewsColor()
             moveToLine(numLine)
         }
     }
@@ -109,21 +109,10 @@ class CharacterProfileFunctionImplement(
     fun searchWordForward() {
         searchTextViewAdapter?.apply {
             nextNumLine()
-            setColorSearchTextFor(getTextView()!!,
-                searchTextResultColor, selectSearchTextResultColor)
+            setTextViewsColor()
             moveToLine(numLine)
         }
     }
-    private fun getTextView() : AppCompatTextView? =
-        searchTextViewAdapter?.run {
-            when( searchText.encounter[searchTextViewAdapter!!.numLine].idTextView)
-            {
-                binding.characterProfileTextViewName.id -> binding.characterProfileTextViewName
-                binding.characterProfileTextViewDescription.id -> binding.characterProfileTextViewDescription
-                binding.characterProfileTextViewComicsTitle.id -> binding.characterProfileTextViewComicsTitle
-                else -> null
-            }
-        }
 
     fun searchText(text: String) {
         setSearchTextViewAdapter(text)
@@ -143,23 +132,32 @@ class CharacterProfileFunctionImplement(
     }
 
     private fun setSearchTextViewAdapter(text: String) {
-        searchTextViewAdapter = SearchTexTViewAdapter(
-            SearchTextResultUtils.createSearchTextResult(
-                text,
-                listOf(
-                    binding.characterProfileTextViewName,
-                    binding.characterProfileTextViewDescription,
-                    binding.characterProfileTextViewDescription
+        searchTextViewAdapter = if(text.isNotEmpty())
+            SearchTexTViewAdapter(
+                SearchTextResultUtils.createSearchTextResult(
+                    text,
+                    listOf(
+                        binding.characterProfileTextViewName,
+                        binding.characterProfileTextViewDescription,
+                        binding.characterProfileTextViewComicsTitle
+                    )
                 )
             )
-        )
+        else
+            SearchTexTViewAdapter(SearchTextResult())
     }
 
     private fun moveToLine(numLine: Int) {
         searchTextViewAdapter?.searchText?.apply {
-            encounter[numLine].apply {
-                binding.characterProfileScrollView.scrollTo(0,scrollPosition)
-            }
+            if(encounter.size>0)
+                encounter[numLine].apply {
+                    binding.characterProfileScrollView.scrollTo(0,scrollPosition!!)
+                }
         }
+    }
+
+    fun returnNormalColor() {
+        searchTextViewAdapter?.searchText?.search = ""
+        setTextViewsColor()
     }
 }

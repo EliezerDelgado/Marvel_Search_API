@@ -4,7 +4,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.eliezer.marvel_characters.BR
 
-abstract class BaseItemViewHolder<T>(protected val binding: ViewDataBinding) : RecyclerView.ViewHolder(
+abstract class BaseItemViewHolder<T>(protected open val binding: ViewDataBinding) : RecyclerView.ViewHolder(
     binding.root
 ) {
     fun bind(item: T) {

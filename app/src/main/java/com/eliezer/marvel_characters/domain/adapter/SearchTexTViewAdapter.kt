@@ -5,45 +5,65 @@ import android.text.style.ForegroundColorSpan
 import androidx.annotation.ColorInt
 import androidx.appcompat.widget.AppCompatTextView
 import com.eliezer.marvel_characters.data.expand.indexOfEncounter
+import com.eliezer.marvel_characters.models.SearchEncounter
 import com.eliezer.marvel_characters.models.SearchTextResult
 
 class SearchTexTViewAdapter(var searchText : SearchTextResult = SearchTextResult()) {
     private var  _numLine = 0
-    val numLine get() = _numLine%(searchText.encounter.size-1)
+    val numLine get() = _numLine%(searchText.encounter.size)
+
+    fun setNumLine(num : Int)
+    {
+        _numLine = num
+    }
+
+    private val recyclersPositions = arrayListOf<Int>()
 
     fun nextNumLine() {
-        ++_numLine
+        if(!recyclersPositions.contains(numLine))
+            ++_numLine
     }
     fun backNumLine() {
+        if(!recyclersPositions.contains(numLine))
+            --_numLine
+        if(_numLine<0)
+            _numLine = searchText.encounter.size -1
+    }
+
+    fun recyclerNextNumLine()
+    {
+        ++_numLine
+    }
+    fun recyclerNumLine()
+    {
         --_numLine
     }
 
-    fun setColorSearchTextFor(textView: AppCompatTextView, @ColorInt normalColor: Int, @ColorInt selectColor : Int) {
-        if (textView.text.contains(searchText.search)) {
-            textView.apply {
-                text =colorAllLinesText(id,text.toString(),  normalColor,
-                    selectColor
-                )
-            }
+    fun setColorSearchTextFor(textView: AppCompatTextView, @ColorInt normalColor: Int, @ColorInt selectColor : Int?) {
+        textView.apply {
+            text =colorAllLinesText(id,text.toString(),  normalColor,
+                selectColor
+            )
         }
-        else
-            setColorAllText(textView, normalColor)
-    }
-    fun setColorAllText(textView: AppCompatTextView,@ColorInt defaultColor: Int){
-        val spannableStringBuilder = SpannableStringBuilder(textView.text)
-        spannableStringBuilder.setSpan(
-            ForegroundColorSpan(defaultColor),
-            0,
-            textView.text.length-1,
-            SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        textView.text = spannableStringBuilder
     }
 
-    private fun colorUnderLineText(spannableStringBuilder : SpannableStringBuilder, numLine: Int, text : String, @ColorInt color: Int) : SpannableStringBuilder {
+    fun addRecyclerPosition(idRecycler : Int, positionText : Int)
+    {
+        var index =0
+        for (i in 0..<searchText.encounter.size)
+        {
+            if(searchText.encounter[i].numText == positionText)
+                index = i
+        }
+        ++index
+        searchText.encounter.add(index, SearchEncounter(idRecycler,positionText,0,null))
+        recyclersPositions.add(index)
+    }
 
-        val position = text.indexOfEncounter(searchText.search,searchText.encounter[numLine].position)
-        val intRange = IntRange(position,position+searchText.search.length-1)
+    private fun colorUnderLineText(spannableStringBuilder : SpannableStringBuilder, line: Int, text : String, @ColorInt color: Int) : SpannableStringBuilder {
+        val pos = searchText.encounter[line].position
+        val position = text.indexOfEncounter(searchText.search,pos)
+        val intRange = IntRange(position,position+searchText.search.length)
         spannableStringBuilder.setSpan(
             ForegroundColorSpan(color),
             intRange.first,
@@ -53,17 +73,17 @@ class SearchTexTViewAdapter(var searchText : SearchTextResult = SearchTextResult
         return spannableStringBuilder
     }
 
-    private fun colorAllLinesText(idTextView: Int, text : String, @ColorInt normalColor: Int, @ColorInt selectColor : Int) : SpannableStringBuilder {
-        var highlighted = SpannableStringBuilder(text)
-        for (i in 0..<searchText.encounter.size)
+    private fun colorAllLinesText(idTextView: Int, text : String, @ColorInt normalColor: Int, @ColorInt selectColor : Int?) : SpannableStringBuilder {
+        var spannableStringBuilder = SpannableStringBuilder(text)
+        for (line in 0..<searchText.encounter.size)
         {
-            highlighted = if (i == numLine &&  idTextView == searchText.encounter[i].idTextView)
-                colorUnderLineText(highlighted,i,text,normalColor)
-            else if (idTextView == searchText.encounter[i].idTextView)
-                colorUnderLineText(highlighted,i,text,selectColor)
+            spannableStringBuilder = if (line == numLine &&  idTextView == searchText.encounter[line].idTextView && selectColor !=null)
+                colorUnderLineText(spannableStringBuilder,line,text,selectColor)
+            else if (idTextView == searchText.encounter[line].idTextView)
+                colorUnderLineText(spannableStringBuilder,line,text,normalColor)
             else
-                highlighted
+                spannableStringBuilder
         }
-        return highlighted
+        return spannableStringBuilder
     }
 }
