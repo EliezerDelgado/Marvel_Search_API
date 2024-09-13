@@ -18,7 +18,7 @@ abstract class BaseAdapter<T, S : BaseItemViewHolder<T>>(protected var items: Ar
     fun getItemsContain(string : String) : ArrayList<SearchEncounter>
     {
         var numPosition = arrayListOf<SearchEncounter>()
-        for (i in 0..items.size)
+        for (i in 0..<items.size)
         {
             val text = items[i].toString()
             if(text.contains(string))
@@ -36,7 +36,7 @@ abstract class BaseAdapter<T, S : BaseItemViewHolder<T>>(protected var items: Ar
         val num = (text.length - text.replace(string,"").length)/string.length
         for (i in 0..<num)
         {
-            numPosition.add(SearchEncounter(text.hashCode(),numText,i,null))
+            numPosition.add(SearchEncounter(text.hashCode(),numText,text.length,i,null))
         }
         return numPosition
     }
@@ -51,6 +51,10 @@ abstract class BaseAdapter<T, S : BaseItemViewHolder<T>>(protected var items: Ar
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         this.items.addAll(items)
         diffResult.dispatchUpdatesTo(this)
+    }
+    fun update()
+    {
+        notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: S, position: Int) {

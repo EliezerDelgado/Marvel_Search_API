@@ -6,33 +6,53 @@ import com.eliezer.marvel_characters.data.configuration.searchTextResultColor
 import com.eliezer.marvel_characters.data.configuration.selectSearchTextResultColor
 import com.eliezer.marvel_characters.databinding.ItemComicHorizontalBinding
 import com.eliezer.marvel_characters.domain.SearchRecycler
-import com.eliezer.marvel_characters.models.SearchEncounter
+import com.eliezer.marvel_characters.models.dataclass.Character
 import com.eliezer.marvel_characters.models.dataclass.Comic
 
-class CharacterProfileComicsListAdapter(items : ArrayList<Comic>) : BaseAdapter<Comic, ItemComicHorizontalViewHolder>(
+class CharacterProfileComicsListAdapter(items : ArrayList<Comic>,private val listener :CharacterProfileComicHolderListener) : BaseAdapter<Comic, ItemComicHorizontalViewHolder>(
     items = items) {
+    interface CharacterProfileComicHolderListener
+    {
+        fun onScroll(position : Int)
+    }
     private val searchRecycler = SearchRecycler()
-    fun setComics(listComic : List<Comic>) =
+    fun setComics(listComic : List<Comic>)
+    {
         setListItems(listComic)
+        items.sortBy { it.id }
+        fillItemsContainText("")
+    }
 
     fun fillItemsContainText(text : String)
     {
-        searchRecycler.apply {
-            itemsContainText = getItemsContain(text)
-            itemsContainText.add(0,SearchEncounter(0,0,0,0))
-            lastNumText = itemsContainText[itemsContainText.size-1].numText + 1
-            itemsContainText.add(lastNumText,SearchEncounter(lastNumText,lastNumText,lastNumText,lastNumText))
-        }
+        if(text.isNotEmpty())
+            searchRecycler.apply {
+                index = -1
+                searchWord = text
+            }
+        searchRecycler.itemsContainText.clear()
+        resetItemContain()
     }
+
+    private fun resetItemContain() {
+        update()
+    }
+
     fun nextPosition()
     {
         if(!searchRecycler.isInLastPosition)
             searchRecycler.index++
+        else
+            searchRecycler.index = 0
+        resetItemContain()
     }
     fun backPosition()
     {
-        if(!searchRecycler.isInFirstPosition)
+        if(!searchRecycler.isNotSetPosition)
             searchRecycler.index--
+        else
+            searchRecycler.index = 0
+        resetItemContain()
     }
     fun isLastPosition() = searchRecycler.isInLastPosition
     fun isInFirstPosition() = searchRecycler.isInFirstPosition
@@ -44,27 +64,39 @@ class CharacterProfileComicsListAdapter(items : ArrayList<Comic>) : BaseAdapter<
 
     override fun addMoreBindViewHolderFunction(holder: ItemComicHorizontalViewHolder, item: Comic) {
         super.addMoreBindViewHolderFunction(holder, item)
-        val position = items.indexOf(item)
-        val searchEncounter : SearchEncounter? = searchRecycler.get(position)
-        if(
-            searchEncounter != null
-            && position > 0
-            && position < searchRecycler.lastNumText
-            && searchRecycler.index == searchEncounter.numText
-            ) {
-
-            holder.paintText(searchRecycler.searchWord,searchTextResultColor,searchEncounter.position,
-                selectSearchTextResultColor)
-        }
-        else if(
-            searchEncounter != null
-            && position > 0
-            && position < searchRecycler.lastNumText
-            )
-        {
-            holder.paintText(searchRecycler.searchWord, searchTextResultColor,null,
-                null)
+        val sizeBefore = searchRecycler.itemsContainText.size
+        val startPosition = if(sizeBefore!=0) searchRecycler.itemsContainText[sizeBefore-1].numText else 0
+        val searchTextResult =holder.searchWord(holder,item.id,searchRecycler.searchWord,startPosition)
+        searchTextResult?.also {
+            if(it.encounter.isNotEmpty()) {
+                searchRecycler.itemsContainTextAddAll(it.encounter)
+                sortSearchRecycler()
+                val idItemIndex = if(searchRecycler.index!=-1) searchRecycler.itemsContainText[searchRecycler.index].idTextView else 0
+                if (idItemIndex== item.id ) {
+                    val index = searchRecycler.run { itemsContainText[index].position }
+                    holder.setTitleColor(
+                        it, searchTextResultColor, index,
+                        selectSearchTextResultColor
+                    )
+                    //val pos = items.indexOf(item)
+                    //listener.onScroll(pos)
+                } else {
+                    holder.setTitleColor(it, searchTextResultColor, null, null)
+                }
+            }
         }
     }
 
+    private fun sortSearchRecycler() {
+        searchRecycler.itemsContainText.sortBy {
+            it.idTextView
+        }
+    }
+
+    fun setPosition(i: Int) {
+        if(searchRecycler.index!=i) {
+            searchRecycler.index = i
+            resetItemContain()
+        }
+    }
 }

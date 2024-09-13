@@ -10,7 +10,7 @@ class MyOnScrolledListener(private val invoke : ()->Unit) : RecyclerView.OnScrol
         val layoutManager = recyclerView.layoutManager as LinearLayoutManager
         val totalItemCount = layoutManager.itemCount
         val lastVisible = layoutManager.findLastVisibleItemPosition() + 1
-        val endHasBeenReached = lastVisible + 1 >= totalItemCount
+        val endHasBeenReached = lastVisible >= totalItemCount
         this.position = layoutManager.findLastVisibleItemPosition()
         if (totalItemCount > 0 && endHasBeenReached) {
             invoke.invoke()

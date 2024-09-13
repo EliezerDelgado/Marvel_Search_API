@@ -17,6 +17,7 @@ import com.eliezer.marvel_characters.models.dataclass.Character
 import com.eliezer.marvel_characters.models.dataclass.Comics
 import com.eliezer.marvel_characters.ui.fragments.character_profile.CharacterProfileFragmentArgs
 import com.eliezer.marvel_characters.ui.fragments.character_profile.adapter.CharacterProfileComicsListAdapter
+import com.eliezer.marvel_characters.ui.fragments.character_profile.adapter.CharacterProfileComicsListAdapter.CharacterProfileComicHolderListener
 import com.eliezer.marvel_characters.ui.fragments.character_profile.viewmodel.CharacterProfileViewModel
 
 class CharacterProfileFunctionImplement(
@@ -24,7 +25,7 @@ class CharacterProfileFunctionImplement(
     private val viewModel: CharacterProfileViewModel,
     private val getComicsRepository : GetComicsRepository,
     private val owner : LifecycleOwner
-) {
+) : CharacterProfileComicsListAdapter.CharacterProfileComicHolderListener {
     private var character: Character? = null
     private var adapter: CharacterProfileComicsListAdapter? = null
     private val myOnScrolledListener = MyOnScrolledListener { getListComics() }
@@ -88,7 +89,7 @@ class CharacterProfileFunctionImplement(
     }
 
     fun setAdapter() {
-        adapter = CharacterProfileComicsListAdapter(arrayListOf())
+        adapter = CharacterProfileComicsListAdapter(arrayListOf(),this)
         binding.characterProfileRecyclerViewComics.setHasFixedSize(true)
         binding.characterProfileRecyclerViewComics.adapter = adapter
         binding.characterProfileRecyclerViewComics.addOnScrollListener(myOnScrolledListener)
@@ -99,18 +100,37 @@ class CharacterProfileFunctionImplement(
     }
 
     fun searchWordBack() {
-        searchTextViewAdapter?.apply {
-            backNumLine()
-            setTextViewsColor()
-            moveToLine(numLine)
+        searchTextViewAdapter?.also {
+            if (it.getNumRecycler()==-1 || adapter!!.isInFirstPosition())
+                it.backNumLine()
+            if(it.getNumRecycler()!=-1)
+            {
+                setTextViewsColor()
+                adapter?.backPosition()
+            }
+            else
+            {
+                setTextViewsColor()
+                adapter?.setPosition(-1)
+                moveToLine(it.numLine)
+            }
         }
     }
 
     fun searchWordForward() {
-        searchTextViewAdapter?.apply {
-            nextNumLine()
-            setTextViewsColor()
-            moveToLine(numLine)
+        searchTextViewAdapter?.also {
+            if (it.getNumRecycler()==-1 || adapter!!.isLastPosition())
+                it.nextNumLine()
+            if(it.getNumRecycler()!=-1) {
+                setTextViewsColor()
+                adapter?.nextPosition()
+            }
+            else
+            {
+                setTextViewsColor()
+                adapter?.setPosition(-1)
+                moveToLine(it.numLine)
+            }
         }
     }
 
@@ -118,6 +138,7 @@ class CharacterProfileFunctionImplement(
         setSearchTextViewAdapter(text)
         setTextViewsColor()
         moveToLine(0)
+        adapter!!.fillItemsContainText(text)
     }
 
     private fun setTextViewsColor() {
@@ -132,26 +153,32 @@ class CharacterProfileFunctionImplement(
     }
 
     private fun setSearchTextViewAdapter(text: String) {
-        searchTextViewAdapter = if(text.isNotEmpty())
-            SearchTexTViewAdapter(
-                SearchTextResultUtils.createSearchTextResult(
-                    text,
-                    listOf(
-                        binding.characterProfileTextViewName,
-                        binding.characterProfileTextViewDescription,
-                        binding.characterProfileTextViewComicsTitle
+        if(text.isNotEmpty()) {
+            searchTextViewAdapter =
+                SearchTexTViewAdapter(
+                    SearchTextResultUtils.createSearchTextResult(
+                        text,
+                        listOf(
+                            binding.characterProfileTextViewName,
+                            binding.characterProfileTextViewDescription,
+                            binding.characterProfileTextViewComicsTitle
+                        )
                     )
                 )
-            )
+            searchTextViewAdapter!!.addRecyclerPosition(binding.characterProfileRecyclerViewComics.id,4)
+        }
         else
+        {
             SearchTexTViewAdapter(SearchTextResult())
+        }
+
     }
 
     private fun moveToLine(numLine: Int) {
         searchTextViewAdapter?.searchText?.apply {
             if(encounter.size>0)
                 encounter[numLine].apply {
-                    binding.characterProfileScrollView.scrollTo(0,scrollPosition!!)
+                    binding.characterProfileScrollView.scrollTo(0,scrollPosition?:0)
                 }
         }
     }
@@ -159,5 +186,9 @@ class CharacterProfileFunctionImplement(
     fun returnNormalColor() {
         searchTextViewAdapter?.searchText?.search = ""
         setTextViewsColor()
+    }
+
+    override fun onScroll(position: Int) {
+        binding.characterProfileRecyclerViewComics.smoothScrollToPosition(position)
     }
 }

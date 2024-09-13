@@ -11,33 +11,24 @@ import com.eliezer.marvel_characters.models.SearchTextResult
 class SearchTexTViewAdapter(var searchText : SearchTextResult = SearchTextResult()) {
     private var  _numLine = 0
     val numLine get() = _numLine%(searchText.encounter.size)
+    private val recyclersPositions = arrayListOf<Int>()
 
     fun setNumLine(num : Int)
     {
         _numLine = num
     }
 
-    private val recyclersPositions = arrayListOf<Int>()
 
     fun nextNumLine() {
-        if(!recyclersPositions.contains(numLine))
             ++_numLine
     }
     fun backNumLine() {
-        if(!recyclersPositions.contains(numLine))
             --_numLine
         if(_numLine<0)
             _numLine = searchText.encounter.size -1
     }
-
-    fun recyclerNextNumLine()
-    {
-        ++_numLine
-    }
-    fun recyclerNumLine()
-    {
-        --_numLine
-    }
+    fun getNumRecycler() : Int =
+        recyclersPositions.indexOf(numLine)
 
     fun setColorSearchTextFor(textView: AppCompatTextView, @ColorInt normalColor: Int, @ColorInt selectColor : Int?) {
         textView.apply {
@@ -49,27 +40,30 @@ class SearchTexTViewAdapter(var searchText : SearchTextResult = SearchTextResult
 
     fun addRecyclerPosition(idRecycler : Int, positionText : Int)
     {
-        var index =0
+        var index =searchText.encounter.size
         for (i in 0..<searchText.encounter.size)
         {
-            if(searchText.encounter[i].numText == positionText)
+            if(searchText.encounter[i].numText == positionText) {
                 index = i
+                break
+            }
         }
-        ++index
-        searchText.encounter.add(index, SearchEncounter(idRecycler,positionText,0,null))
+        searchText.encounter.add(index, SearchEncounter(idRecycler,positionText,0,0,null))
         recyclersPositions.add(index)
     }
 
     private fun colorUnderLineText(spannableStringBuilder : SpannableStringBuilder, line: Int, text : String, @ColorInt color: Int) : SpannableStringBuilder {
         val pos = searchText.encounter[line].position
         val position = text.indexOfEncounter(searchText.search,pos)
-        val intRange = IntRange(position,position+searchText.search.length)
-        spannableStringBuilder.setSpan(
-            ForegroundColorSpan(color),
-            intRange.first,
-            intRange.last,
-            SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
+        if(position!=-1) {
+            val intRange = IntRange(position, position + searchText.search.length)
+            spannableStringBuilder.setSpan(
+                ForegroundColorSpan(color),
+                intRange.first,
+                intRange.last,
+                SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
         return spannableStringBuilder
     }
 
