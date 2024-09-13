@@ -2,6 +2,7 @@ package com.eliezer.marvel_characters.ui.fragments.character_profile.functionImp
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_characters.BR
 import com.eliezer.marvel_characters.core.utils.loadImageFromWebOperations
@@ -17,7 +18,6 @@ import com.eliezer.marvel_characters.models.dataclass.Character
 import com.eliezer.marvel_characters.models.dataclass.Comics
 import com.eliezer.marvel_characters.ui.fragments.character_profile.CharacterProfileFragmentArgs
 import com.eliezer.marvel_characters.ui.fragments.character_profile.adapter.CharacterProfileComicsListAdapter
-import com.eliezer.marvel_characters.ui.fragments.character_profile.adapter.CharacterProfileComicsListAdapter.CharacterProfileComicHolderListener
 import com.eliezer.marvel_characters.ui.fragments.character_profile.viewmodel.CharacterProfileViewModel
 
 class CharacterProfileFunctionImplement(
@@ -137,7 +137,9 @@ class CharacterProfileFunctionImplement(
     fun searchText(text: String) {
         setSearchTextViewAdapter(text)
         setTextViewsColor()
-        moveToLine(0)
+        if(text.isNotEmpty()) {
+            moveToLine(0)
+        }
         adapter!!.fillItemsContainText(text)
     }
 
@@ -153,7 +155,6 @@ class CharacterProfileFunctionImplement(
     }
 
     private fun setSearchTextViewAdapter(text: String) {
-        if(text.isNotEmpty()) {
             searchTextViewAdapter =
                 SearchTexTViewAdapter(
                     SearchTextResultUtils.createSearchTextResult(
@@ -166,12 +167,6 @@ class CharacterProfileFunctionImplement(
                     )
                 )
             searchTextViewAdapter!!.addRecyclerPosition(binding.characterProfileRecyclerViewComics.id,4)
-        }
-        else
-        {
-            SearchTexTViewAdapter(SearchTextResult())
-        }
-
     }
 
     private fun moveToLine(numLine: Int) {
@@ -185,10 +180,11 @@ class CharacterProfileFunctionImplement(
 
     fun returnNormalColor() {
         searchTextViewAdapter?.searchText?.search = ""
+        adapter?.fillItemsContainText("")
         setTextViewsColor()
     }
 
     override fun onScroll(position: Int) {
-        binding.characterProfileRecyclerViewComics.smoothScrollToPosition(position)
+        binding.characterProfileRecyclerViewComics.scrollToPosition(position)
     }
 }

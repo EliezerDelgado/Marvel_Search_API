@@ -26,9 +26,8 @@ class ItemComicHorizontalViewHolder(override var binding: ItemComicHorizontalBin
     fun searchWord(holder: ItemComicHorizontalViewHolder,idItem:Int,searchWord: String?,startPosition : Int) : SearchTextResult?{
         var searchTextResult : SearchTextResult?= null
         val hashMapItem = HashMap<Int,TextView>()
-        hashMapItem.set(idItem,binding.itemComicHorizontalTitle)
+        hashMapItem[idItem] = binding.itemComicHorizontalTitle
         searchWord?.also {
-            if(it.isNotEmpty()) {
                 val text = holder.binding.itemComicHorizontalTitle.text.toString()
                 searchTextResult = if (text.isNotEmpty()) {
                     SearchTextResultUtils.createSearchTextResult(
@@ -38,7 +37,7 @@ class ItemComicHorizontalViewHolder(override var binding: ItemComicHorizontalBin
                     )
                 } else
                     SearchTextResult()
-            }
+
         }
         return searchTextResult
     }

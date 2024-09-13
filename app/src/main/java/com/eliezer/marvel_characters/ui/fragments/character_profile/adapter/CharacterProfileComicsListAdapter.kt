@@ -25,11 +25,10 @@ class CharacterProfileComicsListAdapter(items : ArrayList<Comic>,private val lis
 
     fun fillItemsContainText(text : String)
     {
-        if(text.isNotEmpty())
-            searchRecycler.apply {
+        searchRecycler.apply {
                 index = -1
                 searchWord = text
-            }
+        }
         searchRecycler.itemsContainText.clear()
         resetItemContain()
     }
@@ -45,6 +44,8 @@ class CharacterProfileComicsListAdapter(items : ArrayList<Comic>,private val lis
         else
             searchRecycler.index = 0
         resetItemContain()
+        val position = getPositionItem(searchRecycler.itemsContainText[searchRecycler.index].idTextView)
+        listener.onScroll(position)
     }
     fun backPosition()
     {
@@ -53,6 +54,8 @@ class CharacterProfileComicsListAdapter(items : ArrayList<Comic>,private val lis
         else
             searchRecycler.index = 0
         resetItemContain()
+        val position = getPositionItem(searchRecycler.itemsContainText[searchRecycler.index].idTextView)
+        listener.onScroll(position)
     }
     fun isLastPosition() = searchRecycler.isInLastPosition
     fun isInFirstPosition() = searchRecycler.isInFirstPosition
@@ -78,14 +81,25 @@ class CharacterProfileComicsListAdapter(items : ArrayList<Comic>,private val lis
                         it, searchTextResultColor, index,
                         selectSearchTextResultColor
                     )
-                    //val pos = items.indexOf(item)
-                    //listener.onScroll(pos)
                 } else {
                     holder.setTitleColor(it, searchTextResultColor, null, null)
                 }
             }
+            else{
+                holder.setTitleColor(it, searchTextResultColor, null, null)
+            }
         }
     }
+
+    private fun getPositionItem(idTextView: Int): Int =
+        items.run{
+            var index = 0
+            forEach {
+                if (it.id == idTextView)
+                    index = items.indexOf(it)
+            }
+            index
+        }
 
     private fun sortSearchRecycler() {
         searchRecycler.itemsContainText.sortBy {
