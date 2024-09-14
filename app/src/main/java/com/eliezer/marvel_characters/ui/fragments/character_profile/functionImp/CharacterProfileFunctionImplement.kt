@@ -2,18 +2,14 @@ package com.eliezer.marvel_characters.ui.fragments.character_profile.functionImp
 
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.widget.AppCompatTextView
+import android.widget.TextView
 import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_characters.BR
 import com.eliezer.marvel_characters.core.utils.loadImageFromWebOperations
-import com.eliezer.marvel_characters.data.configuration.searchTextResultColor
-import com.eliezer.marvel_characters.data.configuration.selectSearchTextResultColor
 import com.eliezer.marvel_characters.data.repository.comics.mock.GetComicsRepository
 import com.eliezer.marvel_characters.databinding.FragmentCharacterProfileBinding
-import com.eliezer.marvel_characters.domain.SearchTextResultUtils
-import com.eliezer.marvel_characters.domain.adapter.SearchTexTViewAdapter
+import com.eliezer.marvel_characters.domain.function.FunctionToolbarSearch
 import com.eliezer.marvel_characters.domain.listener.MyOnScrolledListener
-import com.eliezer.marvel_characters.models.SearchTextResult
 import com.eliezer.marvel_characters.models.dataclass.Character
 import com.eliezer.marvel_characters.models.dataclass.Comics
 import com.eliezer.marvel_characters.ui.fragments.character_profile.CharacterProfileFragmentArgs
@@ -21,20 +17,129 @@ import com.eliezer.marvel_characters.ui.fragments.character_profile.adapter.Char
 import com.eliezer.marvel_characters.ui.fragments.character_profile.viewmodel.CharacterProfileViewModel
 
 class CharacterProfileFunctionImplement(
-    private val binding: FragmentCharacterProfileBinding,
-    private val viewModel: CharacterProfileViewModel,
-    private val getComicsRepository : GetComicsRepository,
+    binding: FragmentCharacterProfileBinding,
+    viewModel: CharacterProfileViewModel,
+    getComicsRepository : GetComicsRepository,
     private val owner : LifecycleOwner
-) : CharacterProfileComicsListAdapter.CharacterProfileComicHolderListener {
-    private var character: Character? = null
-    private var adapter: CharacterProfileComicsListAdapter? = null
+) : CharacterProfileComicsListAdapter.CharacterProfileComicHolderListener{
     private val myOnScrolledListener = MyOnScrolledListener { getListComics() }
-    private var searchTextViewAdapter : SearchTexTViewAdapter? = null
-
+    private val functionGetCharacter = FunctionGetCharacter(getComicsRepository)
+    private val functionManagerBinding =FunctionManagerBinding(binding)
+    private val functionManagerRecyclerAdapter = FunctionManagerRecyclerAdapter(this)
+    private val functionManagerViewModel = FunctionManagerViewModel(viewModel)
+    private val functionToolbarSearch = FunctionToolbarSearch(
+        functionManagerBinding.getArrayTextView(),
+        binding.characterProfileScrollView,
+        functionManagerRecyclerAdapter.adapter,
+        binding.characterProfileRecyclerViewComics
+    )
+    override fun onScroll(position: Int) {
+        functionManagerBinding.setScrollPosition(position)
+    }
     fun setBindingVariable() {
+        functionManagerBinding.setBindingVariable(functionGetCharacter.character!!)
+    }
+
+    fun getIntentExtras(argument: Bundle) {
+        functionGetCharacter.getIntentExtras(argument)
+    }
+
+    fun getListComics() {
+        functionManagerBinding.recyclerViewComicsRemoveScrollListener(myOnScrolledListener)
+        if(!getComicsRepository())
+        {
+            functionManagerViewModel.setObservesVM(owner,::adapterComics)
+            functionGetCharacter.searchComics(functionManagerViewModel.viewModel)
+        }
+    }
+    fun setAdapter() {
+        functionManagerBinding.setAdapter(functionManagerRecyclerAdapter.adapter)
+        functionManagerBinding.recyclerViewComicsAddScrollListener(myOnScrolledListener)
+    }
+    fun searchWordBack() {
+        functionToolbarSearch.searchWordBack()
+    }
+
+    fun searchWordForward() {
+        functionToolbarSearch.searchWordForward()
+    }
+
+    fun searchText(text: String) {
+        functionToolbarSearch.searchText(text)
+    }
+    fun returnNormalColor() {
+        functionToolbarSearch.returnNormalColor()
+    }
+    private fun adapterComics(comics: Comics?)
+    {
+        setAdapterComics(comics)
+        functionManagerViewModel.setNotObservesVM(owner)
+        functionManagerBinding.setScrollPosition(myOnScrolledListener.position)
+        functionManagerBinding.resetRecyclerView()
+        functionManagerBinding.recyclerViewComicsAddScrollListener(myOnScrolledListener)
+    }
+    private fun getComicsRepository() : Boolean
+    {
+        val comics =functionGetCharacter.getListComics()
+        return comics?.run {
+            if (total > listComics.size) {
+                if(functionManagerRecyclerAdapter.adapterIsEmpty())
+                    setAdapterComics(comics)
+                true
+            }
+            else
+                false
+        }   ?: false
+    }
+    private fun setAdapterComics(comics: Comics?)
+    {
+        comics?.also {
+            if (it.listComics.isNotEmpty()) {
+                functionManagerRecyclerAdapter.setComics(it)
+                functionManagerBinding.comicsTitleSetVisible()
+            }
+        }
+    }
+}
+private class FunctionManagerViewModel(
+    val viewModel: CharacterProfileViewModel)
+{
+    fun setObservesVM(owner: LifecycleOwner,observeComics: ((Comics)->(Unit))) {
+        viewModel.listComic.observe(owner,observeComics)
+    }
+    fun setNotObservesVM(owner: LifecycleOwner) {
+        viewModel.listComic.removeObservers(owner)
+        viewModel.resetComics()
+    }
+
+}
+private class FunctionManagerRecyclerAdapter(listener:
+    CharacterProfileComicsListAdapter.CharacterProfileComicHolderListener)
+{
+    var adapter: CharacterProfileComicsListAdapter = CharacterProfileComicsListAdapter(
+        arrayListOf(),
+        listener
+    )
+        private set
+    fun adapterIsEmpty()=  adapter.isListEmpty()
+    fun setComics(comics: Comics)
+    {
+        adapter.setComics(comics.listComics)
+    }
+}
+private class FunctionManagerBinding(
+    private val binding: FragmentCharacterProfileBinding
+)
+{
+    fun getArrayTextView() = arrayListOf<TextView>(
+        binding.characterProfileTextViewName,
+        binding.characterProfileTextViewDescription,
+        binding.characterProfileTextViewComicsTitle
+    )
+    fun setBindingVariable(character:Character) {
         binding.setVariable(BR.item, character)
         val t = Thread {
-            character?.urlPicture.also {
+            character.urlPicture.also {
                 binding.setVariable(
                     BR.img,
                     loadImageFromWebOperations(it)
@@ -43,148 +148,48 @@ class CharacterProfileFunctionImplement(
         }
         t.start()
     }
-
-    private fun setObservesVM() {
-        viewModel.listComic.observe(owner, ::setListComics)
-    }
-
-    fun getListComics() {
+    fun recyclerViewComicsRemoveScrollListener(myOnScrolledListener: MyOnScrolledListener)
+    {
         binding.characterProfileRecyclerViewComics.removeOnScrollListener(myOnScrolledListener)
-        val comics = getComicsRepository.getListRepository(character?.id.toString())
-        if (comics == null || comics.total > comics.listComics.size)
-            searchComics()
-        else if (adapter!!.isListEmpty())
-            setListComics(comics)
     }
-
-    private fun searchComics() {
-        character?.id?.also {
-            setObservesVM()
-            viewModel.searchComicsList(it)
-        }
-    }
-
-    private fun setListComics(comics: Comics?) {
-        val position = myOnScrolledListener.position
-        comics?.also {
-            if (it.listComics.isNotEmpty()) {
-                adapter?.setComics(it.listComics)
-                binding.characterProfileTextViewComicsTitle.visibility = View.VISIBLE
-            }
-        }
-        resetRecyclerView()
-        binding.characterProfileRecyclerViewComics.scrollToPosition(position)
-        setNotObservesVM()
-    }
-
-    private fun resetRecyclerView() {
-        binding.characterProfileRecyclerViewComics.requestLayout()
+    fun recyclerViewComicsAddScrollListener(myOnScrolledListener: MyOnScrolledListener)
+    {
         binding.characterProfileRecyclerViewComics.addOnScrollListener(myOnScrolledListener)
     }
-
-
-    private fun setNotObservesVM() {
-        viewModel.listComic.removeObservers(owner)
-        viewModel.resetComics()
+    fun comicsTitleSetVisible()
+    {
+        binding.characterProfileTextViewComicsTitle.visibility = View.VISIBLE
     }
 
-    fun setAdapter() {
-        adapter = CharacterProfileComicsListAdapter(arrayListOf(),this)
+    fun resetRecyclerView() {
+        binding.characterProfileRecyclerViewComics.requestLayout()
+    }
+
+    fun setAdapter(adapter: CharacterProfileComicsListAdapter) {
         binding.characterProfileRecyclerViewComics.setHasFixedSize(true)
         binding.characterProfileRecyclerViewComics.adapter = adapter
-        binding.characterProfileRecyclerViewComics.addOnScrollListener(myOnScrolledListener)
     }
+    fun setScrollPosition(position: Int) {
+        binding.characterProfileRecyclerViewComics.scrollToPosition(position)
+    }
+}
+private class FunctionGetCharacter(
+    private val getComicsRepository : GetComicsRepository
+)
+{
+    var character: Character? = null
 
     fun getIntentExtras(argument: Bundle) {
         character = CharacterProfileFragmentArgs.fromBundle(argument).argCharacter
     }
-
-    fun searchWordBack() {
-        searchTextViewAdapter?.also {
-            if (it.getNumRecycler()==-1 || adapter!!.isInFirstPosition())
-                it.backNumLine()
-            if(it.getNumRecycler()!=-1)
-            {
-                setTextViewsColor()
-                adapter?.backPosition()
-            }
-            else
-            {
-                setTextViewsColor()
-                adapter?.setPosition(-1)
-                moveToLine(it.numLine)
-            }
+    fun getListComics(): Comics?
+    {
+        return getComicsRepository.getListRepository(character?.id.toString())
+    }
+    fun searchComics(viewModel: CharacterProfileViewModel) {
+        character?.id?.also {
+            viewModel.searchComicsList(it)
         }
-    }
-
-    fun searchWordForward() {
-        searchTextViewAdapter?.also {
-            if (it.getNumRecycler()==-1 || adapter!!.isLastPosition())
-                it.nextNumLine()
-            if(it.getNumRecycler()!=-1) {
-                setTextViewsColor()
-                adapter?.nextPosition()
-            }
-            else
-            {
-                setTextViewsColor()
-                adapter?.setPosition(-1)
-                moveToLine(it.numLine)
-            }
-        }
-    }
-
-    fun searchText(text: String) {
-        setSearchTextViewAdapter(text)
-        setTextViewsColor()
-        if(text.isNotEmpty()) {
-            moveToLine(0)
-        }
-        adapter!!.fillItemsContainText(text)
-    }
-
-    private fun setTextViewsColor() {
-        searchTextViewAdapter?.apply {
-            setColorSearchTextFor(binding.characterProfileTextViewName, searchTextResultColor,
-                selectSearchTextResultColor)
-            setColorSearchTextFor(binding.characterProfileTextViewDescription, searchTextResultColor,
-                selectSearchTextResultColor)
-            setColorSearchTextFor(binding.characterProfileTextViewComicsTitle, searchTextResultColor,
-                selectSearchTextResultColor)
-        }
-    }
-
-    private fun setSearchTextViewAdapter(text: String) {
-            searchTextViewAdapter =
-                SearchTexTViewAdapter(
-                    SearchTextResultUtils.createSearchTextResult(
-                        text,
-                        listOf(
-                            binding.characterProfileTextViewName,
-                            binding.characterProfileTextViewDescription,
-                            binding.characterProfileTextViewComicsTitle
-                        )
-                    )
-                )
-            searchTextViewAdapter!!.addRecyclerPosition(binding.characterProfileRecyclerViewComics.id,4)
-    }
-
-    private fun moveToLine(numLine: Int) {
-        searchTextViewAdapter?.searchText?.apply {
-            if(encounter.size>0)
-                encounter[numLine].apply {
-                    binding.characterProfileScrollView.scrollTo(0,scrollPosition?:0)
-                }
-        }
-    }
-
-    fun returnNormalColor() {
-        searchTextViewAdapter?.searchText?.search = ""
-        adapter?.fillItemsContainText("")
-        setTextViewsColor()
-    }
-
-    override fun onScroll(position: Int) {
-        binding.characterProfileRecyclerViewComics.scrollToPosition(position)
     }
 }
+

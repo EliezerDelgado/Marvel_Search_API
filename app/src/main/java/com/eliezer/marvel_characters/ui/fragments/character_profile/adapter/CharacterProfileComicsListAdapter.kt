@@ -6,16 +6,21 @@ import com.eliezer.marvel_characters.data.configuration.searchTextResultColor
 import com.eliezer.marvel_characters.data.configuration.selectSearchTextResultColor
 import com.eliezer.marvel_characters.databinding.ItemComicHorizontalBinding
 import com.eliezer.marvel_characters.domain.SearchRecycler
-import com.eliezer.marvel_characters.models.dataclass.Character
+import com.eliezer.marvel_characters.domain.function.RecyclerAdapterSearchText
+import com.eliezer.marvel_characters.models.SearchTextResult
 import com.eliezer.marvel_characters.models.dataclass.Comic
 
 class CharacterProfileComicsListAdapter(items : ArrayList<Comic>,private val listener :CharacterProfileComicHolderListener) : BaseAdapter<Comic, ItemComicHorizontalViewHolder>(
-    items = items) {
+    items = items) ,RecyclerAdapterSearchText {
     interface CharacterProfileComicHolderListener
     {
         fun onScroll(position : Int)
     }
     private val searchRecycler = SearchRecycler()
+
+    override fun isLastPosition() = searchRecycler.isInLastPosition
+    override fun isInFirstPosition() = searchRecycler.isInFirstPosition
+
     fun setComics(listComic : List<Comic>)
     {
         setListItems(listComic)
@@ -23,7 +28,7 @@ class CharacterProfileComicsListAdapter(items : ArrayList<Comic>,private val lis
         fillItemsContainText("")
     }
 
-    fun fillItemsContainText(text : String)
+    override fun fillItemsContainText(text : String)
     {
         searchRecycler.apply {
                 index = -1
@@ -37,28 +42,29 @@ class CharacterProfileComicsListAdapter(items : ArrayList<Comic>,private val lis
         update()
     }
 
-    fun nextPosition()
+    override fun nextPosition()
     {
         if(!searchRecycler.isInLastPosition)
             searchRecycler.index++
         else
             searchRecycler.index = 0
         resetItemContain()
-        val position = getPositionItem(searchRecycler.itemsContainText[searchRecycler.index].idTextView)
-        listener.onScroll(position)
+        doScroll()
     }
-    fun backPosition()
+    override fun backPosition()
     {
         if(!searchRecycler.isNotSetPosition)
             searchRecycler.index--
         else
             searchRecycler.index = 0
         resetItemContain()
-        val position = getPositionItem(searchRecycler.itemsContainText[searchRecycler.index].idTextView)
+        doScroll()
+    }
+    private fun doScroll()
+    {
+        val position = getPositionItem(searchRecycler.itemsContainText[searchRecycler.index].id)
         listener.onScroll(position)
     }
-    fun isLastPosition() = searchRecycler.isInLastPosition
-    fun isInFirstPosition() = searchRecycler.isInFirstPosition
 
     override fun setViewHolder(inflater: LayoutInflater): ItemComicHorizontalViewHolder {
         val binding = ItemComicHorizontalBinding.inflate(inflater)
@@ -67,29 +73,38 @@ class CharacterProfileComicsListAdapter(items : ArrayList<Comic>,private val lis
 
     override fun addMoreBindViewHolderFunction(holder: ItemComicHorizontalViewHolder, item: Comic) {
         super.addMoreBindViewHolderFunction(holder, item)
+        val searchTextResult = createSearchTextResult(holder,item)
+        addItemContainTextAddAll(searchTextResult)
+        paintSearchResult(searchTextResult,holder,item)
+    }
+    private fun createSearchTextResult(holder: ItemComicHorizontalViewHolder, item: Comic) : SearchTextResult?
+    {
+
         val sizeBefore = searchRecycler.itemsContainText.size
         val startPosition = if(sizeBefore!=0) searchRecycler.itemsContainText[sizeBefore-1].numText else 0
-        val searchTextResult =holder.searchWord(holder,item.id,searchRecycler.searchWord,startPosition)
+        return  holder.searchWord(holder,item.id,searchRecycler.searchWord,startPosition)
+    }
+
+    private fun addItemContainTextAddAll(searchTextResult: SearchTextResult?) {
+        searchTextResult?.also {  searchRecycler.itemsContainTextAddAll(it.encounter)}
+        sortSearchRecycler()
+    }
+
+    private fun paintSearchResult(searchTextResult: SearchTextResult?,holder: ItemComicHorizontalViewHolder,item: Comic) {
+        val idItemIndex = if(searchRecycler.index!=-1) searchRecycler.itemsContainText[searchRecycler.index].id else 0
         searchTextResult?.also {
-            if(it.encounter.isNotEmpty()) {
-                searchRecycler.itemsContainTextAddAll(it.encounter)
-                sortSearchRecycler()
-                val idItemIndex = if(searchRecycler.index!=-1) searchRecycler.itemsContainText[searchRecycler.index].idTextView else 0
-                if (idItemIndex== item.id ) {
-                    val index = searchRecycler.run { itemsContainText[index].position }
-                    holder.setTitleColor(
-                        it, searchTextResultColor, index,
-                        selectSearchTextResultColor
-                    )
-                } else {
-                    holder.setTitleColor(it, searchTextResultColor, null, null)
-                }
-            }
-            else{
+            if(it.encounter.isNotEmpty() && idItemIndex== item.id ) {
+                val index = searchRecycler.run { itemsContainText[index].position }
+                holder.setTitleColor(
+                    it, searchTextResultColor, index,
+                    selectSearchTextResultColor
+                )
+            } else {
                 holder.setTitleColor(it, searchTextResultColor, null, null)
             }
         }
     }
+
 
     private fun getPositionItem(idTextView: Int): Int =
         items.run{
@@ -103,13 +118,13 @@ class CharacterProfileComicsListAdapter(items : ArrayList<Comic>,private val lis
 
     private fun sortSearchRecycler() {
         searchRecycler.itemsContainText.sortBy {
-            it.idTextView
+            it.id
         }
     }
 
-    fun setPosition(i: Int) {
-        if(searchRecycler.index!=i) {
-            searchRecycler.index = i
+    override fun setPosition(position: Int) {
+        if(searchRecycler.index!=position) {
+            searchRecycler.index = position
             resetItemContain()
         }
     }

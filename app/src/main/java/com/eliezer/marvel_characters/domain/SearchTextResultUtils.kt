@@ -42,7 +42,7 @@ class SearchTextResultUtils {
                     }
                     encounter.add(
                         SearchEncounter(
-                            idTextView = textView.id,
+                            id = textView.id,
                             scrollPosition = scrollPosition,
                             length = textView.text.length,
                             numText = numText,
@@ -64,7 +64,7 @@ class SearchTextResultUtils {
                     }
                     encounter.add(
                         SearchEncounter(
-                            idTextView = id,
+                            id = id,
                             scrollPosition = scrollPosition,
                             length = textView.text.length,
                             numText = numText,

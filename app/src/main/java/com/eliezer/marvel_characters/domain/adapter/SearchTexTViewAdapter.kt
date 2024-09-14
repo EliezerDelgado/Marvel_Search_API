@@ -2,6 +2,7 @@ package com.eliezer.marvel_characters.domain.adapter
 
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
+import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.appcompat.widget.AppCompatTextView
 import com.eliezer.marvel_characters.data.expand.indexOfEncounter
@@ -30,7 +31,7 @@ class SearchTexTViewAdapter(var searchText : SearchTextResult = SearchTextResult
     fun getNumRecycler() : Int =
         recyclersPositions.indexOf(numLine)
 
-    fun setColorSearchTextFor(textView: AppCompatTextView, @ColorInt normalColor: Int, @ColorInt selectColor : Int?) {
+    fun setColorSearchTextFor(textView: TextView, @ColorInt normalColor: Int, @ColorInt selectColor : Int?) {
         textView.apply {
             text =colorAllLinesText(id,text.toString(),  normalColor,
                 selectColor
@@ -71,9 +72,9 @@ class SearchTexTViewAdapter(var searchText : SearchTextResult = SearchTextResult
         var spannableStringBuilder = SpannableStringBuilder(text)
         for (line in 0..<searchText.encounter.size)
         {
-            spannableStringBuilder = if (line == numLine &&  idTextView == searchText.encounter[line].idTextView && selectColor !=null)
+            spannableStringBuilder = if (line == numLine &&  idTextView == searchText.encounter[line].id && selectColor !=null)
                 colorUnderLineText(spannableStringBuilder,line,text,selectColor)
-            else if (idTextView == searchText.encounter[line].idTextView)
+            else if (idTextView == searchText.encounter[line].id)
                 colorUnderLineText(spannableStringBuilder,line,text,normalColor)
             else
                 spannableStringBuilder
