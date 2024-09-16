@@ -24,7 +24,7 @@ class ComicDescriptionFunctionImplement (
     private val getCharactersRepository : GetCharactersRepository,
     private val owner : LifecycleOwner
 ) :ComicDescriptionCharacterListAdapter.ComicDescriptionComicHolderListener{
-    private val myOnScrolledListener = MyOnScrolledListener { getListComics() }
+    private val myOnScrolledListener = MyOnScrolledListener { getListCharacters() }
     private val functionRepository = FunctionRepository(getCharactersRepository)
     private val functionManagerBinding = FunctionManagerBinding(binding)
     private val functionManagerRecyclerAdapter = FunctionManagerRecyclerAdapter(this)
