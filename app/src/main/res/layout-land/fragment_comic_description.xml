@@ -80,10 +80,10 @@
             app:layout_constraintTop_toBottomOf="@+id/comic_description_text_view_description"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/comic_description_recycler_view_comics"
+            android:id="@+id/comic_description_recycler_view_characters"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="200dp"
+            android:minHeight="120dp"
             app:layout_constrainedHeight="true"
             android:layout_margin="10dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

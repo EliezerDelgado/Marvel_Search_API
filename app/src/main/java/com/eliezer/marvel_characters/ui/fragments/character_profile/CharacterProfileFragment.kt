@@ -25,6 +25,7 @@ class CharacterProfileFragment :
     private val comicsListViewModel: CharacterProfileViewModel by viewModels()
     @Inject
     lateinit var getComicsRepository: GetComicsRepository
+
     private val myToolbarMenuProvider = MyMenuProvider(R.menu.main_toolbar_menu){ item->
         when(item.itemId)
         {

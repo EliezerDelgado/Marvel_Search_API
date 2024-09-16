@@ -82,7 +82,7 @@ class CharacterProfileComicsListAdapter(items : ArrayList<Comic>,private val lis
 
         val sizeBefore = searchRecycler.itemsContainText.size
         val startPosition = if(sizeBefore!=0) searchRecycler.itemsContainText[sizeBefore-1].numText else 0
-        return  holder.searchWord(holder,item.id,searchRecycler.searchWord,startPosition)
+        return  holder.searchWord(item.id,searchRecycler.searchWord,startPosition)
     }
 
     private fun addItemContainTextAddAll(searchTextResult: SearchTextResult?) {

@@ -30,7 +30,6 @@ class CharactersListFunctionImplement(
         binding.charactersListRecyclerView.adapter = adapter
         binding.charactersListRecyclerView.addOnScrollListener(myOnScrolledListener)
     }
-
     fun getListSearchCharactersRepository()
     {
         searchCharacter?.also {

@@ -19,7 +19,10 @@ interface RecyclerAdapterSearchText{
     fun fillItemsContainText(text : String)
 }
 
-class FunctionToolbarSearch(private var textViews : ArrayList<TextView>,private val scrollView: ScrollView, private val adapter : RecyclerAdapterSearchText, private val recycler : RecyclerView?)
+class FunctionToolbarSearch(private var textViews : ArrayList<TextView>,
+                            private val scrollView: ScrollView,
+                            private val adapter : RecyclerAdapterSearchText,
+                            private val recycler : RecyclerView?)
 {
     private var searchTextViewAdapter : SearchTexTViewAdapter? = null
     fun searchWordBack() {

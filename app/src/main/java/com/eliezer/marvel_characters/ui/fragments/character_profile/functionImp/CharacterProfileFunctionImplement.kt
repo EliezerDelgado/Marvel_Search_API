@@ -11,10 +11,13 @@ import com.eliezer.marvel_characters.databinding.FragmentCharacterProfileBinding
 import com.eliezer.marvel_characters.domain.function.FunctionToolbarSearch
 import com.eliezer.marvel_characters.domain.listener.MyOnScrolledListener
 import com.eliezer.marvel_characters.models.dataclass.Character
+import com.eliezer.marvel_characters.models.dataclass.Comic
 import com.eliezer.marvel_characters.models.dataclass.Comics
 import com.eliezer.marvel_characters.ui.fragments.character_profile.CharacterProfileFragmentArgs
 import com.eliezer.marvel_characters.ui.fragments.character_profile.adapter.CharacterProfileComicsListAdapter
 import com.eliezer.marvel_characters.ui.fragments.character_profile.viewmodel.CharacterProfileViewModel
+import com.eliezer.marvel_characters.ui.fragments.comic_description.ComicDescriptionFragmentArgs
+import com.eliezer.marvel_characters.ui.fragments.comic_description.functionImp.ComicDescriptionFunctionImplement
 
 class CharacterProfileFunctionImplement(
     binding: FragmentCharacterProfileBinding,
@@ -23,7 +26,7 @@ class CharacterProfileFunctionImplement(
     private val owner : LifecycleOwner
 ) : CharacterProfileComicsListAdapter.CharacterProfileComicHolderListener{
     private val myOnScrolledListener = MyOnScrolledListener { getListComics() }
-    private val functionGetCharacter = FunctionGetCharacter(getComicsRepository)
+    private val functionRepository = FunctionRepository(getComicsRepository)
     private val functionManagerBinding =FunctionManagerBinding(binding)
     private val functionManagerRecyclerAdapter = FunctionManagerRecyclerAdapter(this)
     private val functionManagerViewModel = FunctionManagerViewModel(viewModel)
@@ -33,15 +36,16 @@ class CharacterProfileFunctionImplement(
         functionManagerRecyclerAdapter.adapter,
         binding.characterProfileRecyclerViewComics
     )
+
     override fun onScroll(position: Int) {
         functionManagerBinding.setScrollPosition(position)
     }
     fun setBindingVariable() {
-        functionManagerBinding.setBindingVariable(functionGetCharacter.character!!)
+        functionManagerBinding.setBindingVariable(functionRepository.character!!)
     }
 
     fun getIntentExtras(argument: Bundle) {
-        functionGetCharacter.getIntentExtras(argument)
+        functionRepository.getIntentExtras(argument)
     }
 
     fun getListComics() {
@@ -49,7 +53,7 @@ class CharacterProfileFunctionImplement(
         if(!getComicsRepository())
         {
             functionManagerViewModel.setObservesVM(owner,::adapterComics)
-            functionGetCharacter.searchComics(functionManagerViewModel.viewModel)
+            functionRepository.searchComics(functionManagerViewModel.viewModel)
         }
     }
     fun setAdapter() {
@@ -80,7 +84,7 @@ class CharacterProfileFunctionImplement(
     }
     private fun getComicsRepository() : Boolean
     {
-        val comics =functionGetCharacter.getListComics()
+        val comics =functionRepository.getListComics()
         return comics?.run {
             if (total > listComics.size) {
                 if(functionManagerRecyclerAdapter.adapterIsEmpty())
@@ -173,7 +177,7 @@ private class FunctionManagerBinding(
         binding.characterProfileRecyclerViewComics.scrollToPosition(position)
     }
 }
-private class FunctionGetCharacter(
+private class FunctionRepository(
     private val getComicsRepository : GetComicsRepository
 )
 {
@@ -192,4 +196,3 @@ private class FunctionGetCharacter(
         }
     }
 }
-
