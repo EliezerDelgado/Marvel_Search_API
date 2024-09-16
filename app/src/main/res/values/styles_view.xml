@@ -2,7 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="EliezerMarvel"/>
 
-    <style name="EliezerMarvel.TextView.Title" parent="TextAppearance.MaterialComponents.Headline2">
+    <style name="EliezerMarvel.TextView.Title" parent="TextAppearance.MaterialComponents.Headline4">
         <item name="android:textColor">?attr/textColorTitle</item>
         <item name="android:textAlignment">center</item>
         <item name="android:backgroundTint">@android:color/transparent</item>

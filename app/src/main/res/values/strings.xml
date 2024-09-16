@@ -15,4 +15,53 @@
     <string name="main_sub_toolbar_menu_search__title">Search Barra</string>
     <string name="main_sub_toolbar_menu_back__title">Anterior palabra de la busqueda</string>
     <string name="main_sub_toolbar_menu_forward__title">Siguiente palabra de la busqueda</string>
+    <string name="about_me_text_view_name__text">Eliezer Delgado Román</string>
+    <string name="about_me_image_view_photo__description">Mi Foto</string>
+    <string name="about_me_text_view_description__text">
+        EXPERIENCIA&#10;
+Accenture 2 Meses&#10;
+&#10;
+OCT. 2022&#10;
+DIC. 2022&#10;
+Practica no laborales&#10;
+Gestor de base de datos&#10;
+&#10;
+FORMACIÓN ACADÉMICA&#10;
+&#10;
+2023 ENSEÑANZAS DE GRADO SUPERIOR DE FORMACIÓN PROFESIONAL ESPECÍFICA Y EQUIVALENTES, ARTES PLÁSTICAS Y DISEÑO Y DEPORTIVAS - TÉCNICO SUPERIOR EN DESARROLLO DE APLICACIONES&#10;
+MULTIPLATAFORMA&#10;
+&#10;
+EN IES Portada Alta&#10;
+&#10;
+FORMACIÓN COMPLEMENTARIA&#10;
+&#10;
+PROGRAMACIÓN DE APLICACIONES&#10;
+MÓVILES ANDROID TOKIO SCHOOL&#10;
+&#10;
+https://www.tokioschool.com/formaciones/cursos-programacion/android/
+&#10;
+CAPACIDADES Y COMPETENCIAS&#10;
+&#10;
+CONOCIMIENTOS DE INFORMÁTICA:&#10;
+C#,Java, kotlin&#10;
+Lengua(s) extranjera(s):&#10;
+&#10;
+IDIOMAS&#10;
+&#10;
+INGLÉS B1&#10;
+&#10;
+        MI INFORMACION&#10;
+Fecha de Nacimiento: 05/diciembre/2000&#10;
+Correo electrónico: delgadoeliezer05@gmail.com&#10;
+Sexo: Hombre&#10;
+&#10;
+PREFERENCIAS LABORALES&#10;
+Tipo de jornada: INDIFERENTE&#10;
+Android Studio,unity (juegos), intellij, Visual studio 2018 (aplicaccionesWPF,consola),libre office,word, excel xml, html&#10;
+OTRAS HABILIDADES ADQUIRIDAS:&#10;
+Trabajar en equipo, Aprender rápido, Seguir instruccione,&#10;
+Capacidad analítica&#10;
+DISPONIBILIDAD PARA VIAJAR:&#10;
+No posees disponibilidad para viajar&#10;
+    </string>
 </resources>
