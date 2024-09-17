@@ -8,14 +8,14 @@ plugins {
 }
 
 android {
-    namespace = "com.eliezer.marvel_characters"
+    namespace = "com.eliezer.marvel_search_api"
     compileSdk = 34
 
     packaging {
         resources.excludes.add("META-INF/*")
     }
     defaultConfig {
-        applicationId = "com.eliezer.marvel_characters"
+        applicationId = "com.eliezer.marvel_search_api"
         minSdk = 26
         versionCode = 1
         versionName = "1.0"

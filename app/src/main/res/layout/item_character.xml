@@ -6,7 +6,7 @@
     <data>
     <variable
         name="item"
-        type="com.eliezer.marvel_characters.models.dataclass.Character" />
+        type="com.eliezer.marvel_search_api.models.dataclass.Character" />
         <variable
             name="img"
             type="android.graphics.drawable.Drawable" />

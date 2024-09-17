@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/marvelSearchFragment"
-        android:name="com.eliezer.marvel_characters.ui.fragments.marvel_search.MarvelSearchFragment"
+        android:name="com.eliezer.marvel_search_api.ui.fragments.marvel_search.MarvelSearchFragment"
         android:label="fragment_marvel_search"
         tools:layout="@layout/fragment_marvel_search" >
         <action
@@ -22,7 +22,7 @@
     </fragment>
     <fragment
         android:id="@+id/comicsListFragment"
-        android:name="com.eliezer.marvel_characters.ui.fragments.comic_list.ComicsListFragment"
+        android:name="com.eliezer.marvel_search_api.ui.fragments.comic_list.ComicsListFragment"
         android:label="fragment_comics_list"
         tools:layout="@layout/fragment_comics_list" >
         <argument
@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/charactersListFragment"
-        android:name="com.eliezer.marvel_characters.ui.fragments.character_list.CharactersListFragment"
+        android:name="com.eliezer.marvel_search_api.ui.fragments.character_list.CharactersListFragment"
         android:label="fragment_characters_list"
         tools:layout="@layout/fragment_characters_list" >
         <argument
@@ -56,24 +56,24 @@
     </fragment>
     <fragment
         android:id="@+id/characterProfileFragment"
-        android:name="com.eliezer.marvel_characters.ui.fragments.character_profile.CharacterProfileFragment"
+        android:name="com.eliezer.marvel_search_api.ui.fragments.character_profile.CharacterProfileFragment"
         android:label="CharacterProfileFragment" >
         <argument
             android:name="argCharacter"
-            app:argType="com.eliezer.marvel_characters.models.dataclass.Character"/>
+            app:argType="com.eliezer.marvel_search_api.models.dataclass.Character"/>
     </fragment>
     <fragment
         android:id="@+id/comicDescriptionFragment"
-        android:name="com.eliezer.marvel_characters.ui.fragments.comic_description.ComicDescriptionFragment"
+        android:name="com.eliezer.marvel_search_api.ui.fragments.comic_description.ComicDescriptionFragment"
         android:label="fragment_comic_description"
         tools:layout="@layout/fragment_comic_description" >
         <argument
             android:name="argComic"
-            app:argType="com.eliezer.marvel_characters.models.dataclass.Comic"/>
+            app:argType="com.eliezer.marvel_search_api.models.dataclass.Comic"/>
     </fragment>
     <fragment
         android:id="@+id/favoritesFragment"
-        android:name="com.eliezer.marvel_characters.ui.fragments.favorites.FavoritesFragment"
+        android:name="com.eliezer.marvel_search_api.ui.fragments.favorites.FavoritesFragment"
         android:label="fragment_favorites"
         tools:layout="@layout/fragment_favorites" />
 </navigation>

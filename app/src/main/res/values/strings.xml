@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Marvel Characters</string>
+    <string name="app_name">Marvel Search API</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="marvel_search_text_input_edit_text__hint">Buscar...</string>

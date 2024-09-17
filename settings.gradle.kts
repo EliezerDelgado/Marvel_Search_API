@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Marvel Characters"
+rootProject.name = "Marvel Search API"
 include(":app")
