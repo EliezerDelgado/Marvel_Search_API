@@ -5,6 +5,8 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("org.jetbrains.kotlin.plugin.serialization")
     id("androidx.navigation.safeargs.kotlin")
+    // Add the Google services Gradle plugin
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -62,6 +64,7 @@ dependencies {
     implementation(libs.transport.runtime)
     implementation(libs.firebase.components)
     implementation(libs.androidx.hilt.work)
+    implementation(libs.googleid)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -78,4 +81,28 @@ dependencies {
     //Serialization
     implementation(libs.kotlinx.serialization.json)
 
+     // Import the Firebase BoM
+  implementation(platform(libs.firebase.bom))
+
+  // TODO: Add the dependencies for Firebase products you want to use
+  // When using the BoM, don't specify versions in Firebase dependencies
+  implementation(libs.firebase.analytics)
+
+
+  // Add the dependencies for any other desired Firebase products
+  // https://firebase.google.com/docs/android/setup#available-libraries
+
+
+    // Declare the dependencies for the desired Firebase products without specifying versions
+    // For example, declare the dependencies for Firebase Authentication and Cloud Firestore
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
+    // Also add the dependency for the Google Play services library and specify its version
+    implementation(libs.play.services.auth)
+
+    implementation(libs.androidx.credentials)
+
+    // optional - needed for credentials support from play services, for devices running
+    //ELIMINAR Android 13 and below.
+    implementation(libs.androidx.credentials.play.services.auth)
 }

@@ -7,22 +7,29 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.credentials.CredentialManager
+import com.eliezer.marvel_search_api.data.firebase.MyFirebaseAnalytics
 import com.eliezer.marvel_search_api.databinding.ActivityMainBinding
 import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
 import com.google.android.material.appbar.AppBarLayout
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private var _navigationMainActions: NavigationMainActions? = null
     val navigationMainActions get() = _navigationMainActions
-
+    private lateinit var firebaseAnalytics: MyFirebaseAnalytics
     private var binding : ActivityMainBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
+        // Obtain the FirebaseAnalytics instance
+        firebaseAnalytics = MyFirebaseAnalytics(Firebase.analytics)
         setContentView(binding!!.root)
         ViewCompat.setOnApplyWindowInsetsListener(binding!!.mainCoordinatorLayout) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())

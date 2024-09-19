@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "423887211454",
+    "project_id": "marvel-api-favorite",
+    "storage_bucket": "marvel-api-favorite.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:423887211454:android:c834286ef1c97ca80a07ef",
+        "android_client_info": {
+          "package_name": "com.eliezer.marvel_search_api"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "423887211454-pilaacla2c11cgh539a4p2mcp7rlm0c8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.eliezer.marvel_search_api",
+            "certificate_hash": "a26e38bc3d0686047cc0b08dc3c056ce1dc0d014"
+          }
+        },
+        {
+          "client_id": "423887211454-12s7omrlbjg3mu1o7qgmtoit4av80364.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5fYlQ6IJ__JF3axfsCQI-EiE7HfX2VSE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "423887211454-12s7omrlbjg3mu1o7qgmtoit4av80364.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
