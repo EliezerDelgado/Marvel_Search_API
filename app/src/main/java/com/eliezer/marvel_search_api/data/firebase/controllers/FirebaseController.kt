@@ -13,9 +13,14 @@ import javax.inject.Singleton
 class FirebaseController @Inject constructor(
     private val myFirebaseAuth: MyFirebaseAuth
 ) {
-    fun signInGoogle(context: Context): Flow<Result<AuthResult>> =
+    fun signInExistingGoogleAccount(context: Context): Flow<Result<AuthResult>> =
         callbackFlow {
             trySend(myFirebaseAuth.googleSignInExistingAccount(context))
+            awaitClose { }
+        }
+    fun signInAddNewGoogleAccount(context: Context): Flow<Result<AuthResult>> =
+        callbackFlow {
+            trySend(myFirebaseAuth.googleSignInAddNewAccount(context))
             awaitClose { }
         }
 }

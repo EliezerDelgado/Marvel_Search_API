@@ -16,9 +16,6 @@ import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -28,24 +25,21 @@ class MyFirebaseAuth @Inject constructor() {
     //https://medium.com/@TonyGnk/streamlining-authentication-using-android-credential-manager-with-firebase-for-google-sign-in-e4e75b6bd97d
     private val firebaseAuth = FirebaseAuth.getInstance()
 
-    suspend fun googleSignInNewAccount(context: Context): Flow<Result<AuthResult>> {
-        return callbackFlow {
-            try {
+    suspend fun googleSignInAddNewAccount(context: Context): Result<AuthResult> {
+        try {
                 // Initialize Credential Manager
                 val credentialManager: CredentialManager = CredentialManager.create(context)
                 // Generate a nonce (a random number used once)
                 val googleOption: GetSignInWithGoogleOption =getSignInWithGoogleOption(context)
                 // Check if the received credential is a valid Google ID Token
                 val credential = getCredential(context,credentialManager,googleOption)
-                trySend(checkCredentials(credential))
+                return checkCredentials(credential)
             } catch (e: GetCredentialCancellationException) {
-                trySend(Result.failure(Exception("Sign-in was canceled. Please try again.")))
+                return Result.failure(Exception("Sign-in was canceled. Please try again."))
             } catch (e: Exception) {
-                trySend(Result.failure(e))
+                return Result.failure(e)
             }
-            awaitClose { }
         }
-    }
     suspend fun googleSignInExistingAccount(context: Context): Result<AuthResult> {
         try {
                 // Initialize Credential Manager
