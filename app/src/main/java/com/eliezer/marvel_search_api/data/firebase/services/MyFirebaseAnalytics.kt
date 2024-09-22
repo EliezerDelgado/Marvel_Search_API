@@ -1,4 +1,4 @@
-package com.eliezer.marvel_search_api.data.firebase
+package com.eliezer.marvel_search_api.data.firebase.services
 
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics

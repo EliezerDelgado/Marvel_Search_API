@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "423887211454-pilaacla2c11cgh539a4p2mcp7rlm0c8.apps.googleusercontent.com",
+          "client_id": "423887211454-v1ntkqu1ib6b9cmqgudblb51i5oclr89.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.eliezer.marvel_search_api",
-            "certificate_hash": "a26e38bc3d0686047cc0b08dc3c056ce1dc0d014"
+            "certificate_hash": "b8cbd70c7bd18d2d6c9c1776f96f25df591ff5b1"
           }
         },
         {

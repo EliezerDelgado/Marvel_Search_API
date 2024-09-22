@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 @Singleton
 class MarvelController @Inject constructor(
-    private var characterService: CharacterService
+    private val characterService: CharacterService
 ) {
     fun findCharacters(name : String,limit : Int, offset : Int): Flow<CharacterDataWrapper> =
         flow {

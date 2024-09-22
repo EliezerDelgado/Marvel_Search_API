@@ -2,8 +2,10 @@ package com.eliezer.marvel_search_api.core.di
 
 import com.eliezer.marvel_search_api.data.repository.characters.CharacterRepositoryImpl
 import com.eliezer.marvel_search_api.data.repository.comics.ComicsRepositoryImpl
+import com.eliezer.marvel_search_api.data.repository.firebase.FirebaseRepositoryImpl
 import com.eliezer.marvel_search_api.domain.repository.CharactersRepository
 import com.eliezer.marvel_search_api.domain.repository.ComicsRepository
+import com.eliezer.marvel_search_api.domain.repository.FirebaseRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -17,4 +19,7 @@ abstract class RepositoryModules {
 
     @Binds
     abstract fun bindComicsRepository(impl: ComicsRepositoryImpl): ComicsRepository
+
+    @Binds
+    abstract fun bindFirebaseRepository(impl: FirebaseRepositoryImpl): FirebaseRepository
 }

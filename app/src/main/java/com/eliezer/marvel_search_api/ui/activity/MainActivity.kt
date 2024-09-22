@@ -7,13 +7,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.credentials.CredentialManager
-import com.eliezer.marvel_search_api.data.firebase.MyFirebaseAnalytics
+import com.eliezer.marvel_search_api.data.firebase.services.MyFirebaseAnalytics
 import com.eliezer.marvel_search_api.databinding.ActivityMainBinding
 import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
 import com.google.android.material.appbar.AppBarLayout
-import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     private var _navigationMainActions: NavigationMainActions? = null
     val navigationMainActions get() = _navigationMainActions
     private lateinit var firebaseAnalytics: MyFirebaseAnalytics
+    private lateinit var auth: FirebaseAuth
     private var binding : ActivityMainBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +31,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         // Obtain the FirebaseAnalytics instance
         firebaseAnalytics = MyFirebaseAnalytics(Firebase.analytics)
+        auth = Firebase.auth
         setContentView(binding!!.root)
         ViewCompat.setOnApplyWindowInsetsListener(binding!!.mainCoordinatorLayout) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -39,6 +41,14 @@ class MainActivity : AppCompatActivity() {
        _navigationMainActions = NavigationMainActions(binding!!.mainNavHostFragment)
         binding?.mainToolbar?.bringToFront()
         binding?.mainSubToolbar?.bringToFront()
+    }
+    public override fun onStart() {
+        super.onStart()
+        // Check if user is signed in (non-null) and update UI accordingly.
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+           // reload()
+        }
     }
     fun setToolbarView(visibility : Boolean)
     {

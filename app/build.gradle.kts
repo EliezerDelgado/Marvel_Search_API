@@ -10,8 +10,17 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        getByName("debug") {
+            storeFile =
+                file("/home/eliezer/.var/app/com.google.AndroidStudio/config/.android/debug.keystore")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+        }
+    }
     namespace = "com.eliezer.marvel_search_api"
-    compileSdk = 34
+    compileSdk = 35
 
     packaging {
         resources.excludes.add("META-INF/*")
@@ -33,6 +42,9 @@ android {
                 "proguard-rules.pro"
             )
         }
+        getByName("debug") {
+            signingConfig = signingConfigs.getByName("debug")
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -44,6 +56,13 @@ android {
     buildFeatures {
         dataBinding = true
         viewBinding = true
+    }
+    flavorDimensions += listOf("firebase")
+    productFlavors {
+        create("favorite") {
+            dimension = "firebase"
+            signingConfig = signingConfigs.getByName("debug")
+        }
     }
 }
 
@@ -84,7 +103,7 @@ dependencies {
      // Import the Firebase BoM
   implementation(platform(libs.firebase.bom))
 
-  // TODO: Add the dependencies for Firebase products you want to use
+
   // When using the BoM, don't specify versions in Firebase dependencies
   implementation(libs.firebase.analytics)
 
