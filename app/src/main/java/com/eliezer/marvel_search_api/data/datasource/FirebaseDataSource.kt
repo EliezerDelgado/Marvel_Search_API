@@ -5,5 +5,6 @@ import com.google.firebase.auth.AuthResult
 import kotlinx.coroutines.flow.Flow
 
 interface FirebaseDataSource {
-    fun signInGoogle(context: Context): Flow<Result<AuthResult>>
+    fun signInGoogleExistingAccount(context: Context): Flow<Result<AuthResult>>
+    fun signInAddGoogleNewAccount(context: Context): Flow<Result<AuthResult>>
 }

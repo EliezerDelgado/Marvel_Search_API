@@ -8,7 +8,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetListCharacterComicsUseCase @Inject constructor(
+class GetListComicsByCharacterUseCase @Inject constructor(
     @IoDispatcher dispatcher: CoroutineDispatcher,
     private val comicsRepository: ComicsRepository
 ): BaseFlowUseCase<Int, Comics>(dispatcher)  {

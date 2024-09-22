@@ -12,7 +12,8 @@ import javax.inject.Singleton
 class FirebaseRepositoryImpl @Inject constructor(
     private val datasource: FirebaseDataSource,
 ) : FirebaseRepository {
-    override fun signInGoogle(context: Context) : Flow<Result<AuthResult>> = datasource.signInGoogle(context)
+    override fun signInGoogleExistingAccount(context: Context) : Flow<Result<AuthResult>> = datasource.signInGoogleExistingAccount(context)
+    override fun signInAddGoogleNewAccount(context: Context) : Flow<Result<AuthResult>> = datasource.signInAddGoogleNewAccount(context)
 
     override fun analytics() {
     }

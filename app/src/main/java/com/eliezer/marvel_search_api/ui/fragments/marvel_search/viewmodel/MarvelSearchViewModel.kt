@@ -9,7 +9,7 @@ import com.eliezer.marvel_search_api.data.repository.characters.mock.SetCharacte
 import com.eliezer.marvel_search_api.domain.usecase.GetListCharactersUseCase
 import com.eliezer.marvel_search_api.data.repository.comics.mock.SetComicsRepository
 import com.eliezer.marvel_search_api.domain.usecase.GetListComicsUseCase
-import com.eliezer.marvel_search_api.domain.usecase.GetFirebaseResultSignInGoogleUseCase
+import com.eliezer.marvel_search_api.domain.usecase.GetAuthResultGoogleExistingAccountUseCase
 import com.eliezer.marvel_search_api.models.dataclass.Characters
 import com.eliezer.marvel_search_api.models.dataclass.Comics
 import com.google.firebase.auth.AuthResult
@@ -26,7 +26,7 @@ class MarvelSearchViewModel @Inject constructor(
     private val setComicsUseCase : SetComicsRepository,
     private val getCharactersUseCase: GetListCharactersUseCase,
     private val getComicsUseCase: GetListComicsUseCase,
-    private val getFirebaseResultSignInGoogleUseCase: GetFirebaseResultSignInGoogleUseCase
+    private val getAuthResultGoogleExistingAccountUseCase: GetAuthResultGoogleExistingAccountUseCase
 )  : BaseViewModel() {
 
     private var _sizeResult  = MutableLiveData<Int>()
@@ -64,7 +64,7 @@ class MarvelSearchViewModel @Inject constructor(
 
     fun signInGoogle(context: Context) {
         viewModelScope.launch {
-            getFirebaseResultSignInGoogleUseCase.invoke(context)
+            getAuthResultGoogleExistingAccountUseCase.invoke(context)
                 .onStart { _loading.value = true }
                 .onCompletion { _loading.value = false }
                 .catch {

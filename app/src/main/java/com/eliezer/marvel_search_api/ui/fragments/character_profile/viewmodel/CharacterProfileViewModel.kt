@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.eliezer.marvel_search_api.core.base.BaseViewModel
 import com.eliezer.marvel_search_api.data.repository.comics.mock.SetComicsRepository
-import com.eliezer.marvel_search_api.domain.usecase.GetListCharacterComicsUseCase
+import com.eliezer.marvel_search_api.domain.usecase.GetListComicsByCharacterUseCase
 import com.eliezer.marvel_search_api.models.dataclass.Comics
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -18,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CharacterProfileViewModel @Inject constructor(
     private val setComicsRepository : SetComicsRepository,
-    private val getComicsUseCase: GetListCharacterComicsUseCase,
+    private val getComicsUseCase: GetListComicsByCharacterUseCase,
 ): BaseViewModel()  {
 
     private var _listComic  = MutableLiveData<Comics>()
