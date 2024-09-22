@@ -15,12 +15,14 @@ import androidx.credentials.PasswordCredential
 import androidx.credentials.PublicKeyCredential
 import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_search_api.R
+import com.eliezer.marvel_search_api.data.local_property.LocalAccount
 import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
 import com.eliezer.marvel_search_api.databinding.FragmentMarvelSearchBinding
 import com.eliezer.marvel_search_api.ui.fragments.marvel_search.viewmodel.MarvelSearchViewModel
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
+import com.google.firebase.auth.AuthResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.coroutines.coroutineContext
@@ -79,7 +81,13 @@ class MarvelSearchFunctionImplement(
     private fun goComicsListFragment() = navigationMainActions.doActionMarvelSearchFragmentToComicListFragment(   binding.marvelSearchTextInputSearch.editText?.text.toString())
     private fun setObservesVM() {
         viewModel.sizeResult.observe(owner,::getSizeResultList)
+        viewModel.resultSignIn.observe(owner,::setAccount)
     }
+
+    private fun setAccount(authResult: AuthResult) {
+        LocalAccount.authResult = authResult
+    }
+
     private fun searchListCharacters(name:String)
     {
         disableButtons()
