@@ -32,8 +32,8 @@ class MarvelSearchViewModel @Inject constructor(
     private var _sizeResult  = MutableLiveData<Int>()
     val sizeResult: LiveData<Int> get() = _sizeResult
 
-    private  var _resultSignIn = MutableLiveData<AuthResult>()
-    val resultSignIn : LiveData<AuthResult> get() = _resultSignIn
+    private  var _authResult = MutableLiveData<AuthResult>()
+    val authResult : LiveData<AuthResult> get() = _authResult
 
     fun searchCharactersList(name: String) {
         viewModelScope.launch {
@@ -78,7 +78,7 @@ class MarvelSearchViewModel @Inject constructor(
     private fun notifySignIn(result: Result<AuthResult>) {
         result.fold(
             onSuccess = {
-                _resultSignIn.value = it
+                _authResult.postValue( it)
             },
             onFailure = { e ->
                 _error.value = e
@@ -106,70 +106,12 @@ class MarvelSearchViewModel @Inject constructor(
         setComicsUseCase.resetListRepository()
         setCharactersUseCase.resetListRepository()
     }
+
+    fun resetAuthResult() {
+        _authResult = MutableLiveData<AuthResult>()
+    }
 }
 /*
-val pedingGetCredentialRequest = object : CredentialManagerCallback<GetCredentialResponse, GetCredentialException>{
-
-
-    override fun onError(e: GetCredentialException) {
-        Log.e("AUTH", e.message.toString())
-    }
-
-    override fun onResult(result: GetCredentialResponse) {
-        handleSignIn(result)
-    }
-}
-@SuppressLint("SuspiciousIndentation")
-@RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
-suspend fun prueba(context: Context)
-{
-    val client_id = context.getString(R.string.default_web_client_id)
-    val googleIdOption: GetSignInWithGoogleOption = GetSignInWithGoogleOption.Builder(client_id)
-      //  .setFilterByAuthorizedAccounts(false)
-   //     .setServerClientId(client_id)
-   //     .setAutoSelectEnabled(true)
-        //   .setNonce()
-        .build()
-    val credentialManager = CredentialManager.create(context)
-    val request: GetCredentialRequest =  GetCredentialRequest.Builder()
-        .addCredentialOption(googleIdOption)
-        .build()
-
-
-    coroutineScope {
-        try {
-            val result = credentialManager.getCredentialAsync(
-                request = request,
-                context = context,
-                cancellationSignal = CancellationSignal(),
-                executor = Executors.newSingleThreadExecutor(),
-                callback = pedingGetCredentialRequest
-            )
-        } catch (e: Exception) {
-            Log.e("AUTH", e.message.toString())
-        }
-    }
-}
-fun handleSignIn(result: GetCredentialResponse) {
-    // Handle the successfully returned credential.
-    val credential = result.credential
-
-    when (credential) {
-
-        // Passkey credential
-        is PublicKeyCredential -> {
-            // Share responseJson such as a GetCredentialResponse on your server to
-            // validate and authenticate
-            var responseJson = credential.authenticationResponseJson
-        }
-
-        // Password credential
-        is PasswordCredential -> {
-            // Send ID and password to your server to validate and authenticate.
-            val username = credential.id
-            val password = credential.password
-        }
-
         // GoogleIdToken credential
         is CustomCredential -> {
             if (credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {

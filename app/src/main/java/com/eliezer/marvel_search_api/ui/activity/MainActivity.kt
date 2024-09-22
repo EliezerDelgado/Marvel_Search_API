@@ -22,7 +22,6 @@ class MainActivity : AppCompatActivity() {
     private var _navigationMainActions: NavigationMainActions? = null
     val navigationMainActions get() = _navigationMainActions
     private lateinit var firebaseAnalytics: MyFirebaseAnalytics
-    private lateinit var auth: FirebaseAuth
     private var binding : ActivityMainBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +30,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         // Obtain the FirebaseAnalytics instance
         firebaseAnalytics = MyFirebaseAnalytics(Firebase.analytics)
-        auth = Firebase.auth
         setContentView(binding!!.root)
         ViewCompat.setOnApplyWindowInsetsListener(binding!!.mainCoordinatorLayout) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -41,14 +39,6 @@ class MainActivity : AppCompatActivity() {
        _navigationMainActions = NavigationMainActions(binding!!.mainNavHostFragment)
         binding?.mainToolbar?.bringToFront()
         binding?.mainSubToolbar?.bringToFront()
-    }
-    public override fun onStart() {
-        super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = auth.currentUser
-        if (currentUser != null) {
-           // reload()
-        }
     }
     fun setToolbarView(visibility : Boolean)
     {
