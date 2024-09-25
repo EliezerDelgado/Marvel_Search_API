@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.Packaging
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -23,7 +25,15 @@ android {
     compileSdk = 35
 
     packaging {
-        resources.excludes.add("META-INF/*")
+        resources.excludes.addAll(
+            arrayOf(
+                "META-INF/native-image/native-image.properties",
+                "META-INF/DEPENDENCIES",
+                "META-INF/LICENSE.md",
+                "META-INF/NOTICE.md",
+                "META-INF/INDEX.LIST"
+            )
+        )
     }
     defaultConfig {
         applicationId = "com.eliezer.marvel_search_api"
@@ -84,6 +94,7 @@ dependencies {
     implementation(libs.firebase.components)
     implementation(libs.androidx.hilt.work)
     implementation(libs.googleid)
+    implementation(libs.androidx.datastore.core.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -116,6 +127,10 @@ dependencies {
     // For example, declare the dependencies for Firebase Authentication and Cloud Firestore
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
+    {
+        exclude(group = "com.google.firebase", module = "protolite-well-known-types")
+        exclude(group = "com.google.protobuf", module = "protobuf-javalite")
+    }
     // Also add the dependency for the Google Play services library and specify its version
     implementation(libs.play.services.auth)
 
@@ -124,4 +139,8 @@ dependencies {
     // optional - needed for credentials support from play services, for devices running
     //ELIMINAR Android 13 and below.
     implementation(libs.androidx.credentials.play.services.auth)
+    implementation(platform("com.google.cloud:libraries-bom:26.46.0"))
+    implementation("com.google.cloud:google-cloud-datastore")
+    implementation("com.google.cloud:google-cloud-storage")
+
 }

@@ -7,13 +7,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.eliezer.marvel_search_api.R
+import com.eliezer.marvel_search_api.data.firebase.configuration.GoogleDataStoreConfiguration
 import com.eliezer.marvel_search_api.data.firebase.services.MyFirebaseAnalytics
+import com.eliezer.marvel_search_api.data.firebase.services.MyGoogleDataStoreInserts
 import com.eliezer.marvel_search_api.databinding.ActivityMainBinding
 import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
 import com.google.android.material.appbar.AppBarLayout
 import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,7 +40,17 @@ class MainActivity : AppCompatActivity() {
        _navigationMainActions = NavigationMainActions(binding!!.mainNavHostFragment)
         binding?.mainToolbar?.bringToFront()
         binding?.mainSubToolbar?.bringToFront()
+        setGoogleDataStore()
+        MyGoogleDataStoreInserts().insertCharacter(2,1)
     }
+
+    private fun setGoogleDataStore() {
+        Thread{
+            GoogleDataStoreConfiguration.setDatastore(resources.getString(R.string.project_id))
+            GoogleDataStoreConfiguration.setKeyFactory(resources.getString(R.string.project_id),resources.getString(R.string.name_space))
+        }.start()
+    }
+
     fun setToolbarView(visibility : Boolean)
     {
         binding?.mainToolbar?.visibility = if(visibility) View.VISIBLE else View.GONE

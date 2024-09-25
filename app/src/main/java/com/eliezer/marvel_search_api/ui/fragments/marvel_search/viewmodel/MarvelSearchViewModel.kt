@@ -141,14 +141,4 @@ class MarvelSearchViewModel @Inject constructor(
         else -> {
             // Catch any unrecognized credential type here.
             Log.e(TAG, "Unexpected type of credential")
-        }
-    }
-}
-@RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
-fun run(context: Context)
-{
-    runBlocking {
-            prueba(context)
-        }
-}
-*/
+        }*/
