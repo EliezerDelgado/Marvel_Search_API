@@ -1,6 +1,6 @@
 package com.eliezer.marvel_search_api.data.firebase.services
 
-import com.eliezer.marvel_search_api.data.firebase.configuration.GoogleDataStoreConfiguration.firestore
+import com.eliezer.marvel_search_api.data.firebase.configuration.GoogleDataStoreConfiguration.usersCollection
 
 
 class MyGoogleDataStoreInserts {
@@ -11,9 +11,8 @@ class MyGoogleDataStoreInserts {
             "characterId" to idCharacter
         )
         // Add a new document with a generated ID
-        firestore?.apply {
-            collection("users")
-                .document(idUser)
+        usersCollection?.apply {
+                document(idUser)
                 .collection("characters")
                 .document(idCharacter)
                 .set(character)
@@ -25,9 +24,8 @@ class MyGoogleDataStoreInserts {
             "comicId" to idComic
         )
         // Add a new document with a generated ID
-        firestore?.apply {
-            collection("users")
-                .document(idUser)
+        usersCollection?.apply {
+                document(idUser)
                 .collection("comics")
                 .document(idComic)
                 .set(comic)
