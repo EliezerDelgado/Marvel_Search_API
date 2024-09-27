@@ -6,11 +6,9 @@ import com.eliezer.marvel_search_api.data.firebase.configuration.GoogleDataStore
 class MyGoogleDataStoreInserts {
 
     fun insertCharacter(idUser : String,idCharacter : String) {
-        // Create a new user with a first and last name
         val character = hashMapOf(
             "characterId" to idCharacter
         )
-        // Add a new document with a generated ID
         usersCollection?.apply {
                 document(idUser)
                 .collection("characters")
@@ -19,11 +17,9 @@ class MyGoogleDataStoreInserts {
         }
     }
     fun insertComic(idUser : String,idComic : String) {
-        // Create a new user with a first and last name
         val comic = hashMapOf(
             "comicId" to idComic
         )
-        // Add a new document with a generated ID
         usersCollection?.apply {
                 document(idUser)
                 .collection("comics")
