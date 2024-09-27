@@ -127,10 +127,6 @@ dependencies {
     // For example, declare the dependencies for Firebase Authentication and Cloud Firestore
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
-    {
-        exclude(group = "com.google.firebase", module = "protolite-well-known-types")
-        exclude(group = "com.google.protobuf", module = "protobuf-javalite")
-    }
     // Also add the dependency for the Google Play services library and specify its version
     implementation(libs.play.services.auth)
 
@@ -139,8 +135,5 @@ dependencies {
     // optional - needed for credentials support from play services, for devices running
     //ELIMINAR Android 13 and below.
     implementation(libs.androidx.credentials.play.services.auth)
-    implementation(platform("com.google.cloud:libraries-bom:26.46.0"))
-    implementation("com.google.cloud:google-cloud-datastore")
-    implementation("com.google.cloud:google-cloud-storage")
 
 }

@@ -1,28 +1,23 @@
 package com.eliezer.marvel_search_api.data.firebase.services
 
-import com.eliezer.marvel_search_api.data.firebase.configuration.GoogleDataStoreConfiguration.datastore
-import com.eliezer.marvel_search_api.data.firebase.configuration.GoogleDataStoreConfiguration.keyFactory
-import com.google.cloud.datastore.Entity
+import android.content.ContentValues.TAG
+import android.util.Log
+import com.eliezer.marvel_search_api.data.firebase.configuration.GoogleDataStoreConfiguration.firestore
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.firestore.DocumentReference
+
 
 class MyGoogleDataStoreInserts {
 
-    fun insertCharacter(idUser : Int,idCharacter : Int)
-    {
-        keyFactory?.setKind("Character")
+    fun insertCharacter(idUser : String,idCharacter : String) {
+        // Create a new user with a first and last name
+        val character = hashMapOf(
+            "characterId" to idCharacter
+        )
 
-        keyFactory?.also {
-            val taskKey  =  datastore!!.add(
-                Entity.newBuilder(keyFactory!!.newKey())
-                    .set("category", "Personal")
-                    .set("done", false)
-                    .set("priority", 4)
-                    .set("description", "Learn Cloud Datastore")
-                    .set("userId",idUser.toLong())
-                    .set("characterId",idCharacter.toLong())
-                    .build()
-            ).key
-            val s = taskKey.name
-            s.toShort()
-        }
+// Add a new document with a generated ID
+        val l = firestore!!.collection("characters").document(idUser).collection("character").document(idCharacter)
+        l.set(character)
     }
 }

@@ -10,7 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.eliezer.marvel_search_api.R
 import com.eliezer.marvel_search_api.data.firebase.configuration.GoogleDataStoreConfiguration
 import com.eliezer.marvel_search_api.data.firebase.services.MyFirebaseAnalytics
-import com.eliezer.marvel_search_api.data.firebase.services.MyGoogleDataStoreInserts
+import com.eliezer.marvel_search_api.data.firebase.services.MyGoogleDataStoreSelects
 import com.eliezer.marvel_search_api.databinding.ActivityMainBinding
 import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
 import com.google.android.material.appbar.AppBarLayout
@@ -47,9 +47,14 @@ class MainActivity : AppCompatActivity() {
     private fun setGoogleDataStore() {
         Thread{
             val inputStream: InputStream =  resources.openRawResource(R.raw.client_secret)
-            GoogleDataStoreConfiguration.setDatastore(resources.getString(R.string.project_id),inputStream)
-            GoogleDataStoreConfiguration.setKeyFactory(resources.getString(R.string.project_id),resources.getString(R.string.name_space))
-            MyGoogleDataStoreInserts().insertCharacter(2,1)
+            GoogleDataStoreConfiguration.setFiresStore()
+            /*
+            MyGoogleDataStoreInserts().insertCharacter("1","1")
+            MyGoogleDataStoreInserts().insertCharacter("1","2")
+            MyGoogleDataStoreInserts().insertCharacter("1","3")
+            MyGoogleDataStoreInserts().insertCharacter("2","4")
+            */
+            MyGoogleDataStoreSelects().getCharacterId("1")
         }.start()
     }
 
