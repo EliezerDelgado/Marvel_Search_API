@@ -46,7 +46,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun setGoogleDataStore() {
         Thread{
-            val inputStream: InputStream =  resources.openRawResource(R.raw.client_secret)
             GoogleDataStoreConfiguration.setFiresStore()
             /*
             MyGoogleDataStoreInserts().insertCharacter("1","1")
