@@ -1,10 +1,13 @@
 package com.eliezer.marvel_search_api.data.firebase.configuration
 
 
+import android.R
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.datastore.Datastore
 import com.google.cloud.datastore.DatastoreOptions
 import com.google.cloud.datastore.KeyFactory
+import java.io.InputStream
+import java.util.Arrays
 
 
 object GoogleDataStoreConfiguration{
@@ -27,10 +30,16 @@ object GoogleDataStoreConfiguration{
         keyFactory?.setNamespace(nameSpace)
     }
 
-     fun setDatastore(projectId: String) {
+     fun setDatastore(projectId: String,con: InputStream) {
      //    GoogleCredentials
          //    https://developers.google.com/identity/protocols/oauth2?hl=es-419
          //    https://developers.google.com/identity/protocols/oauth2/native-app?hl=es-419
-       datastore  = DatastoreOptions.newBuilder().setProjectId(projectId).build().getService()
+         //https://github.com/googleapis/google-auth-library-java
+
+         val credentials = GoogleCredentials.fromStream(con)
+         credentials.createScoped(listOf("https://www.googleapis.com/auth/contacts","https://www.google.com/m8/feeds/","https://www.googleapis.com/auth/contacts"))
+         datastore  = DatastoreOptions.newBuilder().setProjectId(projectId)
+             .setCredentials(credentials)
+           .build().getService()
      }
 }

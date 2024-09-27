@@ -17,6 +17,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.InputStream
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -41,13 +42,14 @@ class MainActivity : AppCompatActivity() {
         binding?.mainToolbar?.bringToFront()
         binding?.mainSubToolbar?.bringToFront()
         setGoogleDataStore()
-        MyGoogleDataStoreInserts().insertCharacter(2,1)
     }
 
     private fun setGoogleDataStore() {
         Thread{
-            GoogleDataStoreConfiguration.setDatastore(resources.getString(R.string.project_id))
+            val inputStream: InputStream =  resources.openRawResource(R.raw.client_secret)
+            GoogleDataStoreConfiguration.setDatastore(resources.getString(R.string.project_id),inputStream)
             GoogleDataStoreConfiguration.setKeyFactory(resources.getString(R.string.project_id),resources.getString(R.string.name_space))
+            MyGoogleDataStoreInserts().insertCharacter(2,1)
         }.start()
     }
 
