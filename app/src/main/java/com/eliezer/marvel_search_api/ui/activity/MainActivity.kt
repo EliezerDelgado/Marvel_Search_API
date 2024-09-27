@@ -7,17 +7,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.eliezer.marvel_search_api.R
 import com.eliezer.marvel_search_api.data.firebase.configuration.GoogleDataStoreConfiguration
+import com.eliezer.marvel_search_api.data.firebase.configuration.firestore
 import com.eliezer.marvel_search_api.data.firebase.services.MyFirebaseAnalytics
 import com.eliezer.marvel_search_api.data.firebase.services.MyGoogleDataStoreSelects
 import com.eliezer.marvel_search_api.databinding.ActivityMainBinding
 import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
 import com.google.android.material.appbar.AppBarLayout
 import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
-import java.io.InputStream
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -46,7 +47,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun setGoogleDataStore() {
         Thread{
-            GoogleDataStoreConfiguration.setFiresStore()
             /*
             MyGoogleDataStoreInserts().insertCharacter("1","1")
             MyGoogleDataStoreInserts().insertCharacter("1","2")
