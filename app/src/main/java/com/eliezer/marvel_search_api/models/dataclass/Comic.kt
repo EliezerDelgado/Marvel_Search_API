@@ -8,19 +8,26 @@ data class Comic(
 val title              : String ,
 val urlPicture: String,
     val description : String,
+    var favorite : Boolean = false
     ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
-        parcel.readString()!!,
-        parcel.readString()!!,
-        parcel.readString()!!
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
+        parcel.readByte() != 0.toByte()
     ) {
+    }
+    fun changeFavorite(){
+        favorite = !favorite
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)
         parcel.writeString(title)
         parcel.writeString(urlPicture)
+        parcel.writeString(description)
+        parcel.writeByte(if (favorite) 1 else 0)
     }
 
     override fun describeContents(): Int {
@@ -36,4 +43,5 @@ val urlPicture: String,
             return arrayOfNulls(size)
         }
     }
+
 }

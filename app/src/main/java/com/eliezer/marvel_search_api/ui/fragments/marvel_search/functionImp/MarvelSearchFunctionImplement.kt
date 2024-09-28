@@ -10,7 +10,14 @@ import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
 import com.eliezer.marvel_search_api.databinding.FragmentMarvelSearchBinding
 import com.eliezer.marvel_search_api.ui.fragments.marvel_search.viewmodel.MarvelSearchViewModel
 import com.google.firebase.auth.AuthResult
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
+@OptIn(DelicateCoroutinesApi::class)
 class MarvelSearchFunctionImplement(
     private val binding: FragmentMarvelSearchBinding,
     private val viewModel: MarvelSearchViewModel,
@@ -85,13 +92,27 @@ class MarvelSearchFunctionImplement(
         disableButtons()
         viewModel.searchComicsList(title)
     }
-    private fun disableButtons() {
-        binding.marvelSearchButtonGoComicsList.isEnabled = false
-        binding.marvelSearchButtonGoCharacterList.isEnabled = false
+    fun disableButtons() {
+        GlobalScope.launch {
+            withContext(Dispatchers.Main) {
+                binding.marvelSearchButtonGoComicsList.isEnabled = false
+                binding.marvelSearchButtonGoCharacterList.isEnabled = false
+                binding.marvelSearchImageButtonGoFavorite.isEnabled = false
+                binding.marvelSearchImageButtonGoogleSignIn.isEnabled = false
+                binding.marvelSearchImageButtonGoogleSignIn.setImageResource(R.drawable.ic_google_sign_in_disable)
+            }
+        }
     }
-    private fun enableButtons() {
-        binding.marvelSearchButtonGoComicsList.isEnabled = true
-        binding.marvelSearchButtonGoCharacterList.isEnabled = true
+    fun enableButtons() {
+        GlobalScope.launch {
+            withContext(Dispatchers.Main) {
+                binding.marvelSearchButtonGoComicsList.isEnabled = true
+                binding.marvelSearchButtonGoCharacterList.isEnabled = true
+                binding.marvelSearchImageButtonGoFavorite.isEnabled = true
+                binding.marvelSearchImageButtonGoogleSignIn.isEnabled = true
+                binding.marvelSearchImageButtonGoogleSignIn.setImageResource(R.drawable.ic_google_sign_in)
+            }
+        }
     }
 
     private fun getSizeResultList(size: Int){

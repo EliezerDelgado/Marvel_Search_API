@@ -1,22 +1,15 @@
 package com.eliezer.marvel_search_api.ui.fragments.marvel_search
 
-import android.content.ContentValues.TAG
-import android.content.Context
-import android.credentials.GetCredentialException
-import androidx.credentials.GetCredentialResponse
-import androidx.credentials.GetCredentialRequest
-import android.os.Build
+import android.net.ConnectivityManager.NetworkCallback
+import android.net.Network
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.annotation.RequiresApi
-import androidx.credentials.CredentialManager
-import androidx.credentials.CustomCredential
-import androidx.credentials.PasswordCredential
-import androidx.credentials.PublicKeyCredential
 import androidx.fragment.app.viewModels
 import com.eliezer.marvel_search_api.core.base.BaseFragment
 import com.eliezer.marvel_search_api.core.base.BaseViewModel
+import com.eliezer.marvel_search_api.data.expand.isInternetConnected
+import com.eliezer.marvel_search_api.data.expand.registerNetworkCallback
+import com.eliezer.marvel_search_api.data.expand.unregisterNetworkCallback
 import com.eliezer.marvel_search_api.data.mappers.mainActivity
 import com.eliezer.marvel_search_api.databinding.FragmentMarvelSearchBinding
 import com.eliezer.marvel_search_api.ui.fragments.marvel_search.functionImp.MarvelSearchFunctionImplement
@@ -32,17 +25,33 @@ class MarvelSearchFragment : BaseFragment<FragmentMarvelSearchBinding>(
 
     private val searchViewModel: MarvelSearchViewModel by viewModels()
     private var funImpl : MarvelSearchFunctionImplement? = null
+    private val networkCallback = object : NetworkCallback() {
+        override fun onAvailable(network: Network) {
+            // Called when a network is available
+            funImpl?.enableButtons()
+        }
+        override fun onLost(network: Network) {
+            // Called when a network is lost
+            funImpl?.disableButtons()
+        }
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mainActivity(requireActivity()).setToolbarView(false)
         funImpl = MarvelSearchFunctionImplement(binding,searchViewModel, mainActivity(requireActivity()).navigationMainActions!!,viewLifecycleOwner)
         funImpl?.resetLists()
         funImpl?.buttonListener(requireContext())
+        if(requireContext().isInternetConnected)
+            funImpl?.enableButtons()
+        else
+            funImpl?.disableButtons()
+        requireContext().registerNetworkCallback(networkCallback)
     }
 
 
     override fun onDestroyView() {
         super.onDestroyView()
+        requireContext().unregisterNetworkCallback(networkCallback)
         funImpl = null
     }
     override fun addViewModel(): BaseViewModel {
