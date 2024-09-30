@@ -1,9 +1,13 @@
 package com.eliezer.marvel_search_api.data.firebase.services
 
-import com.eliezer.marvel_search_api.data.firebase.configuration.GoogleDataStoreConfiguration.usersCollection
+import com.eliezer.marvel_search_api.data.firebase.configuration.FireStoreConfiguration.usersCollection
+import com.google.firebase.firestore.SetOptions
+import javax.inject.Inject
+import javax.inject.Singleton
 
 
-class MyGoogleDataStoreInserts {
+@Singleton
+class MyFireStoreInserts @Inject constructor() {
 
     fun insertCharacter(idUser : String,idCharacter : String) {
         val character = hashMapOf(

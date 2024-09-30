@@ -14,11 +14,11 @@ class CharactersDataSourceImpl @Inject constructor(
     private val marvelController: MarvelController
 ): CharactersDataSource {
 
-    override fun getDataContainer(name :String,limit : Int,offset :Int): Flow<Characters> =
-     marvelController.findCharacters(name,limit,offset).map { it.data?.mapToListCharacter() ?: Characters() }
+    override fun getDataContainer(name :String,offset :Int): Flow<Characters> =
+     marvelController.findCharacters(name,offset).map { it.data?.mapToListCharacter() ?: Characters() }
 
-    override fun getDataContainer(idComic: Int,limit : Int,offset :Int): Flow<Characters> =
-        marvelController.findComicCharacters(idComic,limit,offset).map { it.data?.mapToListCharacter() ?: Characters()}
+    override fun getDataContainer(idComic: Int,offset :Int): Flow<Characters> =
+        marvelController.findComicCharacters(idComic,offset).map { it.data?.mapToListCharacter() ?: Characters()}
 
 
 }

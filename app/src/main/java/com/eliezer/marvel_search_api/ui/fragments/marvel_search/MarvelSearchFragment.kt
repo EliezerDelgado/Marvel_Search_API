@@ -10,6 +10,7 @@ import com.eliezer.marvel_search_api.core.base.BaseViewModel
 import com.eliezer.marvel_search_api.data.expand.isInternetConnected
 import com.eliezer.marvel_search_api.data.expand.registerNetworkCallback
 import com.eliezer.marvel_search_api.data.expand.unregisterNetworkCallback
+import com.eliezer.marvel_search_api.data.local_property.LocalAccount
 import com.eliezer.marvel_search_api.data.mappers.mainActivity
 import com.eliezer.marvel_search_api.databinding.FragmentMarvelSearchBinding
 import com.eliezer.marvel_search_api.ui.fragments.marvel_search.functionImp.MarvelSearchFunctionImplement
@@ -28,11 +29,18 @@ class MarvelSearchFragment : BaseFragment<FragmentMarvelSearchBinding>(
     private val networkCallback = object : NetworkCallback() {
         override fun onAvailable(network: Network) {
             // Called when a network is available
-            funImpl?.enableButtons()
+            funImpl?.apply {
+                enableSearchButtons()
+                enableGoogleButtons()
+            }
         }
         override fun onLost(network: Network) {
             // Called when a network is lost
-            funImpl?.disableButtons()
+            funImpl?.apply {
+                disableSearchButtons ()
+                disableGoogleButtons()
+                disableFavoriteButtons()
+            }
         }
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,11 +49,16 @@ class MarvelSearchFragment : BaseFragment<FragmentMarvelSearchBinding>(
         funImpl = MarvelSearchFunctionImplement(binding,searchViewModel, mainActivity(requireActivity()).navigationMainActions!!,viewLifecycleOwner)
         funImpl?.resetLists()
         funImpl?.buttonListener(requireContext())
+        checkIsLogin()
         if(requireContext().isInternetConnected)
-            funImpl?.enableButtons()
+            funImpl?.enableSearchButtons()
         else
-            funImpl?.disableButtons()
+            funImpl?.disableSearchButtons()
         requireContext().registerNetworkCallback(networkCallback)
+    }
+
+    private fun checkIsLogin() {
+        LocalAccount.authResult?.also { funImpl?.disableFavoriteButtons() }
     }
 
 

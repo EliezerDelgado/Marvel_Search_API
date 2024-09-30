@@ -20,11 +20,11 @@ class ComicsRepositoryImpl @Inject constructor(
          list.get(name)
 
     override fun getListComics(title: String): Flow<Comics> =
-        datasource.getDataContainer(title, API_SEARCH_LIMIT,list[title]?.listComics?.size ?: 0)
+        datasource.getDataContainer(title, list[title]?.listComics?.size ?: 0)
 
 
     override fun getListCharacterComics(characterId: Int): Flow<Comics> =
-        datasource.getDataContainer(characterId, API_SEARCH_LIMIT,list[characterId.toString()]?.listComics?.size ?:0)
+        datasource.getDataContainer(characterId, list[characterId.toString()]?.listComics?.size ?:0)
 
 
     override fun setListComics(id :String,params: Comics) {

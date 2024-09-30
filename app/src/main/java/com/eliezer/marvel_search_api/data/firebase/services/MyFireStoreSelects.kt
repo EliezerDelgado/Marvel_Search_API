@@ -2,10 +2,13 @@ package com.eliezer.marvel_search_api.data.firebase.services
 
 import android.content.ContentValues.TAG
 import android.util.Log
-import com.eliezer.marvel_search_api.data.firebase.configuration.GoogleDataStoreConfiguration.usersCollection
+import com.eliezer.marvel_search_api.data.firebase.configuration.FireStoreConfiguration.usersCollection
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class MyGoogleDataStoreSelects {
-    fun getCharacterId(idUser : String) : ArrayList<Int>
+@Singleton
+class MyFireStoreSelects @Inject constructor() {
+    fun getCharactersId(idUser : String) : ArrayList<Int>
     {
         val idCharacter = arrayListOf<Int>()
         usersCollection?.also {
@@ -22,7 +25,7 @@ class MyGoogleDataStoreSelects {
         }
         return idCharacter
     }
-    fun getComicId(idUser : String) : ArrayList<Int>
+    fun getComicsId(idUser : String) : ArrayList<Int>
     {
         val idCharacter = arrayListOf<Int>()
         usersCollection?.also {

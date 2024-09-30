@@ -2,6 +2,7 @@ package com.eliezer.marvel_search_api.data.expand
 
 import android.content.Context
 import android.net.ConnectivityManager
+import android.net.ConnectivityManager.NetworkCallback
 import android.net.Network
 import android.net.NetworkCapabilities
 
@@ -16,9 +17,8 @@ fun Context.unregisterNetworkCallback(networkCallback: ConnectivityManager.Netwo
     connectivityManager.unregisterNetworkCallback(networkCallback)
 }
 private fun isInternetAvailable(context: Context): Boolean {
-    val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
     var result = false
-    connectivityManager?.also {   cm->
+    context.connectivityManager.also {   cm->
         val network: Network? = cm.activeNetwork
         network?.also { net ->
             val networkCapabilities = cm.getNetworkCapabilities(net)

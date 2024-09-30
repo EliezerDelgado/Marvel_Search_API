@@ -7,9 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.eliezer.marvel_search_api.R
+import com.eliezer.marvel_search_api.data.firebase.services.MyFireStoreInserts
 import com.eliezer.marvel_search_api.data.firebase.services.MyFirebaseAnalytics
-import com.eliezer.marvel_search_api.data.firebase.services.MyGoogleDataStoreSelects
+import com.eliezer.marvel_search_api.data.firebase.services.MyFireStoreSelects
 import com.eliezer.marvel_search_api.databinding.ActivityMainBinding
 import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
 import com.google.android.material.appbar.AppBarLayout
@@ -44,13 +44,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun setGoogleDataStore() {
         Thread{
-            /*
-            MyGoogleDataStoreInserts().insertCharacter("1","1")
-            MyGoogleDataStoreInserts().insertCharacter("1","2")
+
+            MyFireStoreInserts().insertCharacter("1","1")
+            /*MyGoogleDataStoreInserts().insertCharacter("1","2")
             MyGoogleDataStoreInserts().insertCharacter("1","3")
             MyGoogleDataStoreInserts().insertCharacter("2","4")
             */
-            MyGoogleDataStoreSelects().getCharacterId("1")
+           // MyFireStoreSelects().getCharactersId("1")
         }.start()
     }
 

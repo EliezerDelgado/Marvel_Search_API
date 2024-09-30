@@ -18,13 +18,13 @@ class CharacterRepositoryImpl @Inject constructor(
 
     override fun getListCharacters(name : String): Flow<Characters> {
         var s = list[name]?.listCharacters?.size ?: 0
-       return datasource.getDataContainer(name, API_SEARCH_LIMIT,s)
+       return datasource.getDataContainer(name, s)
 
     }
 
 
    override fun getListComicCharacters(comicId: Int): Flow<Characters> =
-         datasource.getDataContainer(comicId, API_SEARCH_LIMIT,list[comicId.toString()]?.listCharacters?.size ?: 0)
+         datasource.getDataContainer(comicId, list[comicId.toString()]?.listCharacters?.size ?: 0)
 
     override fun resetList() {
         list.clear()

@@ -1,5 +1,6 @@
 package com.eliezer.marvel_search_api.data.retrofit.controllers
 
+import com.eliezer.marvel_search_api.data.const.API_SEARCH_LIMIT
 import com.eliezer.marvel_search_api.data.retrofit.services.CharacterService
 import com.eliezer.marvel_search_api.models.responses.character.CharacterDataWrapper
 import com.eliezer.marvel_search_api.models.responses.comic.ComicDataWrapper
@@ -12,25 +13,25 @@ import javax.inject.Singleton
 class MarvelController @Inject constructor(
     private val characterService: CharacterService
 ) {
-    fun findCharacters(name : String,limit : Int, offset : Int): Flow<CharacterDataWrapper> =
+    fun findCharacters(name : String, offset : Int): Flow<CharacterDataWrapper> =
         flow {
-            emit(        characterService.listCharacter(name,limit,offset)
+            emit(        characterService.listCharacter(name,API_SEARCH_LIMIT,offset)
             )
         }
-    fun findComics(title : String,limit : Int, offset : Int): Flow<ComicDataWrapper> =
+    fun findComics(title : String, offset : Int): Flow<ComicDataWrapper> =
         flow {
-            emit(        characterService.listComics(title,limit,offset)
+            emit(        characterService.listComics(title,API_SEARCH_LIMIT,offset)
             )
         }
 
-    fun findCharacterComics(characterId: Int,limit : Int, offset : Int):  Flow<ComicDataWrapper> =
+    fun findCharacterComics(characterId: Int, offset : Int):  Flow<ComicDataWrapper> =
         flow {
-            emit(        characterService.listCharacterComics(characterId,limit,offset)
+            emit(        characterService.listCharacterComics(characterId, API_SEARCH_LIMIT,offset)
             )
         }
-    fun findComicCharacters(comicId: Int,limit : Int, offset : Int):  Flow<CharacterDataWrapper> =
+    fun findComicCharacters(comicId: Int, offset : Int):  Flow<CharacterDataWrapper> =
         flow {
-            emit(        characterService.listComicCharacters(comicId,limit,offset)
+            emit(        characterService.listComicCharacters(comicId,API_SEARCH_LIMIT,offset)
             )
         }
 

@@ -13,5 +13,5 @@ import com.google.firebase.auth.AuthResult
 
 object LocalAccount {
     var authResult :AuthResult? = null
-
+    val email get() = authResult?.user?.email.toString()
 }

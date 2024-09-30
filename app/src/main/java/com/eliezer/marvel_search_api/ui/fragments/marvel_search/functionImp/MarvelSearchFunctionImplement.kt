@@ -14,7 +14,6 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 @OptIn(DelicateCoroutinesApi::class)
@@ -81,39 +80,68 @@ class MarvelSearchFunctionImplement(
     private fun setAccount(authResult: AuthResult) {
         setNotObserveAuthResult()
         LocalAccount.authResult = authResult
+        enableFavoriteButtons()
     }
 
     private fun searchListCharacters(name:String)
     {
-        disableButtons()
+        disableSearchButtons()
+        disableGoogleButtons()
         viewModel.searchCharactersList(name)
     }
     private fun searchListComics(title: String) {
-        disableButtons()
+        disableSearchButtons()
+        disableGoogleButtons()
         viewModel.searchComicsList(title)
     }
-    fun disableButtons() {
+    fun disableSearchButtons() {
         GlobalScope.launch {
             withContext(Dispatchers.Main) {
                 binding.marvelSearchButtonGoComicsList.isEnabled = false
                 binding.marvelSearchButtonGoCharacterList.isEnabled = false
-                binding.marvelSearchImageButtonGoFavorite.isEnabled = false
+            }
+        }
+    }
+    fun enableSearchButtons() {
+        GlobalScope.launch {
+            withContext(Dispatchers.Main) {
+                binding.marvelSearchButtonGoComicsList.isEnabled = true
+                binding.marvelSearchButtonGoCharacterList.isEnabled = true
+            }
+        }
+    }
+
+    fun disableGoogleButtons() {
+        GlobalScope.launch {
+            withContext(Dispatchers.Main) {
                 binding.marvelSearchImageButtonGoogleSignIn.isEnabled = false
                 binding.marvelSearchImageButtonGoogleSignIn.setImageResource(R.drawable.ic_google_sign_in_disable)
             }
         }
     }
-    fun enableButtons() {
+    fun enableGoogleButtons() {
         GlobalScope.launch {
             withContext(Dispatchers.Main) {
-                binding.marvelSearchButtonGoComicsList.isEnabled = true
-                binding.marvelSearchButtonGoCharacterList.isEnabled = true
-                binding.marvelSearchImageButtonGoFavorite.isEnabled = true
                 binding.marvelSearchImageButtonGoogleSignIn.isEnabled = true
                 binding.marvelSearchImageButtonGoogleSignIn.setImageResource(R.drawable.ic_google_sign_in)
             }
         }
     }
+    fun disableFavoriteButtons() {
+        GlobalScope.launch {
+            withContext(Dispatchers.Main) {
+                binding.marvelSearchImageButtonGoFavorite.isEnabled = false
+            }
+        }
+    }
+    fun enableFavoriteButtons() {
+        GlobalScope.launch {
+            withContext(Dispatchers.Main) {
+                binding.marvelSearchImageButtonGoFavorite.isEnabled = true
+            }
+        }
+    }
+
 
     private fun getSizeResultList(size: Int){
         setNotObserveSizeResult()
@@ -122,7 +150,8 @@ class MarvelSearchFunctionImplement(
         }
         else if(size==0)
             showError(R.string.marvel_search_button_go_character_list__text)
-        enableButtons()
+        enableSearchButtons()
+        enableGoogleButtons()
     }
 
     private fun moveFragment() {

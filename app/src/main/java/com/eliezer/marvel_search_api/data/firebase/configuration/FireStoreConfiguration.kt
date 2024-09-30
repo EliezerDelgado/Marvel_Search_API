@@ -4,7 +4,7 @@ import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-object GoogleDataStoreConfiguration
+object FireStoreConfiguration
 {
     private val firestore: FirebaseFirestore? get() = getFireStore()
     val usersCollection = firestore?.collection("users")
