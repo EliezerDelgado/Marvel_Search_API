@@ -11,6 +11,7 @@ import com.eliezer.marvel_search_api.models.dataclass.Characters
 import com.eliezer.marvel_search_api.ui.fragments.character_list.CharactersListFragmentArgs
 import com.eliezer.marvel_search_api.ui.fragments.character_list.adapter.CharactersListAdapter
 import com.eliezer.marvel_search_api.ui.fragments.character_list.viewmodel.CharactersListViewModel
+import com.eliezer.marvel_search_api.ui.fragments.comic_list.viewmodel.ComicsListViewModel
 
 class CharactersListFunctionImplement(
     private val binding: FragmentCharactersListBinding,
@@ -23,6 +24,7 @@ class CharactersListFunctionImplement(
     private var adapter: CharactersListAdapter? = null
     private var searchCharacter : String? = null
     private val myOnScrolledListener = MyOnScrolledListener { getListCharacters()}
+    private val functionManagerViewModel = FunctionManagerViewModel(viewModel)
 
     fun setAdapter() {
         adapter = CharactersListAdapter(arrayListOf(),this)
@@ -88,11 +90,30 @@ class CharactersListFunctionImplement(
         setNotObservesVM()
     }
 
+    fun getIdCharacters(owner: LifecycleOwner) =   functionManagerViewModel.setIdCharactersObservesVM(owner,::getListCharactersByIds)
+
+    private fun getListCharactersByIds(ids: ArrayList<Int>) {
+        setObservesVM()
+        viewModel.getFavoriteComicsList(ids)
+    }
+
     private fun setNotObservesVM() {
         viewModel.listCharacter.removeObservers(owner)
         viewModel.resetCharacters()
     }
     private fun resetRecyclerView() {
         binding.charactersListRecyclerView.addOnScrollListener(myOnScrolledListener)
+    }
+}
+private class FunctionManagerViewModel(
+    private val viewModel: CharactersListViewModel
+)
+{
+    fun setIdCharactersObservesVM(owner: LifecycleOwner, observeCharacters: ((ArrayList<Int>)->(Unit))) {
+        viewModel.favoriteIdCharacters.observe(owner,observeCharacters)
+    }
+    fun setIdCharactersNotObservesVM(owner: LifecycleOwner) {
+        viewModel.favoriteIdCharacters.removeObservers(owner)
+        viewModel.resetFavoriteIdCharacters()
     }
 }

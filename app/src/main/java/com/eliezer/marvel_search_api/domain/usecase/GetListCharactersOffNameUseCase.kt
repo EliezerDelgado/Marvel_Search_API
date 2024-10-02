@@ -8,7 +8,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetListCharactersUseCase @Inject constructor(
+class GetListCharactersOffNameUseCase @Inject constructor(
     @IoDispatcher dispatcher: CoroutineDispatcher,
     private val charactersRepository: CharactersRepository
 ): BaseFlowUseCase<String, Characters>(dispatcher) {

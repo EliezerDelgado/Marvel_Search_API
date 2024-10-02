@@ -6,4 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface ComicsDataSource {
     fun getDataContainer(title : String,offset :Int): Flow<Comics>
     fun getDataContainer(idCharacter : Int,offset :Int): Flow<Comics>
+    fun getDataContainer(ids : ArrayList<Int>): Flow<Comics>
 }

@@ -2,16 +2,35 @@ package com.eliezer.marvel_search_api.ui.fragments.favorites.functionImp
 
 import android.content.Context
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_search_api.R
 import com.eliezer.marvel_search_api.databinding.FragmentFavoritesBinding
 import com.eliezer.marvel_search_api.ui.fragments.character_list.CharactersListFragment
 import com.eliezer.marvel_search_api.ui.fragments.comic_list.ComicsListFragment
 import com.eliezer.marvel_search_api.domain.listener.MyOnTabSelectedListened
+import com.eliezer.marvel_search_api.models.dataclass.Comics
 import com.eliezer.marvel_search_api.ui.fragments.favorites.adapter.FavoritesPagerAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import android.content.res.Resources
+import android.content.res.Resources.Theme
+import com.eliezer.marvel_search_api.ui.fragments.character_profile.adapter.CharacterProfileComicsListAdapter
 
-class FavoritesFunctionImplement(private val binding: FragmentFavoritesBinding,private val pagerAdapter: FavoritesPagerAdapter,private val context: Context) {
+class FavoritesFunctionImplement(binding: FragmentFavoritesBinding,pagerAdapter: FavoritesPagerAdapter) {
+    private val functionPagerAdapter= FunctionPagerAdapter(binding,pagerAdapter)
+
+    fun setFragments() = functionPagerAdapter.setFragments()
+    fun setContentView() = functionPagerAdapter.setContentView()
+    fun createTabLayout(resources: Resources,theme : Theme) = functionPagerAdapter.createTabLayout(resources,theme)
+
+}
+
+private  class FunctionPagerAdapter(
+    private val binding: FragmentFavoritesBinding,
+    private val pagerAdapter: FavoritesPagerAdapter
+)
+{
+
     fun setFragments() {
         pagerAdapter.addFragment(CharactersListFragment::class.java)
         pagerAdapter.addFragment(ComicsListFragment::class.java)
@@ -21,18 +40,18 @@ class FavoritesFunctionImplement(private val binding: FragmentFavoritesBinding,p
         binding.favoritesViewpager2.setAdapter(pagerAdapter)
     }
 
-    fun createTabLayout() {
+    fun createTabLayout(resources: Resources,theme : Theme) {
         binding.favoritesTabLayout.setTabIndicatorFullWidth(true)
         tabLayoutMediator()
-        setTabLayout()
+        setTabLayout(resources,theme)
     }
 
-    private fun setTabLayout() {
+    private fun setTabLayout(resources: Resources,theme : Theme) {
         binding.favoritesTabLayout.addOnTabSelectedListener(
             MyOnTabSelectedListened(
-                selectedColor = context.resources.getColor(R.color.attr_color_tertiary,context.theme),
-                unselectedColor = context.resources.getColor(R.color.attr_color_secondary,context.theme),
-                reselectedColor = context.resources.getColor(R.color.attr_color_tertiary,context.theme)
+                selectedColor = resources.getColor(R.color.attr_color_tertiary,theme),
+                unselectedColor = resources.getColor(R.color.attr_color_secondary,theme),
+                reselectedColor = resources.getColor(R.color.attr_color_tertiary,theme)
             )
         )
         binding.favoritesTabLayout.selectTab(
@@ -60,5 +79,25 @@ class FavoritesFunctionImplement(private val binding: FragmentFavoritesBinding,p
             }
         }.attach()
     }
+}
+
+
+
+private class  FunctionManagerRecyclerAdapter()
+{
+    /*
+    var adapter: CharacterProfileComicsListAdapter = CharacterProfileComicsListAdapter(
+        arrayListOf(),
+        listener
+    )
+        private set
+    fun adapterIsEmpty()=  adapter.isListEmpty()
+    fun setComics(comics: Comics)
+    {
+        adapter.setComics(comics.listComics)
+    }*/
+}
+private class FunctionManagerBinding(private val binding: FragmentFavoritesBinding)
+{
 
 }

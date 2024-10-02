@@ -7,5 +7,7 @@ import kotlinx.coroutines.flow.Flow
 interface FirebaseRepository {
     fun signInGoogleExistingAccount(context: Context) : Flow<Result<AuthResult>>
     fun signInAddGoogleNewAccount(context: Context) : Flow<Result<AuthResult>>
+    fun getFavoriteIdCharacters(): Flow<Result<ArrayList<Int>>>
+    fun getFavoriteIdComics(): Flow<Result<ArrayList<Int>>>
     fun analytics()
 }

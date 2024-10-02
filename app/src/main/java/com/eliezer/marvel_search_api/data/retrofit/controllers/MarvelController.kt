@@ -15,7 +15,7 @@ class MarvelController @Inject constructor(
 ) {
     fun findCharacters(name : String, offset : Int): Flow<CharacterDataWrapper> =
         flow {
-            emit(        characterService.listCharacter(name,API_SEARCH_LIMIT,offset)
+            emit(        characterService.listCharacters(name,API_SEARCH_LIMIT,offset)
             )
         }
     fun findComics(title : String, offset : Int): Flow<ComicDataWrapper> =
@@ -24,7 +24,7 @@ class MarvelController @Inject constructor(
             )
         }
 
-    fun findCharacterComics(characterId: Int, offset : Int):  Flow<ComicDataWrapper> =
+    fun findComicsOffCharacter(characterId: Int, offset : Int):  Flow<ComicDataWrapper> =
         flow {
             emit(        characterService.listCharacterComics(characterId, API_SEARCH_LIMIT,offset)
             )
@@ -32,6 +32,18 @@ class MarvelController @Inject constructor(
     fun findComicCharacters(comicId: Int, offset : Int):  Flow<CharacterDataWrapper> =
         flow {
             emit(        characterService.listComicCharacters(comicId,API_SEARCH_LIMIT,offset)
+            )
+        }
+    fun findComicsOffIds(ids : ArrayList<Int>)=
+        flow {
+                emit(
+                    characterService.listComics(ids)
+                )
+        }
+    fun findCharactersOffIds(ids : ArrayList<Int>)=
+        flow {
+            emit(
+                characterService.listCharacters(ids)
             )
         }
 

@@ -12,4 +12,10 @@ import javax.inject.Singleton
 class FirebaseDataSourceImpl @Inject constructor(private val firebaseController: FirebaseController) : FirebaseDataSource {
     override fun signInGoogleExistingAccount(context: Context) : Flow<Result<AuthResult>> =firebaseController.signInExistingGoogleAccount(context)
     override fun signInAddGoogleNewAccount(context: Context) : Flow<Result<AuthResult>> =firebaseController.signInAddNewGoogleAccount(context)
+    override fun getFavoriteIdCharacters(): Flow<Result<ArrayList<Int>>> =
+        firebaseController.getFavoritesIdCharacters()
+
+
+    override fun getFavoriteIdComics(): Flow<Result<ArrayList<Int>>> =
+    firebaseController.getFavoritesIdComics()
 }

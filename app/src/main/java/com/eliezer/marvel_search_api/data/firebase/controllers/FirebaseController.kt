@@ -3,7 +3,7 @@ package com.eliezer.marvel_search_api.data.firebase.controllers
 import android.content.Context
 import com.eliezer.marvel_search_api.data.firebase.services.MyFireStoreSelects
 import com.eliezer.marvel_search_api.data.firebase.services.MyFirebaseAuth
-import com.eliezer.marvel_search_api.data.local_property.LocalAccount
+import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.google.firebase.auth.AuthResult
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -27,12 +27,12 @@ class FirebaseController @Inject constructor(
             trySend(myFirebaseAuth.googleSignInAddNewAccount(context))
             awaitClose { }
         }
-    fun getFavoritesIdCharacters() : Flow<ArrayList<Int>> = flow {
+    fun getFavoritesIdCharacters() : Flow<Result<ArrayList<Int>>> = flow {
             emit(
                 myFireStoreSelects.getCharactersId(LocalAccount.email)
             )
         }
-    fun getFavoritesIdComics() : Flow<ArrayList<Int>> = flow {
+    fun getFavoritesIdComics() : Flow<Result<ArrayList<Int>>> = flow {
         emit(
             myFireStoreSelects.getComicsId(LocalAccount.email)
         )

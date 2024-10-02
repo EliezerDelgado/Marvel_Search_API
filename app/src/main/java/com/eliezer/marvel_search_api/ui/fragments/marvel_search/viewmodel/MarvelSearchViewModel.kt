@@ -6,9 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.eliezer.marvel_search_api.core.base.BaseViewModel
 import com.eliezer.marvel_search_api.data.repository.characters.mock.SetCharactersRepository
-import com.eliezer.marvel_search_api.domain.usecase.GetListCharactersUseCase
+import com.eliezer.marvel_search_api.domain.usecase.GetListCharactersOffNameUseCase
 import com.eliezer.marvel_search_api.data.repository.comics.mock.SetComicsRepository
-import com.eliezer.marvel_search_api.domain.usecase.GetListComicsUseCase
+import com.eliezer.marvel_search_api.domain.usecase.GetListComicsOffNameUseCase
 import com.eliezer.marvel_search_api.domain.usecase.GetAuthResultGoogleExistingAccountUseCase
 import com.eliezer.marvel_search_api.models.dataclass.Characters
 import com.eliezer.marvel_search_api.models.dataclass.Comics
@@ -24,8 +24,8 @@ import javax.inject.Inject
 class MarvelSearchViewModel @Inject constructor(
     private val setCharactersUseCase : SetCharactersRepository,
     private val setComicsUseCase : SetComicsRepository,
-    private val getCharactersUseCase: GetListCharactersUseCase,
-    private val getComicsUseCase: GetListComicsUseCase,
+    private val getCharactersUseCase: GetListCharactersOffNameUseCase,
+    private val getComicsUseCase: GetListComicsOffNameUseCase,
     private val getAuthResultGoogleExistingAccountUseCase: GetAuthResultGoogleExistingAccountUseCase
 )  : BaseViewModel() {
 
@@ -75,6 +75,10 @@ class MarvelSearchViewModel @Inject constructor(
                 }
         }
     }
+
+
+
+
     private fun notifySignIn(result: Result<AuthResult>) {
         result.fold(
             onSuccess = {

@@ -10,10 +10,10 @@ import android.net.NetworkCapabilities
 val Context.connectivityManager: ConnectivityManager
     get() = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 val Context.isInternetConnected: Boolean get() =  isInternetAvailable(this)
-fun Context.registerNetworkCallback(networkCallback: ConnectivityManager.NetworkCallback) {
+fun Context.registerNetworkCallback(networkCallback: NetworkCallback) {
     connectivityManager.registerDefaultNetworkCallback(networkCallback)
 }
-fun Context.unregisterNetworkCallback(networkCallback: ConnectivityManager.NetworkCallback) {
+fun Context.unregisterNetworkCallback(networkCallback: NetworkCallback) {
     connectivityManager.unregisterNetworkCallback(networkCallback)
 }
 private fun isInternetAvailable(context: Context): Boolean {

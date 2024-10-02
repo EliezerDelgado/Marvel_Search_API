@@ -23,7 +23,9 @@ class ComicsListFunctionImplement (
 ) : ComicsListAdapter.ComicHolderListener{
     private var adapter: ComicsListAdapter? = null
     private var title : String? = null
+    private var listIdsFavorite = ArrayList<Int>()
     private val myOnScrolledListener = MyOnScrolledListener { getListComics()}
+    private val functionManagerViewModel = FunctionManagerViewModel(viewModel)
 
     fun setAdapter() {
         adapter = ComicsListAdapter(arrayListOf(),this)
@@ -94,6 +96,31 @@ class ComicsListFunctionImplement (
     }
     private fun resetRecyclerView() {
         binding.comicsListRecyclerView.addOnScrollListener(myOnScrolledListener)
+    }
+
+    fun getIdComicsModeSearch(owner: LifecycleOwner) =        functionManagerViewModel.setIdComicsObservesVM(owner,::setListIdFavorite)
+
+    private fun setListIdFavorite(ids: ArrayList<Int>) {
+        listIdsFavorite = ids
+        adapter?.setFavoriteComics(ids)
+    }
+
+    fun getIdComicsModeFavorite(owner: LifecycleOwner) =        functionManagerViewModel.setIdComicsObservesVM(owner,::getListComicsByIds)
+    private fun getListComicsByIds(ids: ArrayList<Int>) {
+        setObservesVM()
+        viewModel.getFavoriteComicsList(ids)
+    }
+
+}
+private class FunctionManagerViewModel(
+    private val viewModel: ComicsListViewModel)
+{
+    fun setIdComicsObservesVM(owner: LifecycleOwner, observeComics: ((ArrayList<Int>)->(Unit))) {
+        viewModel.favoriteIdComics.observe(owner,observeComics)
+    }
+    fun setIdComicsNotObservesVM(owner: LifecycleOwner) {
+        viewModel.favoriteIdComics.removeObservers(owner)
+        viewModel.resetFavoriteIdComics()
     }
 
 }

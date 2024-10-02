@@ -5,11 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.eliezer.marvel_search_api.core.domain.DiffUtilCallback
+import com.eliezer.marvel_search_api.core.utils.MyDiffUtils
 import com.eliezer.marvel_search_api.models.SearchEncounter
 
 abstract class BaseAdapter<T, S : BaseItemViewHolder<T>>(protected var items: ArrayList<T>) : RecyclerView.Adapter<S>() {
 
     fun isListEmpty() : Boolean = items.isEmpty()
+    val diffUtils = MyDiffUtils<T>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): S {
         val inflater = LayoutInflater.from(parent.context)
@@ -47,11 +49,19 @@ abstract class BaseAdapter<T, S : BaseItemViewHolder<T>>(protected var items: Ar
     }
     protected fun setListItems(items: List<T>)
     {
-        val diffCallback = DiffUtilCallback(this.items,items)
-        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        diffUtils.start(this.items)
         this.items.addAll(items)
-        diffResult.dispatchUpdatesTo(this)
+        diffUtils.finish(this.items,this)
     }
+    fun starChanges()
+    {
+        diffUtils.start(this.items)
+    }
+    fun finishChanges()
+    {
+        diffUtils.finish(this.items,this)
+    }
+
     fun update()
     {
         notifyDataSetChanged()

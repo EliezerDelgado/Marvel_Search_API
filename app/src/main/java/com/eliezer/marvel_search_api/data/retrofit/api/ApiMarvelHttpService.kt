@@ -1,7 +1,9 @@
 package com.eliezer.marvel_search_api.data.retrofit.api
 
 import com.eliezer.marvel_search_api.models.responses.character.CharacterDataWrapper
+import com.eliezer.marvel_search_api.models.responses.character.CharacterResponse
 import com.eliezer.marvel_search_api.models.responses.comic.ComicDataWrapper
+import com.eliezer.marvel_search_api.models.responses.comic.ComicResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -15,6 +17,13 @@ interface ApiMarvelHttpService {
         @Query("hash") hash : String,
 
     ) : CharacterDataWrapper
+    @GET(/* value = */ "/v1/public/characters/{characterId}")
+    suspend fun  getCharacters(
+        @Path("characterId") characterId : Int,
+        @Query("ts") ts : Long,
+        @Query("apikey") apikey : String,
+        @Query("hash") hash : String,
+    ) : CharacterResponse
 
     @GET(/* value = */ "/v1/public/characters")
     suspend fun  getCharacters(
@@ -63,6 +72,15 @@ interface ApiMarvelHttpService {
         @Query("apikey") apikey : String,
         @Query("hash") hash : String,
     ) : ComicDataWrapper
+
+
+    @GET(/* value = */ " /v1/public/comics/{comicId}")
+    suspend fun  getComics(
+        @Path("comicId") comicId : Int,
+        @Query("ts") ts : Long,
+        @Query("apikey") apikey : String,
+        @Query("hash") hash : String,
+    ) : ComicResponse
 
     @GET(/* value = */ " /v1/public/comics/{comicId}/characters")
     suspend fun  getComicCharacters(

@@ -18,6 +18,8 @@ class ComicsDataSourceImpl  @Inject constructor(
         marvelController.findComics(title,offset).map { it.data?.mapToListComic() ?: Comics() }
 
     override fun getDataContainer(idCharacter: Int,offset :Int): Flow<Comics> =
-        marvelController.findCharacterComics(idCharacter,offset).map { it.data?.mapToListComic() ?: Comics()}
+        marvelController.findComicsOffCharacter(idCharacter,offset).map { it.data?.mapToListComic() ?: Comics()}
 
+    override fun getDataContainer(ids: ArrayList<Int>): Flow<Comics> =
+        marvelController.findComicsOffIds(ids).map { it.data?.mapToListComic() ?: Comics()}
 }

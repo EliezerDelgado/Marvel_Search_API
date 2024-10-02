@@ -29,4 +29,14 @@ class ComicsListAdapter (items : ArrayList<Comic>,private val listener : ComicHo
         holder.itemView.setOnClickListener{listener?.onComicItemClickListener(
             comic)}
     }
+
+    fun setFavoriteComics(ids: java.util.ArrayList<Int>) {
+        starChanges()
+        for (comic in items)
+        {
+            if(ids.contains(comic.id))
+                comic.favorite = true
+        }
+        finishChanges()
+    }
 }

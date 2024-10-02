@@ -8,13 +8,11 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetListCharactersByComicUseCase  @Inject constructor(
+class GetListCharactersOffComicUseCase  @Inject constructor(
     @IoDispatcher dispatcher: CoroutineDispatcher,
     private val characterRepository: CharactersRepository
 ): BaseFlowUseCase<Int, Characters>(dispatcher)  {
     override fun execute(params: Int)
-   : Flow<Characters>
-    {
-      return characterRepository.getListComicCharacters(params)
-    }
+   : Flow<Characters> =
+       characterRepository.getListComicCharacters(params)
 }

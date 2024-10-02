@@ -14,16 +14,19 @@ class CharacterRepositoryImpl @Inject constructor(
 ) : CharactersRepository {
     private var list: HashMap<String, Characters?> = HashMap()
     override fun getListTmpCharacters(name : String): Characters? =
-         list.get(name)
+        list[name]
 
     override fun getListCharacters(name : String): Flow<Characters> {
-        var s = list[name]?.listCharacters?.size ?: 0
-       return datasource.getDataContainer(name, s)
+        val offset = list[name]?.listCharacters?.size ?: 0
+       return datasource.getDataContainer(name, offset)
 
     }
 
+    override fun getListCharacters(ids: ArrayList<Int>): Flow<Characters> =  datasource.getDataContainer(ids)
 
-   override fun getListComicCharacters(comicId: Int): Flow<Characters> =
+
+
+    override fun getListComicCharacters(comicId: Int): Flow<Characters> =
          datasource.getDataContainer(comicId, list[comicId.toString()]?.listCharacters?.size ?: 0)
 
     override fun resetList() {

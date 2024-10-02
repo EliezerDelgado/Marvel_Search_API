@@ -14,6 +14,9 @@ class FirebaseRepositoryImpl @Inject constructor(
 ) : FirebaseRepository {
     override fun signInGoogleExistingAccount(context: Context) : Flow<Result<AuthResult>> = datasource.signInGoogleExistingAccount(context)
     override fun signInAddGoogleNewAccount(context: Context) : Flow<Result<AuthResult>> = datasource.signInAddGoogleNewAccount(context)
+    override fun getFavoriteIdCharacters(): Flow<Result<ArrayList<Int>>> =  datasource.getFavoriteIdCharacters()
+
+    override fun getFavoriteIdComics(): Flow<Result<ArrayList<Int>>> = datasource.getFavoriteIdComics()
 
     override fun analytics() {
     }

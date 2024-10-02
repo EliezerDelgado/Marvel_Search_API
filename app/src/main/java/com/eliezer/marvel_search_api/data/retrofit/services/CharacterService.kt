@@ -11,7 +11,7 @@ import javax.inject.Singleton
 class CharacterService @Inject constructor(
             private val apiMarvelHttpService: ApiMarvelHttpService
             ){
-    suspend fun listCharacter(name : String,limit : Int, offset : Int): CharacterDataWrapper {
+    suspend fun listCharacters(name : String, limit : Int, offset : Int): CharacterDataWrapper {
         val ts = System.currentTimeMillis()
         val apiKey = RetrofitHash.publicKey
         val hash = RetrofitHash.generateHash(ts)
@@ -24,7 +24,7 @@ class CharacterService @Inject constructor(
             hash = hash
         )
     }
-    suspend fun listCharacter(name : String): CharacterDataWrapper {
+    suspend fun listCharacters(name : String): CharacterDataWrapper {
         val ts = System.currentTimeMillis()
         val apiKey = RetrofitHash.publicKey
         val hash = RetrofitHash.generateHash(ts)
@@ -34,6 +34,24 @@ class CharacterService @Inject constructor(
             apikey = apiKey,
             hash = hash
         )
+    }
+    suspend fun listCharacters(ids : ArrayList<Int>): CharacterDataWrapper {
+        val ts = System.currentTimeMillis()
+        val apiKey = RetrofitHash.publicKey
+        val hash = RetrofitHash.generateHash(ts)
+        val result = CharacterDataWrapper()
+        for(id in ids)
+        {
+            result.data!!.results.add(
+                apiMarvelHttpService.getCharacters(
+                    characterId = id,
+                    ts = ts,
+                    apikey = apiKey,
+                    hash = hash
+                )
+            )
+        }
+        return result
     }
     suspend fun listComics(title : String,limit : Int, offset : Int): ComicDataWrapper {
         val ts = System.currentTimeMillis()
@@ -47,6 +65,24 @@ class CharacterService @Inject constructor(
             apikey = apiKey,
             hash = hash
         )
+    }
+    suspend fun listComics(ids : ArrayList<Int>): ComicDataWrapper {
+        val ts = System.currentTimeMillis()
+        val apiKey = RetrofitHash.publicKey
+        val hash = RetrofitHash.generateHash(ts)
+        val result = ComicDataWrapper()
+        for(id in ids)
+        {
+            result.data!!.results.add(
+                apiMarvelHttpService.getComics(
+                    comicId = id,
+                    ts = ts,
+                    apikey = apiKey,
+                    hash = hash
+                )
+            )
+        }
+        return result
     }
 
     suspend fun listCharacterComics(characterId: Int,limit : Int, offset : Int): ComicDataWrapper {

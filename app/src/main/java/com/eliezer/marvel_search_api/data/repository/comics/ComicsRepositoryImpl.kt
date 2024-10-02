@@ -1,6 +1,5 @@
 package com.eliezer.marvel_search_api.data.repository.comics
 
-import com.eliezer.marvel_search_api.data.const.API_SEARCH_LIMIT
 import com.eliezer.marvel_search_api.data.datasource.ComicsDataSource
 import com.eliezer.marvel_search_api.domain.repository.ComicsRepository
 import com.eliezer.marvel_search_api.models.dataclass.Comics
@@ -17,10 +16,13 @@ class ComicsRepositoryImpl @Inject constructor(
 
 
     override fun getListTmpComics(name : String):Comics? =
-         list.get(name)
+        list[name]
 
     override fun getListComics(title: String): Flow<Comics> =
         datasource.getDataContainer(title, list[title]?.listComics?.size ?: 0)
+
+    override fun getListComics(ids: ArrayList<Int>): Flow<Comics> =
+        datasource.getDataContainer(ids)
 
 
     override fun getListCharacterComics(characterId: Int): Flow<Comics> =

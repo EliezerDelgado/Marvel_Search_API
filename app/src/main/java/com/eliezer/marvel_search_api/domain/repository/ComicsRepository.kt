@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.Flow
 interface ComicsRepository {
     fun getListTmpComics(name : String) : Comics?
     fun getListComics(title : String): Flow<Comics>
+    fun getListComics(ids : ArrayList<Int>): Flow<Comics>
     fun getListCharacterComics(characterId : Int): Flow<Comics>
     fun setListComics(id :String,params: Comics)
     fun resetList()

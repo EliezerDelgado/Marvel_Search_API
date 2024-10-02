@@ -8,9 +8,10 @@ import javax.inject.Singleton
 
 @Singleton
 class MyFireStoreSelects @Inject constructor() {
-    fun getCharactersId(idUser : String) : ArrayList<Int>
+    fun getCharactersId(idUser : String) : Result<ArrayList<Int>>
     {
         val idCharacter = arrayListOf<Int>()
+        var ex : Exception? = null
         usersCollection?.also {
             val docRef = it.document(idUser).collection("characters")
             docRef.get()
@@ -20,14 +21,17 @@ class MyFireStoreSelects @Inject constructor() {
                     }
                 }
                 .addOnFailureListener { exception ->
-                    Log.w(TAG, "Error getting documents.", exception)
+                    ex = Exception( "Error getting documents.", exception)
                 }
         }
-        return idCharacter
+        if(ex !=null )
+            return Result.failure(ex!!)
+        return Result.success(idCharacter)
     }
-    fun getComicsId(idUser : String) : ArrayList<Int>
+    fun getComicsId(idUser : String) : Result<ArrayList<Int>>
     {
         val idCharacter = arrayListOf<Int>()
+        var ex : Exception? = null
         usersCollection?.also {
             val docRef = it.document(idUser).collection("comics")
             docRef.get()
@@ -37,9 +41,11 @@ class MyFireStoreSelects @Inject constructor() {
                     }
                 }
                 .addOnFailureListener { exception ->
-                    Log.w(TAG, "Error getting documents.", exception)
+                    ex = Exception( "Error getting documents.", exception)
                 }
         }
-        return idCharacter
+        if(ex !=null )
+            return Result.failure(ex!!)
+        return Result.success(idCharacter)
     }
 }

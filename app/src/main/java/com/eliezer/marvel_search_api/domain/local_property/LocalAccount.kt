@@ -1,4 +1,4 @@
-package com.eliezer.marvel_search_api.data.local_property
+package com.eliezer.marvel_search_api.domain.local_property
 
 import android.content.Context
 import android.net.ConnectivityManager

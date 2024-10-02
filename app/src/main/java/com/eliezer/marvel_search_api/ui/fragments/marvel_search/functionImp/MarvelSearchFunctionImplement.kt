@@ -5,7 +5,7 @@ import android.os.Build
 import androidx.annotation.StringRes
 import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_search_api.R
-import com.eliezer.marvel_search_api.data.local_property.LocalAccount
+import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
 import com.eliezer.marvel_search_api.databinding.FragmentMarvelSearchBinding
 import com.eliezer.marvel_search_api.ui.fragments.marvel_search.viewmodel.MarvelSearchViewModel
@@ -170,6 +170,7 @@ class MarvelSearchFunctionImplement(
 
     private fun showError(@StringRes idError: Int) {
         //todo e un utils
+       // viewModel.error
     }
 
     private fun setNotObserveSizeResult() {

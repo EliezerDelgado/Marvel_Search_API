@@ -20,5 +20,7 @@ class CharactersDataSourceImpl @Inject constructor(
     override fun getDataContainer(idComic: Int,offset :Int): Flow<Characters> =
         marvelController.findComicCharacters(idComic,offset).map { it.data?.mapToListCharacter() ?: Characters()}
 
+    override fun getDataContainer(ids: ArrayList<Int>): Flow<Characters> = marvelController.findCharactersOffIds(ids).map { it.data?.mapToListCharacter() ?: Characters()}
+
 
 }
