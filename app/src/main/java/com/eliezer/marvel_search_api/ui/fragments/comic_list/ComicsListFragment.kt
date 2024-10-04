@@ -31,8 +31,8 @@ class ComicsListFragment :
         super.onViewCreated(view, savedInstanceState)
         funImpl = ComicsListFunctionImplement(
             binding,
-            mainActivity(requireActivity()).navigationMainActions!!,
             comicsListViewModel,
+            mainActivity(requireActivity()).navigationMainActions!!,
             getComicsRepository,
             this
         )
@@ -42,7 +42,7 @@ class ComicsListFragment :
             funImpl?.getComicsArg(requireArguments())
             funImpl?.getListSearchComicsRepository()
         }else if (mode == FAVORITE_ID)
-            funImpl?.getListFavoriteComicsRepository(FAVORITE_ID)
+            funImpl?.getIdComicsModeFavorite()
     }
 
     override fun onDestroyView() {

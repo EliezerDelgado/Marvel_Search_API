@@ -54,7 +54,7 @@ class ComicDescriptionFunctionImplement (
         }
     }
     fun setAdapter() {
-        functionManagerBinding.setAdapter(functionManagerRecyclerAdapter.adapter)
+        functionManagerBinding.setAdapterBinding(functionManagerRecyclerAdapter.adapter)
         functionManagerBinding.recyclerViewComicsAddScrollListener(myOnScrolledListener)
     }
     fun searchWordBack() {
@@ -168,7 +168,7 @@ private class FunctionManagerBinding(
         binding.comicDescriptionRecyclerViewCharacters.requestLayout()
     }
 
-    fun setAdapter(adapter: ComicDescriptionCharacterListAdapter) {
+    fun setAdapterBinding(adapter: ComicDescriptionCharacterListAdapter) {
         binding.comicDescriptionRecyclerViewCharacters.setHasFixedSize(true)
         binding.comicDescriptionRecyclerViewCharacters.adapter = adapter
     }

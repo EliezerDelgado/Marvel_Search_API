@@ -15,41 +15,38 @@ import com.eliezer.marvel_search_api.ui.fragments.comic_list.viewmodel.ComicsLis
 
 
 class ComicsListFunctionImplement (
-    private val binding: FragmentComicsListBinding,
+    binding: FragmentComicsListBinding,
+    viewModel: ComicsListViewModel,
     private val navigationMainActions: NavigationMainActions,
-    private val  viewModel: ComicsListViewModel,
     private val getComicsRepository : GetComicsRepository,
     private val owner : LifecycleOwner
 ) : ComicsListAdapter.ComicHolderListener{
-    private var adapter: ComicsListAdapter? = null
     private var title : String? = null
     private var listIdsFavorite = ArrayList<Int>()
     private val myOnScrolledListener = MyOnScrolledListener { getListComics()}
     private val functionManagerViewModel = FunctionManagerViewModel(viewModel)
+    private val functionManagerRecyclerAdapter = FunctionManagerRecyclerAdapter(this)
+    private val functionManagerBinding = FunctionManagerBinding(binding)
 
-    fun setAdapter() {
-        adapter = ComicsListAdapter(arrayListOf(),this)
-        binding.comicsListRecyclerView.setHasFixedSize(true)
-        binding.comicsListRecyclerView.adapter = adapter
-        binding.comicsListRecyclerView.addOnScrollListener(myOnScrolledListener)
-    }
+
 
     fun getListSearchComicsRepository()
     {
         title?.also {
             val comics = getComicsRepository.getListRepository(it)
-            setComicsList(comics)
+            functionManagerRecyclerAdapter.setComicsList(comics)
         }
     }
     fun getListFavoriteComicsRepository(favoriteId : String)
     {
         val comics = getComicsRepository.getListRepository(favoriteId)
-        setComicsList(comics)
+        functionManagerRecyclerAdapter.setComicsList(comics)
+    }
+    fun setAdapter() {
+        functionManagerBinding.setAdapter(functionManagerRecyclerAdapter.adapter!!)
+        functionManagerBinding.recyclerViewComicsAddScrollListener(myOnScrolledListener)
     }
 
-
-    private fun setComicsList(comics: Comics?) =
-        adapter?.setComics(comics?.listComics ?: emptyList())
 
     override fun onComicItemClickListener(comic: Comic) {
         navigationMainActions.doActionComicsListFragmentToComicDescriptionFragment(comic =comic)
@@ -60,57 +57,80 @@ class ComicsListFunctionImplement (
     }
 
 
-    private fun setObservesVM() {
-        viewModel.listComic.observe(owner,::setListComics)
-    }
-
     private fun getListComics() {
-        binding.comicsListRecyclerView.removeOnScrollListener(myOnScrolledListener)
+        functionManagerBinding.recyclerViewComicsRemoveScrollListener(myOnScrolledListener)
         val comics = getComicsRepository.getListRepository(title!!)
         if(comics==null || comics.total > comics.listComics.size)
             searchListComics()
-        else if (adapter!!.isListEmpty())
+        else if (functionManagerRecyclerAdapter.adapter!!.isListEmpty())
             setListComics(comics)
 
     }
     private fun searchListComics() {
-        setObservesVM()
-        viewModel.searchComicsList(title!!)
+        functionManagerViewModel.setListComicsObservesVM(owner,::setListComics)
+        functionManagerViewModel.searchComicList(title!!)
     }
 
-    private fun setListComics(characters: Comics?) {
+    private fun setListComics(comics: Comics?) {
         val position = myOnScrolledListener.position
-        characters?.apply {
+        comics?.apply {
             if (listComics.isNotEmpty())
-                adapter?.setComics(listComics)
+                functionManagerRecyclerAdapter.adapter?.setComics(listComics)
 
         }
-        resetRecyclerView()
-        setNotObservesVM()
-        binding.comicsListRecyclerView.scrollToPosition(position)
+        functionManagerBinding.resetRecyclerView(myOnScrolledListener)
+        functionManagerViewModel.setListComicsNoObservesVM(owner)
+        functionManagerBinding.recyclerViewComicsScrollToPosition(position)
     }
 
-    private fun setNotObservesVM() {
-        viewModel.listComic.removeObservers(owner)
-        viewModel.resetComics()
-    }
-    private fun resetRecyclerView() {
-        binding.comicsListRecyclerView.addOnScrollListener(myOnScrolledListener)
-    }
-
-    fun getIdComicsModeSearch(owner: LifecycleOwner) =        functionManagerViewModel.setIdComicsObservesVM(owner,::setListIdFavorite)
+    private fun getIdComicsModeSearch(owner: LifecycleOwner) =  functionManagerViewModel.setIdComicsObservesVM(owner,::setListIdFavorite)
 
     private fun setListIdFavorite(ids: ArrayList<Int>) {
         listIdsFavorite = ids
-        adapter?.setFavoriteComics(ids)
+        functionManagerRecyclerAdapter.adapter?.setFavoriteComics(ids)
+        getIdComicsModeSearch(owner)
     }
 
-    fun getIdComicsModeFavorite(owner: LifecycleOwner) =        functionManagerViewModel.setIdComicsObservesVM(owner,::getListComicsByIds)
+    fun getIdComicsModeFavorite() =  functionManagerViewModel.setIdComicsObservesVM(owner,::getListComicsByIds)
     private fun getListComicsByIds(ids: ArrayList<Int>) {
-        setObservesVM()
-        viewModel.getFavoriteComicsList(ids)
+        functionManagerViewModel.setListComicsObservesVM(owner,::setListComics)
+        functionManagerViewModel.getFavoriteComicsList(ids)
     }
 
+}
+private class FunctionManagerBinding(
+    private val binding: FragmentComicsListBinding,
+)
+{
+    fun setAdapter(adapter: ComicsListAdapter) {
+        binding.comicsListRecyclerView.setHasFixedSize(true)
+        binding.comicsListRecyclerView.adapter = adapter
+    }
+
+    fun recyclerViewComicsAddScrollListener(myOnScrolledListener: MyOnScrolledListener) {
+        binding.comicsListRecyclerView.addOnScrollListener(myOnScrolledListener)
+    }
+    fun recyclerViewComicsRemoveScrollListener(myOnScrolledListener: MyOnScrolledListener) {
+        binding.comicsListRecyclerView.removeOnScrollListener(myOnScrolledListener)
+    }
+    fun recyclerViewComicsScrollToPosition(position : Int)
+    {
+        binding.comicsListRecyclerView.scrollToPosition(position)
+    }
+    fun resetRecyclerView(myOnScrolledListener: MyOnScrolledListener) {
+        binding.comicsListRecyclerView.addOnScrollListener(myOnScrolledListener)
+    }
+}
+private class FunctionManagerRecyclerAdapter(
+    listener: ComicsListAdapter.ComicHolderListener
+)
+{
+    var adapter: ComicsListAdapter? = ComicsListAdapter(arrayListOf(),listener)
+        private set
+
+
+    fun setComicsList(comics: Comics?) =
+        adapter?.setComics(comics?.listComics ?: emptyList())
 }
 private class FunctionManagerViewModel(
     private val viewModel: ComicsListViewModel)
@@ -123,4 +143,20 @@ private class FunctionManagerViewModel(
         viewModel.resetFavoriteIdComics()
     }
 
+    fun setListComicsObservesVM(owner: LifecycleOwner, observe : ((Comics)->(Unit))) {
+        viewModel.listComic.observe(owner,observe)
+    }
+    fun setListComicsNoObservesVM(owner: LifecycleOwner) {
+        viewModel.listComic.removeObservers(owner)
+        viewModel.resetComics()
+    }
+    fun getFavoriteComicsList(ids : ArrayList<Int>)
+    {
+        viewModel.getFavoriteComicsList(ids)
+    }
+
+    fun searchComicList(title : String)
+    {
+        viewModel.searchComicsList(title)
+    }
 }
