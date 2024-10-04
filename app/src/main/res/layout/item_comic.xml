@@ -52,7 +52,6 @@
             android:layout_margin="10dp"
             style="@style/EliezerMarvel.ImageButton"
             android:layout_gravity="top|center"
-            android:onClick="@{() -> item.changeFavorite()}"
             android:src="@{item.favorite ?  @drawable/ic_star_on : @drawable/ic_star}"
             app:layout_constraintTop_toTopOf="@+id/item_comic_image_view_photo"
             app:layout_constraintRight_toRightOf="@+id/item_comic_image_view_photo"

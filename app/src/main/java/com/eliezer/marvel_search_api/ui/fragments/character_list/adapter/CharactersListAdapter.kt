@@ -4,12 +4,14 @@ import android.view.LayoutInflater
 import com.eliezer.marvel_search_api.core.base.BaseAdapter
 import com.eliezer.marvel_search_api.databinding.ItemCharacterBinding
 import com.eliezer.marvel_search_api.models.dataclass.Character
+import com.eliezer.marvel_search_api.models.dataclass.Comic
 
 class CharactersListAdapter(items : ArrayList<Character>,private val listener : CharacterHolderListener?) : BaseAdapter<Character, ItemCharacterViewHolder>(
     items = items) {
     interface CharacterHolderListener
     {
         fun onCharacterItemClickListener(character: Character)
+        fun onImageButtonFavoriteListener(character : Character)
     }
     fun setCharacters(characters : List<Character>) =
         setListItems(characters)
@@ -27,5 +29,12 @@ class CharactersListAdapter(items : ArrayList<Character>,private val listener : 
     private fun onClickListener(holder: ItemCharacterViewHolder, character: Character)
     {
         holder.itemView.setOnClickListener{listener?.onCharacterItemClickListener(character)}
+
+        listener?.also {
+            holder.itemCharacterImageButtonFavoriteListener{
+                character.favorite = !character.favorite
+                it.onImageButtonFavoriteListener(character)
+            }
+        }
     }
 }

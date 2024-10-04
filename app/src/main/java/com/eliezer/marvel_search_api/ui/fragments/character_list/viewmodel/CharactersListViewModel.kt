@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.eliezer.marvel_search_api.core.base.BaseViewModel
 import com.eliezer.marvel_search_api.data.repository.characters.mock.SetCharactersRepository
+import com.eliezer.marvel_search_api.data.repository.firebase.mock.FireStoreDeleteCharacter
+import com.eliezer.marvel_search_api.data.repository.firebase.mock.FireStoreInsertCharacter
 import com.eliezer.marvel_search_api.domain.usecase.GetFavoriteIdCharactersUseCase
 import com.eliezer.marvel_search_api.domain.usecase.GetListCharactersOffListIdsUseCase
 import com.eliezer.marvel_search_api.domain.usecase.GetListCharactersOffNameUseCase
@@ -21,7 +23,7 @@ class CharactersListViewModel @Inject constructor(
     private val setCharactersRepository : SetCharactersRepository,
     private val getListCharactersOffNameUseCase: GetListCharactersOffNameUseCase,
     private val getFavoriteIdCharactersUseCase: GetFavoriteIdCharactersUseCase,
-    private val getListCharactersOffListIdsUseCase: GetListCharactersOffListIdsUseCase
+    private val getListCharactersOffListIdsUseCase: GetListCharactersOffListIdsUseCase,
 ): BaseViewModel()  {
 
     private var _listCharacter  = MutableLiveData<Characters>()

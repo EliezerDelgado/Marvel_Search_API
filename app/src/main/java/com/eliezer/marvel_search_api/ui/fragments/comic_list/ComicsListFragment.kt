@@ -9,6 +9,7 @@ import com.eliezer.marvel_search_api.data.const.SEARCH_ID
 import com.eliezer.marvel_search_api.data.mappers.mainActivity
 import com.eliezer.marvel_search_api.data.repository.comics.mock.GetComicsRepository
 import com.eliezer.marvel_search_api.databinding.FragmentComicsListBinding
+import com.eliezer.marvel_search_api.ui.fragments.character_list.functionImp.function.ComicListFunctionManagerRepository
 import com.eliezer.marvel_search_api.ui.fragments.comic_list.functionImp.ComicsListFunctionImplement
 import com.eliezer.marvel_search_api.ui.fragments.comic_list.viewmodel.ComicsListViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,7 +23,7 @@ class ComicsListFragment :
 {
 
     @Inject
-    lateinit var getComicsRepository: GetComicsRepository
+    lateinit var comicListFunctionManagerRepository: ComicListFunctionManagerRepository
     private var funImpl : ComicsListFunctionImplement? = null
     private val comicsListViewModel: ComicsListViewModel by viewModels()
     private var mode : String? = null

@@ -15,7 +15,18 @@ class FirebaseDataSourceImpl @Inject constructor(private val firebaseController:
     override fun getFavoriteIdCharacters(): Flow<Result<ArrayList<Int>>> =
         firebaseController.getFavoritesIdCharacters()
 
-
     override fun getFavoriteIdComics(): Flow<Result<ArrayList<Int>>> =
     firebaseController.getFavoritesIdComics()
+
+    override fun insertFavoriteIdCharacter(idCharacter: Int): Flow<Unit> =
+        firebaseController.insertFavoriteIdCharacter(idCharacter)
+
+    override fun insertFavoriteIdComic(idComic: Int): Flow<Unit> =
+        firebaseController.insertFavoriteIdComic(idComic)
+
+    override fun deleteFavoriteIdCharacter(idCharacter: Int): Flow<Unit> =
+        firebaseController.deleteFavoriteIdCharacter(idCharacter)
+
+    override fun deleteFavoriteIdComic(idComic: Int): Flow<Unit> =
+        firebaseController.deleteFavoriteIdComic(idComic)
 }

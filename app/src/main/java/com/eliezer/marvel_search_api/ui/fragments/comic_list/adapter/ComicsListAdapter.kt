@@ -10,6 +10,7 @@ class ComicsListAdapter (items : ArrayList<Comic>,private val listener : ComicHo
     interface ComicHolderListener
     {
         fun onComicItemClickListener(comic: Comic)
+        fun onImageButtonFavoriteListener(comic : Comic)
     }
     fun setComics(comics : List<Comic>) =
         setListItems(comics)
@@ -28,6 +29,12 @@ class ComicsListAdapter (items : ArrayList<Comic>,private val listener : ComicHo
     {
         holder.itemView.setOnClickListener{listener?.onComicItemClickListener(
             comic)}
+        listener?.also {
+            holder.itemComicImageButtonFavoriteListener{
+                comic.favorite = !comic.favorite
+                it.onImageButtonFavoriteListener(comic)
+            }
+        }
     }
 
     fun setFavoriteComics(ids: java.util.ArrayList<Int>) {

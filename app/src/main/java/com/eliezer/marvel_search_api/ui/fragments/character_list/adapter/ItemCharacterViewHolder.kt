@@ -6,11 +6,12 @@ import com.eliezer.marvel_search_api.core.utils.loadImageFromWebOperations
 import com.eliezer.marvel_search_api.databinding.ItemCharacterBinding
 import com.eliezer.marvel_search_api.models.dataclass.Character
 
-open class ItemCharacterViewHolder(binding: ItemCharacterBinding) : BaseItemViewHolder<Character>(binding = binding ) {
+open class ItemCharacterViewHolder(override var binding: ItemCharacterBinding) : BaseItemViewHolder<Character>(binding = binding ) {
     override fun onBindMethodCalled(item: Character) {
         val t = Thread {
             binding.setVariable(BR.img, loadImageFromWebOperations(item.urlPicture))
         }
         t.start()
     }
+    fun itemCharacterImageButtonFavoriteListener(listener: ()->Unit)= listener.invoke()
 }

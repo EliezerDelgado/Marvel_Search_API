@@ -9,6 +9,7 @@ import com.eliezer.marvel_search_api.domain.listener.MyOnScrolledListener
 import com.eliezer.marvel_search_api.models.dataclass.Comic
 import com.eliezer.marvel_search_api.models.dataclass.Comics
 import com.eliezer.marvel_search_api.ui.fragments.character_list.CharactersListFragmentArgs
+import com.eliezer.marvel_search_api.ui.fragments.character_list.functionImp.function.ComicListFunctionManagerRepository
 import com.eliezer.marvel_search_api.ui.fragments.comic_list.ComicsListFragmentArgs
 import com.eliezer.marvel_search_api.ui.fragments.comic_list.adapter.ComicsListAdapter
 import com.eliezer.marvel_search_api.ui.fragments.comic_list.viewmodel.ComicsListViewModel
@@ -18,7 +19,7 @@ class ComicsListFunctionImplement (
     binding: FragmentComicsListBinding,
     viewModel: ComicsListViewModel,
     private val navigationMainActions: NavigationMainActions,
-    private val getComicsRepository : GetComicsRepository,
+    private val comicListFunctionManagerRepository: ComicListFunctionManagerRepository,
     private val owner : LifecycleOwner
 ) : ComicsListAdapter.ComicHolderListener{
     private var title : String? = null
@@ -33,13 +34,13 @@ class ComicsListFunctionImplement (
     fun getListSearchComicsRepository()
     {
         title?.also {
-            val comics = getComicsRepository.getListRepository(it)
+            val comics = comicListFunctionManagerRepository.getComicsRepository.getListRepository(it)
             functionManagerRecyclerAdapter.setComicsList(comics)
         }
     }
     fun getListFavoriteComicsRepository(favoriteId : String)
     {
-        val comics = getComicsRepository.getListRepository(favoriteId)
+        val comics = comicListFunctionManagerRepository.getComicsRepository.getListRepository(favoriteId)
         functionManagerRecyclerAdapter.setComicsList(comics)
     }
     fun setAdapter() {
@@ -51,6 +52,14 @@ class ComicsListFunctionImplement (
     override fun onComicItemClickListener(comic: Comic) {
         navigationMainActions.doActionComicsListFragmentToComicDescriptionFragment(comic =comic)
     }
+
+    override fun onImageButtonFavoriteListener(comic:Comic) =
+         if(comic.favorite)
+             comicListFunctionManagerRepository.insertComic.insertFavoriteComic(comic.id)
+        else
+             comicListFunctionManagerRepository.deleteComic.deleteFavoriteComic(comic.id)
+
+
     fun getMode(arguments: Bundle) = CharactersListFragmentArgs.fromBundle(arguments).argMode
     fun getComicsArg(arguments: Bundle) {
         title = ComicsListFragmentArgs.fromBundle(arguments).argSearchComic
@@ -59,7 +68,7 @@ class ComicsListFunctionImplement (
 
     private fun getListComics() {
         functionManagerBinding.recyclerViewComicsRemoveScrollListener(myOnScrolledListener)
-        val comics = getComicsRepository.getListRepository(title!!)
+        val comics = comicListFunctionManagerRepository.getComicsRepository.getListRepository(title!!)
         if(comics==null || comics.total > comics.listComics.size)
             searchListComics()
         else if (functionManagerRecyclerAdapter.adapter!!.isListEmpty())
@@ -96,8 +105,8 @@ class ComicsListFunctionImplement (
         functionManagerViewModel.setListComicsObservesVM(owner,::setListComics)
         functionManagerViewModel.getFavoriteComicsList(ids)
     }
-
 }
+
 private class FunctionManagerBinding(
     private val binding: FragmentComicsListBinding,
 )

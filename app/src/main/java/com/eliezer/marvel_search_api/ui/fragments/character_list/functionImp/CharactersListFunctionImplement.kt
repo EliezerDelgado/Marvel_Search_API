@@ -2,22 +2,22 @@ package com.eliezer.marvel_search_api.ui.fragments.character_list.functionImp
 
 import android.os.Bundle
 import androidx.lifecycle.LifecycleOwner
-import com.eliezer.marvel_search_api.data.repository.characters.mock.GetCharactersRepository
 import com.eliezer.marvel_search_api.databinding.FragmentCharactersListBinding
 import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
 import com.eliezer.marvel_search_api.domain.listener.MyOnScrolledListener
 import com.eliezer.marvel_search_api.models.dataclass.Character
 import com.eliezer.marvel_search_api.models.dataclass.Characters
+import com.eliezer.marvel_search_api.models.dataclass.Comic
 import com.eliezer.marvel_search_api.ui.fragments.character_list.CharactersListFragmentArgs
 import com.eliezer.marvel_search_api.ui.fragments.character_list.adapter.CharactersListAdapter
+import com.eliezer.marvel_search_api.ui.fragments.character_list.functionImp.function.CharacterListFunctionManagerRepository
 import com.eliezer.marvel_search_api.ui.fragments.character_list.viewmodel.CharactersListViewModel
-import com.eliezer.marvel_search_api.ui.fragments.comic_list.viewmodel.ComicsListViewModel
 
 class CharactersListFunctionImplement(
     private val binding: FragmentCharactersListBinding,
     private val navigationMainActions: NavigationMainActions,
     private val  viewModel: CharactersListViewModel,
-    private val getCharactersRepository : GetCharactersRepository,
+    private val characterListFunctionManagerRepository: CharacterListFunctionManagerRepository,
     private val owner : LifecycleOwner
 ) : CharactersListAdapter.CharacterHolderListener{
 
@@ -35,13 +35,13 @@ class CharactersListFunctionImplement(
     fun getListSearchCharactersRepository()
     {
         searchCharacter?.also {
-            val characters = getCharactersRepository.getListRepository(it)
+            val characters = characterListFunctionManagerRepository.getCharactersRepository.getListRepository(it)
             setCharacterList(characters)
         }
     }
     fun getListFavoriteCharactersRepository(favoriteId : String)
     {
-        val characters = getCharactersRepository.getListRepository(favoriteId)
+        val characters = characterListFunctionManagerRepository.getCharactersRepository.getListRepository(favoriteId)
         setCharacterList(characters)
     }
 
@@ -63,7 +63,7 @@ class CharactersListFunctionImplement(
 
     private fun getListCharacters() {
         binding.charactersListRecyclerView.removeOnScrollListener(myOnScrolledListener)
-        val characters = getCharactersRepository.getListRepository(searchCharacter!!)
+        val characters = characterListFunctionManagerRepository.getCharactersRepository.getListRepository(searchCharacter!!)
         if(characters==null || characters.total > characters.listCharacters.size)
         {
             searchListCharacters()
@@ -104,6 +104,12 @@ class CharactersListFunctionImplement(
     private fun resetRecyclerView() {
         binding.charactersListRecyclerView.addOnScrollListener(myOnScrolledListener)
     }
+
+    override fun onImageButtonFavoriteListener(character: Character) =
+        if(character.favorite)
+            characterListFunctionManagerRepository.insertCharacter.insertFavoriteCharacter(character.id)
+        else
+            characterListFunctionManagerRepository.deleteCharacter.deleteFavoriteCharacter(character.id)
 }
 private class FunctionManagerViewModel(
     private val viewModel: CharactersListViewModel
