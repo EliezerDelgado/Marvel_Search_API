@@ -15,5 +15,9 @@ open class ItemComicViewHolder (override var binding: ItemComicBinding) : BaseIt
         }
         t.start()
     }
-    fun itemComicImageButtonFavoriteListener(listener: ()->Unit)= listener.invoke()
+    fun itemComicImageButtonFavoriteListener(listener: ()->Unit){
+        binding.itemComicImageButtonFavorite.setOnClickListener{
+            listener.invoke()
+        }
+    }
 }

@@ -12,15 +12,6 @@ plugins {
 }
 
 android {
-    signingConfigs {
-        getByName("debug") {
-            storeFile =
-                file("/home/eliezer/.var/app/com.google.AndroidStudio/config/.android/debug.keystore")
-            storePassword = "android"
-            keyAlias = "androiddebugkey"
-            keyPassword = "android"
-        }
-    }
     namespace = "com.eliezer.marvel_search_api"
     compileSdk = 35
 

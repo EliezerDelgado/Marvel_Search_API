@@ -9,8 +9,14 @@ import com.eliezer.marvel_search_api.data.repository.firebase.mock.FireStoreInse
 import javax.inject.Inject
 
 
-data class ComicListFunctionManagerRepository @Inject constructor(
-    val getComicsRepository: GetComicsRepository,
-    val insertComic: FireStoreInsertComic,
-    val deleteComic: FireStoreDeleteComic
+class ComicListFunctionManagerRepository @Inject constructor(
+    private val getComicsRepository: GetComicsRepository,
+    private val insertComic: FireStoreInsertComic,
+    private val deleteComic: FireStoreDeleteComic
 )
+{
+    fun getListRepository(comic: String) = getComicsRepository.getListRepository(comic)
+    fun insertFavoriteComic(comicId : Int) = insertComic.insertFavoriteComic(comicId)
+    fun deleteFavoriteComic(comicId : Int) = deleteComic.deleteFavoriteComic(comicId)
+
+}

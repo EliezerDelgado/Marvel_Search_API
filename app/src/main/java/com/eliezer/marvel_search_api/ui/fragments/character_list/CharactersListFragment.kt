@@ -21,7 +21,7 @@ class CharactersListFragment :
     )
 {
     @Inject
-    private lateinit var characterListFunctionManagerRepository: CharacterListFunctionManagerRepository
+    lateinit var characterListFunctionManagerRepository: CharacterListFunctionManagerRepository
 
     private val characterListViewModel: CharactersListViewModel by viewModels()
     private var funImpl : CharactersListFunctionImplement? = null

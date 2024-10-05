@@ -6,8 +6,13 @@ import com.eliezer.marvel_search_api.data.repository.firebase.mock.FireStoreInse
 import javax.inject.Inject
 
 
-data class CharacterListFunctionManagerRepository @Inject constructor(
-    val getCharactersRepository: GetCharactersRepository,
-    val insertCharacter: FireStoreInsertCharacter,
-    val deleteCharacter: FireStoreDeleteCharacter
+class CharacterListFunctionManagerRepository @Inject constructor(
+    private val getCharactersRepository: GetCharactersRepository,
+    private val insertCharacter: FireStoreInsertCharacter,
+    private val deleteCharacter: FireStoreDeleteCharacter
 )
+{
+    fun getListRepository(character:String) = getCharactersRepository.getListRepository(character)
+    fun insertFavoriteCharacter(characterInt:Int) = insertCharacter.insertFavoriteCharacter(characterInt)
+    fun deleteFavoriteCharacter(characterInt:Int) = deleteCharacter.deleteFavoriteCharacter(characterInt)
+}

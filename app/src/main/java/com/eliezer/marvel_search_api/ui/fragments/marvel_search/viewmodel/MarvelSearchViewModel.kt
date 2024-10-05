@@ -1,6 +1,7 @@
 package com.eliezer.marvel_search_api.ui.fragments.marvel_search.viewmodel
 
 import android.content.Context
+import androidx.credentials.exceptions.NoCredentialException
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -8,6 +9,7 @@ import com.eliezer.marvel_search_api.core.base.BaseViewModel
 import com.eliezer.marvel_search_api.data.repository.characters.mock.SetCharactersRepository
 import com.eliezer.marvel_search_api.domain.usecase.GetListCharactersOffNameUseCase
 import com.eliezer.marvel_search_api.data.repository.comics.mock.SetComicsRepository
+import com.eliezer.marvel_search_api.domain.usecase.GetAuthResultGoogleAddNewAccountUseCase
 import com.eliezer.marvel_search_api.domain.usecase.GetListComicsOffNameUseCase
 import com.eliezer.marvel_search_api.domain.usecase.GetAuthResultGoogleExistingAccountUseCase
 import com.eliezer.marvel_search_api.models.dataclass.Characters
@@ -26,7 +28,8 @@ class MarvelSearchViewModel @Inject constructor(
     private val setComicsUseCase : SetComicsRepository,
     private val getCharactersUseCase: GetListCharactersOffNameUseCase,
     private val getComicsUseCase: GetListComicsOffNameUseCase,
-    private val getAuthResultGoogleExistingAccountUseCase: GetAuthResultGoogleExistingAccountUseCase
+    private val getAuthResultGoogleExistingAccountUseCase: GetAuthResultGoogleExistingAccountUseCase,
+    private val getAuthResultGoogleAddNewAccountUseCase: GetAuthResultGoogleAddNewAccountUseCase
 )  : BaseViewModel() {
 
     private var _sizeResult  = MutableLiveData<Int>()
@@ -71,7 +74,24 @@ class MarvelSearchViewModel @Inject constructor(
                     _error.value = it
                 }
                 .collect {
-                    notifySignIn(it)
+                    notifySignIn(it
+                        ,context
+                    )
+                }
+        }
+    }
+    fun signInNewGoogleAccount(context: Context) {
+        viewModelScope.launch {
+            getAuthResultGoogleAddNewAccountUseCase.invoke(context)
+                .onStart { _loading.value = true }
+                .onCompletion { _loading.value = false }
+                .catch {
+                    _error.value = it
+                }
+                .collect {
+                    notifySignIn(it
+                    ,context
+                    )
                 }
         }
     }
@@ -79,13 +99,18 @@ class MarvelSearchViewModel @Inject constructor(
 
 
 
-    private fun notifySignIn(result: Result<AuthResult>) {
+    private fun notifySignIn(result: Result<AuthResult>
+                             ,context: Context
+    ) {
         result.fold(
             onSuccess = {
                 _authResult.postValue( it)
             },
             onFailure = { e ->
                 _error.value = e
+                //TODO Cambiar
+                if(e is NoCredentialException)
+                    signInNewGoogleAccount(context)
             }
         )
     }

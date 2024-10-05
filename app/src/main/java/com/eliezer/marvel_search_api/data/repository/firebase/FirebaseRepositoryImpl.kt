@@ -17,16 +17,16 @@ class FirebaseRepositoryImpl @Inject constructor(
     override fun getFavoriteIdCharacters(): Flow<Result<ArrayList<Int>>> =  datasource.getFavoriteIdCharacters()
 
     override fun getFavoriteIdComics(): Flow<Result<ArrayList<Int>>> = datasource.getFavoriteIdComics()
-    override fun insertFavoriteIdCharacter(idCharacter: Int): Flow<Unit> =
+    override fun insertFavoriteIdCharacter(idCharacter: Int) =
         datasource.insertFavoriteIdCharacter(idCharacter)
 
-    override fun insertFavoriteIdComic(idComic: Int): Flow<Unit> =
+    override fun insertFavoriteIdComic(idComic: Int) =
         datasource.insertFavoriteIdComic(idComic)
 
-    override fun deleteFavoriteIdCharacter(idCharacter: Int): Flow<Unit> =
+    override fun deleteFavoriteIdCharacter(idCharacter: Int) =
         datasource.deleteFavoriteIdCharacter(idCharacter)
 
-    override fun deleteFavoriteIdComic(idComic: Int): Flow<Unit> =
+    override fun deleteFavoriteIdComic(idComic: Int) =
         datasource.deleteFavoriteIdComic(idComic)
     override fun analytics() {
     }

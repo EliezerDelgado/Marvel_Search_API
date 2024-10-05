@@ -35,13 +35,13 @@ class CharactersListFunctionImplement(
     fun getListSearchCharactersRepository()
     {
         searchCharacter?.also {
-            val characters = characterListFunctionManagerRepository.getCharactersRepository.getListRepository(it)
+            val characters = characterListFunctionManagerRepository.getListRepository(it)
             setCharacterList(characters)
         }
     }
     fun getListFavoriteCharactersRepository(favoriteId : String)
     {
-        val characters = characterListFunctionManagerRepository.getCharactersRepository.getListRepository(favoriteId)
+        val characters = characterListFunctionManagerRepository.getListRepository(favoriteId)
         setCharacterList(characters)
     }
 
@@ -63,7 +63,7 @@ class CharactersListFunctionImplement(
 
     private fun getListCharacters() {
         binding.charactersListRecyclerView.removeOnScrollListener(myOnScrolledListener)
-        val characters = characterListFunctionManagerRepository.getCharactersRepository.getListRepository(searchCharacter!!)
+        val characters = characterListFunctionManagerRepository.getListRepository(searchCharacter!!)
         if(characters==null || characters.total > characters.listCharacters.size)
         {
             searchListCharacters()
@@ -107,9 +107,9 @@ class CharactersListFunctionImplement(
 
     override fun onImageButtonFavoriteListener(character: Character) =
         if(character.favorite)
-            characterListFunctionManagerRepository.insertCharacter.insertFavoriteCharacter(character.id)
+            characterListFunctionManagerRepository.insertFavoriteCharacter(character.id)
         else
-            characterListFunctionManagerRepository.deleteCharacter.deleteFavoriteCharacter(character.id)
+            characterListFunctionManagerRepository.deleteFavoriteCharacter(character.id)
 }
 private class FunctionManagerViewModel(
     private val viewModel: CharactersListViewModel

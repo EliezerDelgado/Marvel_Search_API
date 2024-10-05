@@ -39,43 +39,28 @@ class FirebaseController @Inject constructor(
         )
     }
 
-    fun getFavoritesIdComics(): Flow<Result<ArrayList<Int>>> = flow {
-        emit(
-            myFireStoreSelects.getComicsId(LocalAccount.email)
-        )
-    }
+    fun getFavoritesIdComics(): Flow<Result<ArrayList<Int>>> =
+        myFireStoreSelects.getComicsId(LocalAccount.email)
 
-    fun insertFavoriteIdCharacter(idCharacter: Int) = flow {
-        emit(
+    fun insertFavoriteIdCharacter(idCharacter: Int) =
             myFireStoreInserts.insertCharacter(
                 idUser = LocalAccount.email,
                idCharacter =  idCharacter.toString()
             )
-        )
-    }
-    fun insertFavoriteIdComic(idComic: Int) : Flow<Unit> = flow {
-        emit(
+    fun insertFavoriteIdComic(idComic: Int) =
             myFireStoreInserts.insertComic(
                 idUser = LocalAccount.email,
                 idComic =  idComic.toString()
             )
-        )
-    }
 
-    fun deleteFavoriteIdCharacter(idCharacter: Int) = flow {
-        emit(
+    fun deleteFavoriteIdCharacter(idCharacter: Int)=
             myFireStoreDelete.deleteCharacter(
                 idUser = LocalAccount.email,
                 idCharacter =  idCharacter.toString()
             )
-        )
-    }
-    fun deleteFavoriteIdComic(idComic: Int) = flow {
-        emit(
+    fun deleteFavoriteIdComic(idComic: Int) =
             myFireStoreDelete.deleteComic(
                 idUser = LocalAccount.email,
                 idComic =  idComic.toString()
             )
-        )
-    }
 }

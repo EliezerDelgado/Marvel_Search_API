@@ -35,14 +35,14 @@ class MyFirebaseAuth @Inject constructor() {
                 val credential = getCredential(context,credentialManager,googleOption)
                 return checkCredentials(credential)
             } catch (e: GetCredentialCancellationException) {
-                return Result.failure(Exception("Sign-in was canceled. Please try again."))
+                return Result.failure(e)
             } catch (e: Exception) {
                 return Result.failure(e)
             }
         }
     suspend fun googleSignInExistingAccount(context: Context): Result<AuthResult> {
         try {
-                // Initialize Credential Manager
+                // Initialize Credential Manage
                 val credentialManager: CredentialManager = CredentialManager.create(context)
                 // Generate a nonce (a random number used once)
                 val googleIdOption: GetGoogleIdOption =getGoogleExistingId(context)
@@ -50,9 +50,9 @@ class MyFirebaseAuth @Inject constructor() {
                 val credential = getCredential(context,credentialManager,googleIdOption)
                 return checkCredentials(credential)
             } catch (e: GetCredentialCancellationException) {
-                return Result.failure(Exception("Sign-in was canceled. Please try again."))
+                return Result.failure(e)
             }catch (e: NoCredentialException) {
-            return Result.failure(Exception("No Google Account available"))
+            return Result.failure(e)
         } catch (e: Exception) {
                 return Result.failure(e)
             }
@@ -82,7 +82,7 @@ class MyFirebaseAuth @Inject constructor() {
                 val authResult = firebaseAuth.signInWithCredential(authCredential).await()
                 return Result.success(authResult)
             } else {
-                throw RuntimeException("Received an invalid credential type")
+                return Result.failure(RuntimeException("Received an invalid credential type"))
             }
 
     }

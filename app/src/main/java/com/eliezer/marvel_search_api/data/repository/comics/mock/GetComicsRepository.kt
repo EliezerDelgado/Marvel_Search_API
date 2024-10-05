@@ -7,7 +7,7 @@ import javax.inject.Inject
 class GetComicsRepository @Inject constructor(
     private val comicsRepository: ComicsRepository
 ){
-    fun getListRepository(search : String) :  Comics?{
-        return comicsRepository.getListTmpComics(search)
+    fun getListRepository(comic : String) :  Comics?{
+        return comicsRepository.getListTmpComics(comic)
     }
 }

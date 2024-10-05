@@ -9,7 +9,7 @@ import javax.inject.Inject
 class FireStoreInsertComic @Inject constructor(
     private val firebaseRepository: FirebaseRepository
 ){
-    fun insertFavoriteComic(comicInt : Int) {
-        firebaseRepository.insertFavoriteIdComic(comicInt)
+    fun insertFavoriteComic(comicId : Int) {
+        firebaseRepository.insertFavoriteIdComic(comicId)
     }
 }

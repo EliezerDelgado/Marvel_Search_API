@@ -12,16 +12,15 @@ class FavoritesFragment :  BaseFragment<FragmentFavoritesBinding>(
 )  {
     private var pagerAdapter : FavoritesPagerAdapter? = null
     private var funImpl : FavoritesFunctionImplement? = null
-    private val favoriteViewModel: FavoriteViewModel by viewModels()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         pagerAdapter = FavoritesPagerAdapter(this)
-        funImpl = FavoritesFunctionImplement(binding,pagerAdapter!!,favoriteViewModel,requireContext())
+        funImpl = FavoritesFunctionImplement(binding,pagerAdapter!!)
         funImpl?.setFragments()
         funImpl?.setContentView()
-        funImpl?.createTabLayout()
+        funImpl?.createTabLayout(requireContext().resources,requireContext().theme)
     }
 
     override fun onDestroyView() {

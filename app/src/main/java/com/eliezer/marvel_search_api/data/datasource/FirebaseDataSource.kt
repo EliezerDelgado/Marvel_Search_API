@@ -9,9 +9,9 @@ interface FirebaseDataSource {
     fun signInAddGoogleNewAccount(context: Context): Flow<Result<AuthResult>>
     fun getFavoriteIdCharacters(): Flow<Result<ArrayList<Int>>>
     fun getFavoriteIdComics(): Flow<Result<ArrayList<Int>>>
-    fun insertFavoriteIdCharacter(idCharacter: Int) : Flow<Unit>
-    fun insertFavoriteIdComic(idComic: Int) : Flow<Unit>
-    fun deleteFavoriteIdCharacter(idCharacter: Int) : Flow<Unit>
-    fun deleteFavoriteIdComic(idComic: Int) : Flow<Unit>
+    fun insertFavoriteIdCharacter(idCharacter: Int)
+    fun insertFavoriteIdComic(idComic: Int)
+    fun deleteFavoriteIdCharacter(idCharacter: Int)
+    fun deleteFavoriteIdComic(idComic: Int)
 
 }

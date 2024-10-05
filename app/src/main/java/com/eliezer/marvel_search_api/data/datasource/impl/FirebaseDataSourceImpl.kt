@@ -9,7 +9,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class FirebaseDataSourceImpl @Inject constructor(private val firebaseController: FirebaseController) : FirebaseDataSource {
+class FirebaseDataSourceImpl @Inject constructor(
+    private val firebaseController: FirebaseController
+) : FirebaseDataSource {
     override fun signInGoogleExistingAccount(context: Context) : Flow<Result<AuthResult>> =firebaseController.signInExistingGoogleAccount(context)
     override fun signInAddGoogleNewAccount(context: Context) : Flow<Result<AuthResult>> =firebaseController.signInAddNewGoogleAccount(context)
     override fun getFavoriteIdCharacters(): Flow<Result<ArrayList<Int>>> =
@@ -18,15 +20,15 @@ class FirebaseDataSourceImpl @Inject constructor(private val firebaseController:
     override fun getFavoriteIdComics(): Flow<Result<ArrayList<Int>>> =
     firebaseController.getFavoritesIdComics()
 
-    override fun insertFavoriteIdCharacter(idCharacter: Int): Flow<Unit> =
+    override fun insertFavoriteIdCharacter(idCharacter: Int) =
         firebaseController.insertFavoriteIdCharacter(idCharacter)
 
-    override fun insertFavoriteIdComic(idComic: Int): Flow<Unit> =
+    override fun insertFavoriteIdComic(idComic: Int) =
         firebaseController.insertFavoriteIdComic(idComic)
 
-    override fun deleteFavoriteIdCharacter(idCharacter: Int): Flow<Unit> =
+    override fun deleteFavoriteIdCharacter(idCharacter: Int) =
         firebaseController.deleteFavoriteIdCharacter(idCharacter)
 
-    override fun deleteFavoriteIdComic(idComic: Int): Flow<Unit> =
+    override fun deleteFavoriteIdComic(idComic: Int) =
         firebaseController.deleteFavoriteIdComic(idComic)
 }

@@ -1,11 +1,13 @@
 package com.eliezer.marvel_search_api.ui.fragments.comic_list.functionImp
 
 import android.os.Bundle
+import androidx.core.text.util.LocalePreferences
 import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_search_api.data.repository.comics.mock.GetComicsRepository
 import com.eliezer.marvel_search_api.databinding.FragmentComicsListBinding
 import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
 import com.eliezer.marvel_search_api.domain.listener.MyOnScrolledListener
+import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.eliezer.marvel_search_api.models.dataclass.Comic
 import com.eliezer.marvel_search_api.models.dataclass.Comics
 import com.eliezer.marvel_search_api.ui.fragments.character_list.CharactersListFragmentArgs
@@ -21,28 +23,28 @@ class ComicsListFunctionImplement (
     private val navigationMainActions: NavigationMainActions,
     private val comicListFunctionManagerRepository: ComicListFunctionManagerRepository,
     private val owner : LifecycleOwner
-) : ComicsListAdapter.ComicHolderListener{
-    private var title : String? = null
+) : ComicsListAdapter.ComicHolderListener {
+    private var title: String? = null
     private var listIdsFavorite = ArrayList<Int>()
-    private val myOnScrolledListener = MyOnScrolledListener { getListComics()}
+    private val myOnScrolledListener = MyOnScrolledListener { getListComics() }
     private val functionManagerViewModel = FunctionManagerViewModel(viewModel)
     private val functionManagerRecyclerAdapter = FunctionManagerRecyclerAdapter(this)
     private val functionManagerBinding = FunctionManagerBinding(binding)
 
 
-
-    fun getListSearchComicsRepository()
-    {
+    fun getListSearchComicsRepository() {
         title?.also {
-            val comics = comicListFunctionManagerRepository.getComicsRepository.getListRepository(it)
+            val comics = comicListFunctionManagerRepository.getListRepository(it)
             functionManagerRecyclerAdapter.setComicsList(comics)
+            getIdComicsModeSearch(owner)
         }
     }
-    fun getListFavoriteComicsRepository(favoriteId : String)
-    {
-        val comics = comicListFunctionManagerRepository.getComicsRepository.getListRepository(favoriteId)
+
+    fun getListFavoriteComicsRepository(favoriteId: String) {
+        val comics = comicListFunctionManagerRepository.getListRepository(favoriteId)
         functionManagerRecyclerAdapter.setComicsList(comics)
     }
+
     fun setAdapter() {
         functionManagerBinding.setAdapter(functionManagerRecyclerAdapter.adapter!!)
         functionManagerBinding.recyclerViewComicsAddScrollListener(myOnScrolledListener)
@@ -50,14 +52,21 @@ class ComicsListFunctionImplement (
 
 
     override fun onComicItemClickListener(comic: Comic) {
-        navigationMainActions.doActionComicsListFragmentToComicDescriptionFragment(comic =comic)
+        navigationMainActions.doActionComicsListFragmentToComicDescriptionFragment(comic = comic)
     }
 
-    override fun onImageButtonFavoriteListener(comic:Comic) =
-         if(comic.favorite)
-             comicListFunctionManagerRepository.insertComic.insertFavoriteComic(comic.id)
-        else
-             comicListFunctionManagerRepository.deleteComic.deleteFavoriteComic(comic.id)
+    override fun onImageButtonFavoriteListener(comic: Comic) {
+        if (LocalAccount.authResult?.run {
+                if (comic.favorite)
+                    comicListFunctionManagerRepository.insertFavoriteComic(comic.id)
+                else
+                    comicListFunctionManagerRepository.deleteFavoriteComic(comic.id)
+                true
+            } == null) {
+            //Todo error no sig in
+            comic.toString()
+        }
+    }
 
 
     fun getMode(arguments: Bundle) = CharactersListFragmentArgs.fromBundle(arguments).argMode
@@ -68,15 +77,16 @@ class ComicsListFunctionImplement (
 
     private fun getListComics() {
         functionManagerBinding.recyclerViewComicsRemoveScrollListener(myOnScrolledListener)
-        val comics = comicListFunctionManagerRepository.getComicsRepository.getListRepository(title!!)
-        if(comics==null || comics.total > comics.listComics.size)
+        val comics = comicListFunctionManagerRepository.getListRepository(title!!)
+        if (comics == null || comics.total > comics.listComics.size)
             searchListComics()
         else if (functionManagerRecyclerAdapter.adapter!!.isListEmpty())
             setListComics(comics)
 
     }
+
     private fun searchListComics() {
-        functionManagerViewModel.setListComicsObservesVM(owner,::setListComics)
+        functionManagerViewModel.setListComicsObservesVM(owner, ::setListComics)
         functionManagerViewModel.searchComicList(title!!)
     }
 
@@ -92,13 +102,22 @@ class ComicsListFunctionImplement (
         functionManagerBinding.recyclerViewComicsScrollToPosition(position)
     }
 
-    private fun getIdComicsModeSearch(owner: LifecycleOwner) =  functionManagerViewModel.setIdComicsObservesVM(owner,::setListIdFavorite)
+    private fun getIdComicsModeSearch(owner: LifecycleOwner) {
+        functionManagerViewModel.setIdComicsObservesVM(owner,::setListIdFavoriteModeSearch)
+        functionManagerViewModel.getFavoriteIdsComicsList()
+    }
 
-    private fun setListIdFavorite(ids: ArrayList<Int>) {
+
+    private fun setListIdFavoriteModeSearch(ids: ArrayList<Int>) {
         listIdsFavorite = ids
         functionManagerRecyclerAdapter.adapter?.setFavoriteComics(ids)
-        getIdComicsModeSearch(owner)
     }
+    private fun setListIdFavoriteModeFavorite(ids: ArrayList<Int>) {
+        listIdsFavorite = ids
+        functionManagerRecyclerAdapter.adapter?.setFavoriteComics(ids)
+        getListComicsByIds(ids)
+    }
+
 
     fun getIdComicsModeFavorite() =  functionManagerViewModel.setIdComicsObservesVM(owner,::getListComicsByIds)
     private fun getListComicsByIds(ids: ArrayList<Int>) {
@@ -162,6 +181,10 @@ private class FunctionManagerViewModel(
     fun getFavoriteComicsList(ids : ArrayList<Int>)
     {
         viewModel.getFavoriteComicsList(ids)
+    }
+    fun getFavoriteIdsComicsList()
+    {
+        viewModel.getFavoriteIdComicsList()
     }
 
     fun searchComicList(title : String)

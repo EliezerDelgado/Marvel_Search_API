@@ -34,7 +34,7 @@ class ComicsListFragment :
             binding,
             comicsListViewModel,
             mainActivity(requireActivity()).navigationMainActions!!,
-            getComicsRepository,
+            comicListFunctionManagerRepository,
             this
         )
         mode = funImpl?.getMode(requireArguments())
