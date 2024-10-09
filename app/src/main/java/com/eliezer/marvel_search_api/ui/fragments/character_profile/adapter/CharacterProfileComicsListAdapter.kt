@@ -23,7 +23,7 @@ class CharacterProfileComicsListAdapter(items : ArrayList<Comic>,private val lis
 
     fun setComics(listComic : List<Comic>)
     {
-        setListItems(listComic)
+        addListItems(listComic)
         items.sortBy { it.id }
         fillItemsContainText("")
     }
@@ -39,7 +39,7 @@ class CharacterProfileComicsListAdapter(items : ArrayList<Comic>,private val lis
     }
 
     private fun resetItemContain() {
-        update()
+        update(0,items.size-1)
     }
 
     override fun nextPosition()

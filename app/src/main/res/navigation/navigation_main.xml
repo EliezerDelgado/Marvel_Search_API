@@ -75,5 +75,12 @@
         android:id="@+id/favoritesFragment"
         android:name="com.eliezer.marvel_search_api.ui.fragments.favorites.FavoritesFragment"
         android:label="fragment_favorites"
-        tools:layout="@layout/fragment_favorites" />
+        tools:layout="@layout/fragment_favorites" >
+        <action
+            android:id="@+id/action_favoritesFragment_to_characterProfileFragment"
+            app:destination="@id/characterProfileFragment" />
+        <action
+            android:id="@+id/action_favoritesFragment_to_comicDescriptionFragment"
+            app:destination="@id/comicDescriptionFragment" />
+    </fragment>
 </navigation>

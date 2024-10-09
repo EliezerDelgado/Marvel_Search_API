@@ -80,7 +80,7 @@ interface ApiMarvelHttpService {
         @Query("ts") ts : Long,
         @Query("apikey") apikey : String,
         @Query("hash") hash : String,
-    ) : ComicResponse
+    ) : ComicDataWrapper
 
     @GET(/* value = */ " /v1/public/comics/{comicId}/characters")
     suspend fun  getComicCharacters(

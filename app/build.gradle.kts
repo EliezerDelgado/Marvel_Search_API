@@ -1,5 +1,3 @@
-import com.android.build.api.dsl.Packaging
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -68,6 +66,7 @@ android {
 }
 
 dependencies {
+
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.javax.inject)
     implementation(libs.gson)
@@ -127,4 +126,10 @@ dependencies {
     //ELIMINAR Android 13 and below.
     implementation(libs.androidx.credentials.play.services.auth)
 
+    //RoomDatabase
+    implementation(libs.androidx.room.runtime)
+    kapt(libs.androidx.room.compiler)
+
+    // To use Kotlin annotation processing tool (kapt)
+    kapt(libs.room.compiler)
 }

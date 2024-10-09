@@ -10,7 +10,7 @@ data class ComicDataWrapper (
   @SerializedName("copyright"       ) var copyright       : String? = null,
   @SerializedName("attributionText" ) var attributionText : String? = null,
   @SerializedName("attributionHTML" ) var attributionHTML : String? = null,
-  @SerializedName("data"            ) var data            : ComicDataContainer?   = ComicDataContainer(),
+  @SerializedName("data"            ) var data            : ComicDataContainer   = ComicDataContainer(),
   @SerializedName("etag"            ) var etag            : String? = null
 
 )

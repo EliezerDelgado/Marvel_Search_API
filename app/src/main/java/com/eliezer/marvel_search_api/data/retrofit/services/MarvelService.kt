@@ -8,7 +8,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class CharacterService @Inject constructor(
+class MarvelService @Inject constructor(
             private val apiMarvelHttpService: ApiMarvelHttpService
             ){
     suspend fun listCharacters(name : String, limit : Int, offset : Int): CharacterDataWrapper {
@@ -66,23 +66,16 @@ class CharacterService @Inject constructor(
             hash = hash
         )
     }
-    suspend fun listComics(ids : ArrayList<Int>): ComicDataWrapper {
+    suspend fun listComics(id : Int): ComicDataWrapper {
         val ts = System.currentTimeMillis()
         val apiKey = RetrofitHash.publicKey
         val hash = RetrofitHash.generateHash(ts)
-        val result = ComicDataWrapper()
-        for(id in ids)
-        {
-            result.data!!.results.add(
-                apiMarvelHttpService.getComics(
-                    comicId = id,
-                    ts = ts,
-                    apikey = apiKey,
-                    hash = hash
-                )
-            )
-        }
-        return result
+        return apiMarvelHttpService.getComics(
+            comicId = id,
+            ts = ts,
+            apikey = apiKey,
+            hash = hash
+        )
     }
 
     suspend fun listCharacterComics(characterId: Int,limit : Int, offset : Int): ComicDataWrapper {

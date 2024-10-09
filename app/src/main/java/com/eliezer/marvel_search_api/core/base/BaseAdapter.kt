@@ -2,9 +2,7 @@ package com.eliezer.marvel_search_api.core.base
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.eliezer.marvel_search_api.core.domain.DiffUtilCallback
 import com.eliezer.marvel_search_api.core.utils.MyDiffUtils
 import com.eliezer.marvel_search_api.models.SearchEncounter
 
@@ -47,24 +45,42 @@ abstract class BaseAdapter<T, S : BaseItemViewHolder<T>>(protected var items: Ar
     override fun getItemCount(): Int {
        return items.size
     }
-    protected fun setListItems(items: List<T>)
+    protected fun addListItems(items: List<T>)
     {
         diffUtils.start(this.items)
-        this.items.addAll(items)
+        items.forEach{
+            if(this.items.contains(it))
+                this.items.add(it)
+        }
         diffUtils.finish(this.items,this)
     }
-    fun starChanges()
+    protected fun setListItems(items: List<T>)
+    {
+        clearItems()
+        starChanges()
+        this.items.addAll(items)
+        finishChanges()
+    }
+
+    protected fun clearItems()
+    {
+        starChanges()
+        items.clear()
+        finishChanges()
+    }
+
+    private fun starChanges()
     {
         diffUtils.start(this.items)
     }
-    fun finishChanges()
+    private fun finishChanges()
     {
         diffUtils.finish(this.items,this)
     }
 
-    fun update()
+    fun update(positionStart: Int,positionEnd: Int)
     {
-        notifyDataSetChanged()
+        notifyItemRangeChanged(positionStart,positionEnd-positionStart)
     }
 
     override fun onBindViewHolder(holder: S, position: Int) {

@@ -12,8 +12,15 @@ class ComicsListAdapter (items : ArrayList<Comic>,private val listener : ComicHo
         fun onComicItemClickListener(comic: Comic)
         fun onImageButtonFavoriteListener(comic : Comic)
     }
-    fun setComics(comics : List<Comic>) =
+    fun addComics(comics : List<Comic>) {
+        addListItems(comics)
+    }
+    fun setComics(comics : List<Comic>) {
         setListItems(comics)
+    }
+    fun clearComics() {
+        clearItems()
+    }
 
     override fun setViewHolder(inflater: LayoutInflater): ItemComicViewHolder {
         val binding = ItemComicBinding.inflate(inflater)
@@ -37,13 +44,24 @@ class ComicsListAdapter (items : ArrayList<Comic>,private val listener : ComicHo
         }
     }
 
-    fun setFavoriteComics(ids: java.util.ArrayList<Int>) {
-        starChanges()
+    fun setFavoriteComics(ids:ArrayList<Int>) {
         for (comic in items)
         {
-            if(ids.contains(comic.id))
+            if(ids.contains(comic.id)) {
                 comic.favorite = true
+                update(items.indexOf(comic),items.indexOf(comic)+1)
+            }
         }
-        finishChanges()
     }
+    fun setFavoriteComic(comic: Comic) {
+        val index = items.indexOf(comic)
+        items[index].favorite = true
+        update(index,index+1)
+    }
+    fun setNoFavoriteComic(comic: Comic) {
+        val index = items.indexOf(comic)
+        items[index].favorite = false
+        update(index,index+1)
+    }
+
 }

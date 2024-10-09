@@ -12,6 +12,7 @@ import com.eliezer.marvel_search_api.databinding.FragmentComicsListBinding
 import com.eliezer.marvel_search_api.ui.fragments.character_list.functionImp.function.ComicListFunctionManagerRepository
 import com.eliezer.marvel_search_api.ui.fragments.comic_list.functionImp.ComicsListFunctionImplement
 import com.eliezer.marvel_search_api.ui.fragments.comic_list.viewmodel.ComicsListViewModel
+import com.eliezer.marvel_search_api.ui.fragments.favorites.interfaces.FavoriteToolbarButtonsClickAction
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -19,7 +20,7 @@ import javax.inject.Inject
 class ComicsListFragment :
     BaseFragment<FragmentComicsListBinding>(
         FragmentComicsListBinding::inflate
-    )
+    ), FavoriteToolbarButtonsClickAction
 {
 
     @Inject
@@ -40,10 +41,17 @@ class ComicsListFragment :
         mode = funImpl?.getMode(requireArguments())
         funImpl?.setAdapter()
         if(mode == SEARCH_ID) {
+            funImpl?.setMyOnScrolledListener()
             funImpl?.getComicsArg(requireArguments())
             funImpl?.getListSearchComicsRepository()
-        }else if (mode == FAVORITE_ID)
+        }else if (mode == FAVORITE_ID) {
+            funImpl?.disableMyOnScrolledListener()
             funImpl?.getIdComicsModeFavorite()
+        }
+    }
+
+    override fun doReload() {
+        funImpl?.getIdComicsModeFavorite()
     }
 
     override fun onDestroyView() {

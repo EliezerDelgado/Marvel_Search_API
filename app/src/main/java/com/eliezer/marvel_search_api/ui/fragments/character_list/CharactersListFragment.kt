@@ -11,6 +11,7 @@ import com.eliezer.marvel_search_api.databinding.FragmentCharactersListBinding
 import com.eliezer.marvel_search_api.ui.fragments.character_list.functionImp.CharactersListFunctionImplement
 import com.eliezer.marvel_search_api.ui.fragments.character_list.functionImp.function.CharacterListFunctionManagerRepository
 import com.eliezer.marvel_search_api.ui.fragments.character_list.viewmodel.CharactersListViewModel
+import com.eliezer.marvel_search_api.ui.fragments.favorites.interfaces.FavoriteToolbarButtonsClickAction
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -18,7 +19,7 @@ import javax.inject.Inject
 class CharactersListFragment :
     BaseFragment<FragmentCharactersListBinding>(
         FragmentCharactersListBinding::inflate
-    )
+    ), FavoriteToolbarButtonsClickAction
 {
     @Inject
     lateinit var characterListFunctionManagerRepository: CharacterListFunctionManagerRepository
@@ -50,5 +51,9 @@ class CharactersListFragment :
     override fun onDestroyView() {
         super.onDestroyView()
         funImpl = null
+    }
+
+    override fun doReload() {
+        //funImpl?.getListFavoriteCharactersRepository(FAVORITE_ID)
     }
 }

@@ -33,11 +33,8 @@ class FirebaseController @Inject constructor(
             awaitClose { }
         }
 
-    fun getFavoritesIdCharacters(): Flow<Result<ArrayList<Int>>> = flow {
-        emit(
+    fun getFavoritesIdCharacters(): Flow<Result<ArrayList<Int>>> =
             myFireStoreSelects.getCharactersId(LocalAccount.email)
-        )
-    }
 
     fun getFavoritesIdComics(): Flow<Result<ArrayList<Int>>> =
         myFireStoreSelects.getComicsId(LocalAccount.email)

@@ -12,6 +12,6 @@ import com.google.firebase.auth.AuthResult
 
 
 object LocalAccount {
-    var authResult :AuthResult? = null
-    val email get() = authResult?.user?.email.toString()
+    var authResult = MutableLiveData<AuthResult?>()
+    val email get() = authResult.value?.user?.email.toString()
 }

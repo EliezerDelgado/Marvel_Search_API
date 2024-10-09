@@ -35,8 +35,8 @@ class MarvelSearchViewModel @Inject constructor(
     private var _sizeResult  = MutableLiveData<Int>()
     val sizeResult: LiveData<Int> get() = _sizeResult
 
-    private  var _authResult = MutableLiveData<AuthResult>()
-    val authResult : LiveData<AuthResult> get() = _authResult
+    private  var _googleAuthResult = MutableLiveData<AuthResult>()
+    val googleAuthResult : LiveData<AuthResult> get() = _googleAuthResult
 
     fun searchCharactersList(name: String) {
         viewModelScope.launch {
@@ -104,7 +104,7 @@ class MarvelSearchViewModel @Inject constructor(
     ) {
         result.fold(
             onSuccess = {
-                _authResult.postValue( it)
+                _googleAuthResult.postValue( it)
             },
             onFailure = { e ->
                 _error.value = e
@@ -137,7 +137,7 @@ class MarvelSearchViewModel @Inject constructor(
     }
 
     fun resetAuthResult() {
-        _authResult = MutableLiveData<AuthResult>()
+        _googleAuthResult = MutableLiveData<AuthResult>()
     }
 }
 /*

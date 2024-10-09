@@ -5,6 +5,8 @@ converterGson = "2.9.0"
 credentials = "1.5.0-alpha05"
 dagger = "2.49"
 daggerCompiler = "2.49"
+daggerCompilerVersion = "version-number"
+daggerVersion = "version-number"
 firebaseBom = "33.3.0"
 gson = "2.11.0"
 hiltAndroidCompiler = "2.49"
@@ -20,6 +22,8 @@ librariesBom = "  26.48.0-SNAPSHOT"
 listenablefuture = "9999.0-empty-to-avoid-conflict-with-guava"
 material = "1.12.0"
 activity = "1.9.2"
+roomCompiler="2.6.1"
+roomRuntime="2.6.1"
 constraintlayout = "2.1.4"
 navigationCompose = "2.8.1"
 navigationFragmentKtx = "2.8.1"
@@ -39,12 +43,15 @@ androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = 
 androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
 androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials" }
 androidx-navigation-safe-args-gradle-plugin = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "navigationCompose" }
+androidx-room-compiler = { module = "androidx.room:room-compiler",version.ref = "roomCompiler" }
+androidx-room-runtime = { module = "androidx.room:room-runtime",version.ref = "roomRuntime"  }
 androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "workRuntime" }
-cloud-google-cloud-datastore = { module = "com.google.cloud:google-cloud-datastore" }
 compiler = { module = "com.android.databinding:compiler", version.ref = "compiler" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "daggerCompiler" }
+dagger-compiler-vversionnumber = { module = "com.google.dagger:dagger-compiler", version.ref = "daggerCompilerVersion" }
+dagger-vversionnumber = { module = "com.google.dagger:dagger", version.ref = "daggerVersion" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
@@ -58,7 +65,6 @@ androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "j
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
-libraries-bom = { module = "com.google.cloud:libraries-bom", version.ref = "librariesBom" }
 listenablefuture = { module = "com.google.guava:listenablefuture", version.ref = "listenablefuture" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
@@ -68,6 +74,7 @@ androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation
 play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
 protolite-well-known-types = { module = "com.google.firebase:protolite-well-known-types", version.ref = "protoliteWellKnownTypes" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+room-compiler = { module = "androidx.room:room-compiler" }
 transport-runtime = { group = "com.google.android.datatransport", name = "transport-runtime", version.ref = "transportRuntime" }
 firebase-components = { group = "com.google.firebase", name = "firebase-components", version.ref = "firebaseComponents" }
 androidx-hilt-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "hiltWork" }

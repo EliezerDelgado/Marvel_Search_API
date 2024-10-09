@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import com.eliezer.marvel_search_api.core.base.BaseAdapter
 import com.eliezer.marvel_search_api.databinding.ItemCharacterBinding
 import com.eliezer.marvel_search_api.models.dataclass.Character
-import com.eliezer.marvel_search_api.models.dataclass.Comic
 
 class CharactersListAdapter(items : ArrayList<Character>,private val listener : CharacterHolderListener?) : BaseAdapter<Character, ItemCharacterViewHolder>(
     items = items) {
@@ -14,7 +13,7 @@ class CharactersListAdapter(items : ArrayList<Character>,private val listener : 
         fun onImageButtonFavoriteListener(character : Character)
     }
     fun setCharacters(characters : List<Character>) =
-        setListItems(characters)
+        addListItems(characters)
 
     override fun setViewHolder(inflater: LayoutInflater): ItemCharacterViewHolder {
         val binding = ItemCharacterBinding.inflate(inflater)

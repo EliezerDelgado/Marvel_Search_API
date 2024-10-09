@@ -6,4 +6,5 @@
     <attr name="toolbarTheme" format="reference"/>
     <attr name="colorBackgroundDisable" format="color"/>
     <attr name="colorTextDisable" format="color"/>
+    <attr name="colorTertiary" format="color"/>
 </resources>

@@ -13,4 +13,5 @@
         <item name="colorBackgroundDisable">@color/gray</item>
         <item name="colorTextDisable">@color/dark_gray</item>
     </style>
+    <style name="Theme.MarvelSearch" parent="Base.Theme.MarvelSearchAPI" />
 </resources>

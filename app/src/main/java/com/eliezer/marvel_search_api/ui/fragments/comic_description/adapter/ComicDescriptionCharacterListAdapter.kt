@@ -22,7 +22,7 @@ class ComicDescriptionCharacterListAdapter(items : ArrayList<Character>,private 
     override fun isInFirstPosition() = searchRecycler.isInFirstPosition
     fun setCharacters(listCharacter : List<Character>)
     {
-        setListItems(listCharacter)
+        addListItems(listCharacter)
         items.sortBy { it.id }
         fillItemsContainText("")
     }
@@ -38,7 +38,7 @@ class ComicDescriptionCharacterListAdapter(items : ArrayList<Character>,private 
     }
 
     private fun resetItemContain() {
-        update()
+        update(0,items.size-1)
     }
 
     override fun nextPosition()

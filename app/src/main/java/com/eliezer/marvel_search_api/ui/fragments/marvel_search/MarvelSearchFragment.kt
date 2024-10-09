@@ -15,6 +15,7 @@ import com.eliezer.marvel_search_api.data.mappers.mainActivity
 import com.eliezer.marvel_search_api.databinding.FragmentMarvelSearchBinding
 import com.eliezer.marvel_search_api.ui.fragments.marvel_search.functionImp.MarvelSearchFunctionImplement
 import com.eliezer.marvel_search_api.ui.fragments.marvel_search.viewmodel.MarvelSearchViewModel
+import com.google.firebase.auth.AuthResult
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,7 +26,7 @@ class MarvelSearchFragment : BaseFragment<FragmentMarvelSearchBinding>(
 
 
     private val searchViewModel: MarvelSearchViewModel by viewModels()
-    private var funImpl : MarvelSearchFunctionImplement? = null
+    private var funImpl: MarvelSearchFunctionImplement? = null
     private val networkCallback = object : NetworkCallback() {
         override fun onAvailable(network: Network) {
             // Called when a network is available
@@ -34,31 +35,48 @@ class MarvelSearchFragment : BaseFragment<FragmentMarvelSearchBinding>(
                 enableGoogleButtons()
             }
         }
+
         override fun onLost(network: Network) {
             // Called when a network is lost
             funImpl?.apply {
-                disableSearchButtons ()
+                disableSearchButtons()
                 disableGoogleButtons()
                 disableFavoriteButtons()
             }
         }
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mainActivity(requireActivity()).setToolbarView(false)
-        funImpl = MarvelSearchFunctionImplement(binding,searchViewModel, mainActivity(requireActivity()).navigationMainActions!!,viewLifecycleOwner)
+        LocalAccount.authResult.observe(this.viewLifecycleOwner, ::listenAuthResult)
+        funImpl = MarvelSearchFunctionImplement(
+            binding,
+            searchViewModel,
+            mainActivity(requireActivity()).navigationMainActions!!,
+            viewLifecycleOwner
+        )
         funImpl?.resetLists()
         funImpl?.buttonListener(requireContext())
         checkIsLogin()
-        if(requireContext().isInternetConnected)
+        if (requireContext().isInternetConnected)
             funImpl?.enableSearchButtons()
         else
             funImpl?.disableSearchButtons()
         requireContext().registerNetworkCallback(networkCallback)
     }
 
+    private fun listenAuthResult(authResult: AuthResult?) {
+        authResult?.also{
+            funImpl?.enableFavoriteButtons()
+        } ?: funImpl?.disableFavoriteButtons()
+    }
+
+
     private fun checkIsLogin() {
-        LocalAccount.authResult?.also { funImpl?.disableFavoriteButtons() }
+        LocalAccount.authResult.value?.also{
+            funImpl?.enableFavoriteButtons()
+        } ?: funImpl?.disableFavoriteButtons()
     }
 
 

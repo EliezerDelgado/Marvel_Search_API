@@ -14,40 +14,45 @@ import javax.inject.Singleton
 
 @Singleton
 class MyFireStoreSelects @Inject constructor() {
-    fun getCharactersId(idUser : String) : Result<ArrayList<Int>>
-    {
-        val idCharacter = arrayListOf<Int>()
-        var ex : Exception? = null
-        usersCollection?.also {
+    fun getCharactersId(idUser : String) : Flow<Result<ArrayList<Int>>> = callbackFlow {
+        usersCollection!!.also {
             val docRef = it.document(idUser).collection("characters")
             docRef.get()
                 .addOnSuccessListener { result ->
-                    for (document in result) {
-                        idCharacter.add(document.id.toInt())
-                    }
+                    trySend(
+                        Result.success(
+                            ArrayList(
+                                result.map { res ->
+                                    res.id.toInt()
+                                }
+                            )
+                        )
+                    )
                 }
-                .addOnFailureListener { exception ->
-                    ex = Exception( "Error getting documents.", exception)
+                .addOnFailureListener {ex->
+                    trySend(Result.failure(ex))
                 }
         }
-        if(ex !=null )
-            return Result.failure(ex!!)
-        return Result.success(idCharacter)
+        awaitClose {  }
     }
-    fun getComicsId(idUser : String) : Flow<Result<ArrayList<Int>>> =
-        callbackFlow {
-            val idComics = arrayListOf<Int>()
+
+    fun getComicsId(idUser : String) : Flow<Result<ArrayList<Int>>> =    callbackFlow {
             usersCollection!!.also {
                 val docRef = it.document(idUser).collection("comics")
                 docRef.get()
                     .addOnSuccessListener { result ->
-                        for (document in result) {
-                            idComics.add(document.id.toInt())
-                        }
-                        trySend(Result.success(idComics))
+                        trySend(
+                            Result.success(
+                                ArrayList(
+                                    result.map { res ->
+                                        res.id.toInt()
+                                    }
+                                )
+                            )
+                        )
                     }
-                    .addOnFailureListener {
-                        trySend(Result.failure(Exception()))
+                    .addOnFailureListener { ex->
+                        trySend(Result.failure(ex))
                     }
             }
             awaitClose {  }

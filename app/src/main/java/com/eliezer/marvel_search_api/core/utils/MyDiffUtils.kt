@@ -10,11 +10,12 @@ class MyDiffUtils<T>() {
      private var oldItems= ArrayList<T>()
     fun start(oldItems:  ArrayList<T>)
     {
-        this.oldItems = oldItems
+        this.oldItems = ArrayList(oldItems)
+        newItems = arrayListOf()
     }
     fun finish(newItems : ArrayList<T>,adapter : RecyclerView.Adapter<*>)
     {
-        this.newItems = newItems
+        this.newItems = ArrayList(newItems)
         val diffCallback =  DiffUtilCallback(oldList = oldItems, newList =  newItems)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         diffResult.dispatchUpdatesTo(adapter)

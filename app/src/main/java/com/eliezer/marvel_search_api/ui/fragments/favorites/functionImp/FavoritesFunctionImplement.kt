@@ -21,7 +21,7 @@ class FavoritesFunctionImplement(binding: FragmentFavoritesBinding,pagerAdapter:
 
     fun setFragments() = functionPagerAdapter.setFragments()
     fun setContentView() = functionPagerAdapter.setContentView()
-    fun createTabLayout(resources: Resources,theme : Theme) = functionPagerAdapter.createTabLayout(resources,theme)
+    fun createTabLayout(myOnTabSelectedListened :MyOnTabSelectedListened) = functionPagerAdapter.createTabLayout(myOnTabSelectedListened)
 
 }
 
@@ -32,27 +32,23 @@ private  class FunctionPagerAdapter(
 {
 
     fun setFragments() {
-        pagerAdapter.addFragment(CharactersListFragment::class.java)
-        pagerAdapter.addFragment(ComicsListFragment::class.java)
+        pagerAdapter.createCharactersListFragment()
+        pagerAdapter.createComicsListFragment()
     }
 
     fun setContentView() {
         binding.favoritesViewpager2.setAdapter(pagerAdapter)
     }
 
-    fun createTabLayout(resources: Resources,theme : Theme) {
+    fun createTabLayout(myOnTabSelectedListened :MyOnTabSelectedListened) {
         binding.favoritesTabLayout.setTabIndicatorFullWidth(true)
         tabLayoutMediator()
-        setTabLayout(resources,theme)
+        setTabLayout(myOnTabSelectedListened)
     }
 
-    private fun setTabLayout(resources: Resources,theme : Theme) {
+    private fun setTabLayout(myOnTabSelectedListened :MyOnTabSelectedListened) {
         binding.favoritesTabLayout.addOnTabSelectedListener(
-            MyOnTabSelectedListened(
-                selectedColor = resources.getColor(R.color.attr_color_tertiary,theme),
-                unselectedColor = resources.getColor(R.color.attr_color_secondary,theme),
-                reselectedColor = resources.getColor(R.color.attr_color_tertiary,theme)
-            )
+            myOnTabSelectedListened
         )
         binding.favoritesTabLayout.selectTab(
             binding.favoritesTabLayout.getTabAt(
@@ -66,7 +62,6 @@ private  class FunctionPagerAdapter(
         TabLayoutMediator(
             binding.favoritesTabLayout, binding.favoritesViewpager2
         ) { tab: TabLayout.Tab, position: Int ->
-            val arrayView = ArrayList<ViewGroup>()
             when (position) {
                 0 -> {
                     tab.setIcon(R.drawable.ic_spiderman)

@@ -64,4 +64,5 @@ Capacidad analítica&#10;
 DISPONIBILIDAD PARA VIAJAR:&#10;
 No posees disponibilidad para viajar&#10;
     </string>
+    <string name="favorite_toolbar_menu_reload__title">Reload</string>
 </resources>

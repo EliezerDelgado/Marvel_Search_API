@@ -74,13 +74,12 @@ class MarvelSearchFunctionImplement(
         viewModel.sizeResult.observe(owner,::getSizeResultList)
     }
     private fun setObserveAuthResult(){
-        viewModel.authResult.observe(owner,::setAccount)
+        viewModel.googleAuthResult.observe(owner,::setAccount)
     }
 
     private fun setAccount(authResult: AuthResult) {
         setNotObserveAuthResult()
-        LocalAccount.authResult = authResult
-        enableFavoriteButtons()
+        LocalAccount.authResult.postValue(authResult)
     }
 
     private fun searchListCharacters(name:String)
@@ -178,7 +177,7 @@ class MarvelSearchFunctionImplement(
         viewModel.resetSizeResult()
     }
     private fun setNotObserveAuthResult() {
-        viewModel.authResult.removeObservers(owner)
+        viewModel.googleAuthResult.removeObservers(owner)
         viewModel.resetAuthResult()
     }
 
