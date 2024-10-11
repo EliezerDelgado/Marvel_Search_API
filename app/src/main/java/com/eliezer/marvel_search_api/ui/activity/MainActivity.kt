@@ -51,9 +51,7 @@ class MainActivity : AppCompatActivity() {
         getLocalUser()
     }
 
-    private fun getLocalUser() {
-        funImpl?.getLocalUserCredential()
-    }
+    private fun getLocalUser() =     funImpl?.getLocalUserCredential()
 
     fun setToolbarView(visibility : Boolean) =     funImpl?.setToolbarView(visibility)
     fun getToolBar() = binding?.mainToolbar
