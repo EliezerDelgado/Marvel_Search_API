@@ -8,7 +8,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetLocalUserAccountUseCase  @Inject constructor(
+class GetLocalUserAccountCredential  @Inject constructor(
     @IoDispatcher dispatcher: CoroutineDispatcher,
     private val localUserCredentialRepository : LocalUserCredentialRepository
 ): BaseFlowUseCase<Void?, MyUserCredential?>(dispatcher)  {

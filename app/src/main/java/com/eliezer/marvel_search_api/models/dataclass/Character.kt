@@ -7,13 +7,25 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 @Entity
-data class Character(
-    @PrimaryKey val id : Int,
+data class Character  @Ignore constructor(
+    @PrimaryKey  @ColumnInfo(name = "id") val id : Int,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "urlPicture") val urlPicture: String,
     @ColumnInfo(name = "description")val description : String,
-    @Ignore var favorite : Boolean = false
+    var favorite : Boolean = false
 ) : Parcelable {
+    constructor(
+        id : Int,
+        name: String,
+        urlPicture: String,
+        description : String
+    ) :this(
+        id,
+        name,
+        urlPicture,
+        description,
+        false
+    )
 
     @Ignore
     constructor(parcel: Parcel) : this(

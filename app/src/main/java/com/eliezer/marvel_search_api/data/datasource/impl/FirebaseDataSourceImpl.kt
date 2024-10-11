@@ -1,6 +1,7 @@
 package com.eliezer.marvel_search_api.data.datasource.impl
 
 import android.content.Context
+import androidx.credentials.Credential
 import com.eliezer.marvel_search_api.data.datasource.FirebaseDataSource
 import com.eliezer.marvel_search_api.data.firebase.controllers.FirebaseController
 import com.google.firebase.auth.AuthResult
@@ -31,4 +32,8 @@ class FirebaseDataSourceImpl @Inject constructor(
 
     override fun deleteFavoriteIdComic(idComic: Int) =
         firebaseController.deleteFavoriteIdComic(idComic)
+
+    override fun signInWithCredentialsGoogleAccount(credential: Credential): Flow<Result<AuthResult>> =
+        firebaseController.signInWithCredentialsGoogleAccount(credential)
+
 }

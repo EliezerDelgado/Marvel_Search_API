@@ -7,7 +7,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.eliezer.marvel_search_api.core.base.BaseViewModel
-import com.eliezer.marvel_search_api.data.firebase.services.MyFirebaseAuth
 import com.eliezer.marvel_search_api.data.repository.characters.mock.SetCharactersRepository
 import com.eliezer.marvel_search_api.domain.usecase.GetListCharactersOffNameUseCase
 import com.eliezer.marvel_search_api.data.repository.comics.mock.SetComicsRepository
@@ -19,9 +18,6 @@ import com.eliezer.marvel_search_api.models.dataclass.Characters
 import com.eliezer.marvel_search_api.models.dataclass.Comics
 import com.google.firebase.auth.AuthResult
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
@@ -89,7 +85,7 @@ class MarvelSearchViewModel @Inject constructor(
         }
     }
 
-    fun signInNewGoogleAccount(context: Context) {
+    private fun signInNewGoogleAccount(context: Context) {
         viewModelScope.launch {
             getAuthResultGoogleAddNewAccountUseCase.invoke(context)
                 .onStart { _loading.value = true }

@@ -45,14 +45,14 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        funImpl = binding?.let { MainActivityFunctionImplement(it,viewModel)}
+        funImpl = binding?.let { MainActivityFunctionImplement(it,viewModel,this)}
         _navigationMainActions = NavigationMainActions(binding!!.mainNavHostFragment)
         funImpl?.setMainToolbar()
         getLocalUser()
     }
 
     private fun getLocalUser() {
-
+        funImpl?.getLocalUserCredential()
     }
 
     fun setToolbarView(visibility : Boolean)

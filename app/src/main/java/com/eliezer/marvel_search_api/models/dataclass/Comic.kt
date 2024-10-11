@@ -7,13 +7,26 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 @Entity
-data class Comic(
+data class Comic @Ignore constructor(
     @PrimaryKey val id : Int,
     @ColumnInfo(name = "title")val title : String,
     @ColumnInfo(name = "urlPicture")val urlPicture: String,
     @ColumnInfo(name = "description")val description : String,
     @Ignore var favorite : Boolean = false
     ): Parcelable {
+    constructor(
+        id : Int,
+        title : String,
+        urlPicture: String,
+       description : String
+    ): this(
+        id,
+        title,
+        urlPicture,
+        description,
+        false
+    )
+
     @Ignore
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
