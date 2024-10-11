@@ -55,28 +55,18 @@ class MainActivity : AppCompatActivity() {
         funImpl?.getLocalUserCredential()
     }
 
-    fun setToolbarView(visibility : Boolean)
-    {
-        binding?.mainToolbar?.visibility = if(visibility) View.VISIBLE else View.GONE
-        getCoordinatorLayoutParams().behavior = if(visibility) AppBarLayout.ScrollingViewBehavior() else null
-        binding?.mainSubToolbar?.visibility = View.GONE
-        if(!visibility)
-            binding?.mainCoordinatorLayout?.requestLayout()
-    }
+    fun setToolbarView(visibility : Boolean) =     funImpl?.setToolbarView(visibility)
     fun getToolBar() = binding?.mainToolbar
     fun getSubToolBar() = binding?.mainSubToolbar
 
     fun getSubToolBarEditText() = binding?.mainSubToolbarEditText
 
-    fun setSubToolbarView(visibility: Boolean)
-    {
-        binding?.mainSubToolbar?.visibility = if(visibility) View.VISIBLE else View.GONE
-    }
-    private fun getCoordinatorLayoutParams() =  binding?.mainConstraintLayout?.layoutParams as CoordinatorLayout.LayoutParams
+    fun setSubToolbarView(visibility: Boolean) = funImpl?.setSubToolbarView(visibility)
 
     override fun onDestroy() {
         super.onDestroy()
         _navigationMainActions = null
+        funImpl = null
         binding = null
     }
 }

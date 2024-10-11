@@ -1,11 +1,15 @@
 package com.eliezer.marvel_search_api.ui.activity.funtionImp
 
+import android.view.View
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.credentials.Credential
 import androidx.lifecycle.LifecycleOwner
+import androidx.transition.Visibility
 import com.eliezer.marvel_search_api.databinding.ActivityMainBinding
 import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.eliezer.marvel_search_api.models.dataclass.MyUserCredential
 import com.eliezer.marvel_search_api.ui.activity.viewmodel.MainActivityViewModel
+import com.google.android.material.appbar.AppBarLayout
 import com.google.firebase.auth.AuthResult
 
 class MainActivityFunctionImplement(
@@ -48,6 +52,9 @@ class MainActivityFunctionImplement(
         functionManagerViewModel.setGetUserWithCredentialNotObserveVM(owner)
         LocalAccount.authResult.postValue(authResult)
     }
+    fun setToolbarView(visibility: Boolean) = functionManagerBinding.setToolbarView(visibility)
+
+    fun setSubToolbarView(visibility: Boolean) = functionManagerBinding.setSubToolbarView(visibility)
 }
 
 private class FunctionManagerBinding(
@@ -59,6 +66,20 @@ private class FunctionManagerBinding(
         binding.mainToolbar.bringToFront()
         binding.mainSubToolbar.bringToFront()
     }
+    fun setToolbarView(visibility : Boolean)
+    {
+        binding.mainToolbar.visibility = if(visibility) View.VISIBLE else View.GONE
+        getCoordinatorLayoutParams().behavior = if(visibility) AppBarLayout.ScrollingViewBehavior() else null
+        binding.mainSubToolbar.visibility = View.GONE
+        if(!visibility)
+            binding.mainCoordinatorLayout.requestLayout()
+    }
+
+    fun setSubToolbarView(visibility: Boolean)
+    {
+        binding.mainSubToolbar.visibility = if(visibility) View.VISIBLE else View.GONE
+    }
+    private fun getCoordinatorLayoutParams() =  binding.mainConstraintLayout.layoutParams as CoordinatorLayout.LayoutParams
 }
 private class FunctionManagerViewModel(
     private val viewModel : MainActivityViewModel
