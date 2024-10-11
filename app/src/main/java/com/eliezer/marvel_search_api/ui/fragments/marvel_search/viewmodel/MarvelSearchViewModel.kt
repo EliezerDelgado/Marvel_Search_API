@@ -1,21 +1,27 @@
 package com.eliezer.marvel_search_api.ui.fragments.marvel_search.viewmodel
 
 import android.content.Context
+import androidx.credentials.Credential
 import androidx.credentials.exceptions.NoCredentialException
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.eliezer.marvel_search_api.core.base.BaseViewModel
+import com.eliezer.marvel_search_api.data.firebase.services.MyFirebaseAuth
 import com.eliezer.marvel_search_api.data.repository.characters.mock.SetCharactersRepository
 import com.eliezer.marvel_search_api.domain.usecase.GetListCharactersOffNameUseCase
 import com.eliezer.marvel_search_api.data.repository.comics.mock.SetComicsRepository
 import com.eliezer.marvel_search_api.domain.usecase.GetAuthResultGoogleAddNewAccountUseCase
 import com.eliezer.marvel_search_api.domain.usecase.GetListComicsOffNameUseCase
 import com.eliezer.marvel_search_api.domain.usecase.GetAuthResultGoogleExistingAccountUseCase
+import com.eliezer.marvel_search_api.domain.usecase.GetGoogleAuthResultWithCredentialUseCase
 import com.eliezer.marvel_search_api.models.dataclass.Characters
 import com.eliezer.marvel_search_api.models.dataclass.Comics
 import com.google.firebase.auth.AuthResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
@@ -28,15 +34,16 @@ class MarvelSearchViewModel @Inject constructor(
     private val setComicsUseCase : SetComicsRepository,
     private val getCharactersUseCase: GetListCharactersOffNameUseCase,
     private val getComicsUseCase: GetListComicsOffNameUseCase,
+    private val getGoogleAuthResultWithCredentialUseCase: GetGoogleAuthResultWithCredentialUseCase,
     private val getAuthResultGoogleExistingAccountUseCase: GetAuthResultGoogleExistingAccountUseCase,
     private val getAuthResultGoogleAddNewAccountUseCase: GetAuthResultGoogleAddNewAccountUseCase
 )  : BaseViewModel() {
 
-    private var _sizeResult  = MutableLiveData<Int>()
+    private var _sizeResult = MutableLiveData<Int>()
     val sizeResult: LiveData<Int> get() = _sizeResult
 
-    private  var _googleAuthResult = MutableLiveData<AuthResult>()
-    val googleAuthResult : LiveData<AuthResult> get() = _googleAuthResult
+    private var _googleAuthResult = MutableLiveData<AuthResult>()
+    val googleAuthResult: LiveData<AuthResult> get() = _googleAuthResult
 
     fun searchCharactersList(name: String) {
         viewModelScope.launch {
@@ -47,10 +54,11 @@ class MarvelSearchViewModel @Inject constructor(
                     _error.value = it
                 }
                 .collect {
-                    onResultOfGetListCharacter(it,name)
+                    onResultOfGetListCharacter(it, name)
                 }
         }
     }
+
     fun searchComicsList(title: String) {
         viewModelScope.launch {
             getComicsUseCase.invoke(title)
@@ -60,7 +68,7 @@ class MarvelSearchViewModel @Inject constructor(
                     _error.value = it
                 }
                 .collect {
-                    onResultOfGetListComics(it,title)
+                    onResultOfGetListComics(it, title)
                 }
         }
     }
@@ -74,12 +82,13 @@ class MarvelSearchViewModel @Inject constructor(
                     _error.value = it
                 }
                 .collect {
-                    notifySignIn(it
-                        ,context
+                    notifySignIn(
+                        it, context
                     )
                 }
         }
     }
+
     fun signInNewGoogleAccount(context: Context) {
         viewModelScope.launch {
             getAuthResultGoogleAddNewAccountUseCase.invoke(context)
@@ -89,46 +98,44 @@ class MarvelSearchViewModel @Inject constructor(
                     _error.value = it
                 }
                 .collect {
-                    notifySignIn(it
-                    ,context
+                    notifySignIn(
+                        it, context
                     )
                 }
         }
     }
 
 
-
-
-    private fun notifySignIn(result: Result<AuthResult>
-                             ,context: Context
+    private fun notifySignIn(
+        result: Result<AuthResult>, context: Context?
     ) {
         result.fold(
             onSuccess = {
-                _googleAuthResult.postValue( it)
+                _googleAuthResult.postValue(it)
             },
             onFailure = { e ->
                 _error.value = e
                 //TODO Cambiar
-                if(e is NoCredentialException)
-                    signInNewGoogleAccount(context)
+                if (e is NoCredentialException)
+                    context?.also { signInNewGoogleAccount(it) }
             }
         )
     }
 
-    private fun onResultOfGetListCharacter(characters: Characters,name: String){
-        if(characters.listCharacters.isNotEmpty())
-            setCharactersUseCase.setListRepository(name,characters)
+    private fun onResultOfGetListCharacter(characters: Characters, name: String) {
+        if (characters.listCharacters.isNotEmpty())
+            setCharactersUseCase.setListRepository(name, characters)
         _sizeResult.postValue(characters.listCharacters.size)
     }
 
-    private fun onResultOfGetListComics(comics: Comics, title: String){
-        if(comics.listComics.isNotEmpty())
-           setComicsUseCase.setListRepository(title,comics)
+    private fun onResultOfGetListComics(comics: Comics, title: String) {
+        if (comics.listComics.isNotEmpty())
+            setComicsUseCase.setListRepository(title, comics)
         _sizeResult.postValue(comics.listComics.size)
     }
 
     fun resetSizeResult() {
-        _sizeResult  = MutableLiveData<Int>()
+        _sizeResult = MutableLiveData<Int>()
     }
 
     fun resetLists() {
@@ -139,7 +146,26 @@ class MarvelSearchViewModel @Inject constructor(
     fun resetAuthResult() {
         _googleAuthResult = MutableLiveData<AuthResult>()
     }
+
+
+    fun signInWithCredentialsGoogleAccount(credential: Credential) {
+        viewModelScope.launch {
+            getGoogleAuthResultWithCredentialUseCase.invoke(credential)
+                .onStart { _loading.value = true }
+                .onCompletion { _loading.value = false }
+                .catch {
+                    _error.value = it
+                }
+                .collect {
+
+                    notifySignIn(
+                        it, null
+                    )
+                }
+        }
+    }
 }
+
 /*
         // GoogleIdToken credential
         is CustomCredential -> {

@@ -1,6 +1,7 @@
 package com.eliezer.marvel_search_api.data.firebase.controllers
 
 import android.content.Context
+import androidx.credentials.Credential
 import com.eliezer.marvel_search_api.data.firebase.services.MyFireStoreDelete
 import com.eliezer.marvel_search_api.data.firebase.services.MyFireStoreInserts
 import com.eliezer.marvel_search_api.data.firebase.services.MyFireStoreSelects
@@ -24,6 +25,11 @@ class FirebaseController @Inject constructor(
     fun signInExistingGoogleAccount(context: Context): Flow<Result<AuthResult>> =
         callbackFlow {
             trySend(myFirebaseAuth.googleSignInExistingAccount(context))
+            awaitClose { }
+        }
+    fun signInWithCredentialsGoogleAccount(credential: Credential): Flow<Result<AuthResult>> =
+        callbackFlow {
+            trySend(myFirebaseAuth.googleSignInWithCredentialAccount(credential))
             awaitClose { }
         }
 

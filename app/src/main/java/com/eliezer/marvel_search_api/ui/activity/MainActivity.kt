@@ -3,15 +3,21 @@ package com.eliezer.marvel_search_api.ui.activity
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.viewModels
 import com.eliezer.marvel_search_api.data.firebase.services.MyFireStoreInserts
 import com.eliezer.marvel_search_api.data.firebase.services.MyFirebaseAnalytics
 import com.eliezer.marvel_search_api.data.firebase.services.MyFireStoreSelects
 import com.eliezer.marvel_search_api.databinding.ActivityMainBinding
 import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
+import com.eliezer.marvel_search_api.ui.activity.funtionImp.MainActivityFunctionImplement
+import com.eliezer.marvel_search_api.ui.activity.viewmodel.MainActivityViewModel
+import com.eliezer.marvel_search_api.ui.fragments.comic_list.functionImp.ComicsListFunctionImplement
+import com.eliezer.marvel_search_api.ui.fragments.marvel_search.viewmodel.MarvelSearchViewModel
 import com.google.android.material.appbar.AppBarLayout
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
@@ -21,8 +27,11 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private var _navigationMainActions: NavigationMainActions? = null
     val navigationMainActions get() = _navigationMainActions
+
     private lateinit var firebaseAnalytics: MyFirebaseAnalytics
     private var binding : ActivityMainBinding? = null
+    private val viewModel: MainActivityViewModel by viewModels()
+    private var funImpl : MainActivityFunctionImplement? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,22 +45,14 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-       _navigationMainActions = NavigationMainActions(binding!!.mainNavHostFragment)
-        binding?.mainToolbar?.bringToFront()
-        binding?.mainSubToolbar?.bringToFront()
-        setGoogleDataStore()
+        funImpl = binding?.let { MainActivityFunctionImplement(it,viewModel)}
+        _navigationMainActions = NavigationMainActions(binding!!.mainNavHostFragment)
+        funImpl?.setMainToolbar()
+        getLocalUser()
     }
 
-    private fun setGoogleDataStore() {
-        Thread{
+    private fun getLocalUser() {
 
-            MyFireStoreInserts().insertCharacter("1","1")
-            /*MyGoogleDataStoreInserts().insertCharacter("1","2")
-            MyGoogleDataStoreInserts().insertCharacter("1","3")
-            MyGoogleDataStoreInserts().insertCharacter("2","4")
-            */
-           // MyFireStoreSelects().getCharactersId("1")
-        }.start()
     }
 
     fun setToolbarView(visibility : Boolean)

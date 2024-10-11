@@ -10,6 +10,7 @@ import androidx.credentials.exceptions.NoCredentialException
 import com.eliezer.marvel_search_api.data.firebase.utils.FirebaseCredential
 import com.eliezer.marvel_search_api.data.firebase.utils.FirebaseGoogle
 import com.eliezer.marvel_search_api.data.firebase.utils.FirebaseNonce
+import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
@@ -57,6 +58,16 @@ class MyFirebaseAuth @Inject constructor() {
                 return Result.failure(e)
             }
     }
+    suspend fun googleSignInWithCredentialAccount(credential: Credential): Result<AuthResult>
+        = try {
+            checkCredentials(credential)
+        } catch (e: GetCredentialCancellationException) {
+            Result.failure(e)
+        }catch (e: NoCredentialException) {
+            Result.failure(e)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     private fun getGoogleExistingId(context : Context) : GetGoogleIdOption
     {
         val hashedNonce = FirebaseNonce.generateNonce()
@@ -79,6 +90,7 @@ class MyFirebaseAuth @Inject constructor() {
                     GoogleIdTokenCredential.createFrom(credential.data)
                 val authCredential =
                     GoogleAuthProvider.getCredential(googleIdTokenCredential.idToken, null)
+                LocalAccount.requestCredential = credential
                 val authResult = firebaseAuth.signInWithCredential(authCredential).await()
                 return Result.success(authResult)
             } else {

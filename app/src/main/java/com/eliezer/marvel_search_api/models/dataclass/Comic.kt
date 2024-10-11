@@ -2,14 +2,19 @@ package com.eliezer.marvel_search_api.models.dataclass
 
 import android.os.Parcel
 import android.os.Parcelable
-
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
+@Entity
 data class Comic(
-    val id : Int,
-val title              : String ,
-val urlPicture: String,
-    val description : String,
-    var favorite : Boolean = false
+    @PrimaryKey val id : Int,
+    @ColumnInfo(name = "title")val title : String,
+    @ColumnInfo(name = "urlPicture")val urlPicture: String,
+    @ColumnInfo(name = "description")val description : String,
+    @Ignore var favorite : Boolean = false
     ): Parcelable {
+    @Ignore
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readString() ?: "",

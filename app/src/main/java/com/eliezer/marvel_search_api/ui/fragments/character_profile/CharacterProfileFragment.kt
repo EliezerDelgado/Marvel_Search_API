@@ -11,8 +11,13 @@ import com.eliezer.marvel_search_api.data.repository.comics.mock.GetComicsReposi
 import com.eliezer.marvel_search_api.databinding.FragmentCharacterProfileBinding
 import com.eliezer.marvel_search_api.domain.listener.MyMenuProvider
 import com.eliezer.marvel_search_api.domain.listener.MyTextChangedListener
+import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.eliezer.marvel_search_api.ui.fragments.character_profile.functionImp.CharacterProfileFunctionImplement
 import com.eliezer.marvel_search_api.ui.fragments.character_profile.viewmodel.CharacterProfileViewModel
+import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.EmailAuthCredential
+import com.google.firebase.auth.GoogleAuthCredential
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

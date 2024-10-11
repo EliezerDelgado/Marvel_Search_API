@@ -5,6 +5,8 @@ import android.os.Build
 import androidx.annotation.StringRes
 import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_search_api.R
+import com.eliezer.marvel_search_api.core.utils.loadImageFromWebOperations
+import com.eliezer.marvel_search_api.data.firebase.controllers.FirebaseController
 import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
 import com.eliezer.marvel_search_api.databinding.FragmentMarvelSearchBinding
@@ -53,10 +55,18 @@ class MarvelSearchFunctionImplement(
                 setOnClickListener {
                     setObserveAuthResult()
                     nameButtonPulse = id.toString()
-                    googleSignIn(context)
+                    if(LocalAccount.requestCredential==null)
+                        googleSignIn(context)
+                    else
+                        googleSignWithCredential()
+
                 }
             }
         }
+    }
+
+    private fun googleSignWithCredential() {
+        viewModel.signInWithCredentialsGoogleAccount(LocalAccount.requestCredential!!)
     }
 
     private fun googleSignIn(context: Context) {

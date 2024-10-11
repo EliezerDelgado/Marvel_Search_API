@@ -6,6 +6,7 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Build
+import androidx.credentials.Credential
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.AuthResult
@@ -13,5 +14,6 @@ import com.google.firebase.auth.AuthResult
 
 object LocalAccount {
     var authResult = MutableLiveData<AuthResult?>()
+    var requestCredential : Credential? = null
     val email get() = authResult.value?.user?.email.toString()
 }

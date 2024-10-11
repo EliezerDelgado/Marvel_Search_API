@@ -137,6 +137,7 @@ class ComicsListFunctionImplement (
 
     }
     private fun getListComicsByIds(ids: ArrayList<Int>) {
+        functionManagerViewModel.setIdComicsNotObservesVM(owner)
         functionManagerViewModel.setListComicsObservesVM(owner,::setFavoriteListComics)
         functionManagerViewModel.getFavoriteComicsList(ids)
     }
