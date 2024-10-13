@@ -3,11 +3,9 @@ package com.eliezer.marvel_search_api.data.room_database.converter
 import android.os.Bundle
 import android.os.Parcel
 import androidx.room.TypeConverter
-import com.eliezer.marvel_search_api.data.mappers.decodeBase64
-import com.eliezer.marvel_search_api.data.mappers.toBase64
 
 
-class MarvelFavoriteDatabaseConverter {
+class MarvelLocalDatabaseConverter {
     @TypeConverter
     fun bundlesToBase64(bundle: Bundle) : ByteArray
     {

@@ -55,6 +55,13 @@ class MainActivityFunctionImplement(
     fun setToolbarView(visibility: Boolean) = functionManagerBinding.setToolbarView(visibility)
 
     fun setSubToolbarView(visibility: Boolean) = functionManagerBinding.setSubToolbarView(visibility)
+    fun listeningChangesInAuthResult() {
+        functionManagerViewModel.setAuthResultObservesVM(owner,::updateLocalDatabase)
+    }
+
+    private fun updateLocalDatabase(authResult: AuthResult?) {
+        functionManagerViewModel.updateLocalDatabase()
+    }
 }
 
 private class FunctionManagerBinding(
@@ -106,5 +113,13 @@ private class FunctionManagerViewModel(
     fun getGoogleSigInAuthResult(credential: Credential)
     {
         viewModel.signInGoogle(credential)
+    }
+
+    fun setAuthResultObservesVM(owner: LifecycleOwner, observe: (AuthResult?) -> Unit) {
+        LocalAccount.authResult.observe(owner,observe)
+    }
+
+    fun updateLocalDatabase() {
+        viewModel.updateLocalDatabase()
     }
 }

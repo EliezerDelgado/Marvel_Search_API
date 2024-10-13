@@ -10,12 +10,16 @@ import com.eliezer.marvel_search_api.core.base.BaseViewModel
 import com.eliezer.marvel_search_api.data.repository.characters.mock.SetCharactersRepository
 import com.eliezer.marvel_search_api.domain.usecase.GetListCharactersOffNameUseCase
 import com.eliezer.marvel_search_api.data.repository.comics.mock.SetComicsRepository
+import com.eliezer.marvel_search_api.data.repository.user_credential.mock.LocalUserDeleteAll
+import com.eliezer.marvel_search_api.data.repository.user_credential.mock.LocalUserInsert
 import com.eliezer.marvel_search_api.domain.usecase.GetAuthResultGoogleAddNewAccountUseCase
 import com.eliezer.marvel_search_api.domain.usecase.GetListComicsOffNameUseCase
 import com.eliezer.marvel_search_api.domain.usecase.GetAuthResultGoogleExistingAccountUseCase
 import com.eliezer.marvel_search_api.domain.usecase.GetGoogleAuthResultWithCredentialUseCase
 import com.eliezer.marvel_search_api.models.dataclass.Characters
 import com.eliezer.marvel_search_api.models.dataclass.Comics
+import com.eliezer.marvel_search_api.models.dataclass.MyUserCredential
+import com.eliezer.marvel_search_api.ui.fragments.marvel_search.viewmodel.usecase.MarvelSearchUseCases
 import com.google.firebase.auth.AuthResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -28,11 +32,9 @@ import javax.inject.Inject
 class MarvelSearchViewModel @Inject constructor(
     private val setCharactersUseCase : SetCharactersRepository,
     private val setComicsUseCase : SetComicsRepository,
-    private val getCharactersUseCase: GetListCharactersOffNameUseCase,
-    private val getComicsUseCase: GetListComicsOffNameUseCase,
-    private val getGoogleAuthResultWithCredentialUseCase: GetGoogleAuthResultWithCredentialUseCase,
-    private val getAuthResultGoogleExistingAccountUseCase: GetAuthResultGoogleExistingAccountUseCase,
-    private val getAuthResultGoogleAddNewAccountUseCase: GetAuthResultGoogleAddNewAccountUseCase
+    private val localUserInsert: LocalUserInsert,
+    private val localUserDeleteAll: LocalUserDeleteAll,
+    private val marvelSearchUseCases: MarvelSearchUseCases
 )  : BaseViewModel() {
 
     private var _sizeResult = MutableLiveData<Int>()
@@ -43,7 +45,7 @@ class MarvelSearchViewModel @Inject constructor(
 
     fun searchCharactersList(name: String) {
         viewModelScope.launch {
-            getCharactersUseCase.invoke(name)
+            marvelSearchUseCases.getCharactersUseCase.invoke(name)
                 .onStart { _loading.value = true }
                 .onCompletion { _loading.value = false }
                 .catch {
@@ -57,7 +59,7 @@ class MarvelSearchViewModel @Inject constructor(
 
     fun searchComicsList(title: String) {
         viewModelScope.launch {
-            getComicsUseCase.invoke(title)
+            marvelSearchUseCases.getComicsUseCase.invoke(title)
                 .onStart { _loading.value = true }
                 .onCompletion { _loading.value = false }
                 .catch {
@@ -71,7 +73,7 @@ class MarvelSearchViewModel @Inject constructor(
 
     fun signInGoogle(context: Context) {
         viewModelScope.launch {
-            getAuthResultGoogleExistingAccountUseCase.invoke(context)
+            marvelSearchUseCases.getAuthResultGoogleExistingAccountUseCase.invoke(context)
                 .onStart { _loading.value = true }
                 .onCompletion { _loading.value = false }
                 .catch {
@@ -84,10 +86,18 @@ class MarvelSearchViewModel @Inject constructor(
                 }
         }
     }
+    fun insertLocalUser(myUserCredential: MyUserCredential)
+    {
+        localUserInsert.insertCredentialOfLocalUser(myUserCredential)
+    }
+    fun deleteAllLocalUser()
+    {
+        localUserDeleteAll.deleteCredentialOfLocalUser()
+    }
 
     private fun signInNewGoogleAccount(context: Context) {
         viewModelScope.launch {
-            getAuthResultGoogleAddNewAccountUseCase.invoke(context)
+            marvelSearchUseCases.getAuthResultGoogleAddNewAccountUseCase.invoke(context)
                 .onStart { _loading.value = true }
                 .onCompletion { _loading.value = false }
                 .catch {
@@ -146,7 +156,7 @@ class MarvelSearchViewModel @Inject constructor(
 
     fun signInWithCredentialsGoogleAccount(credential: Credential) {
         viewModelScope.launch {
-            getGoogleAuthResultWithCredentialUseCase.invoke(credential)
+            marvelSearchUseCases.getGoogleAuthResultWithCredentialUseCase.invoke(credential)
                 .onStart { _loading.value = true }
                 .onCompletion { _loading.value = false }
                 .catch {

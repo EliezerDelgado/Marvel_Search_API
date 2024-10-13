@@ -14,8 +14,7 @@ import javax.inject.Singleton
 class LocalUserCredentialRepositoryImpl @Inject constructor() : LocalUserCredentialRepository{
     private val myUserCredentialDao = LocalDatabase.db?.myUserCredential()
 
-    override fun insert(credential: Credential) {
-        val myUserCredential = MyUserCredential(credential.type,credential.data)
+    override fun insert(myUserCredential: MyUserCredential) {
         myUserCredentialDao?.insert(myUserCredential)
     }
 

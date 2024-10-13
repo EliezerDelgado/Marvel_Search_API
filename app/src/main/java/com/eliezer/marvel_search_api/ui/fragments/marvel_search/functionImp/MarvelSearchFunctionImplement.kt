@@ -10,6 +10,7 @@ import com.eliezer.marvel_search_api.data.firebase.controllers.FirebaseControlle
 import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
 import com.eliezer.marvel_search_api.databinding.FragmentMarvelSearchBinding
+import com.eliezer.marvel_search_api.models.dataclass.MyUserCredential
 import com.eliezer.marvel_search_api.ui.fragments.marvel_search.viewmodel.MarvelSearchViewModel
 import com.google.firebase.auth.AuthResult
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -90,6 +91,10 @@ class MarvelSearchFunctionImplement(
     private fun setAccount(authResult: AuthResult) {
         setNotObserveAuthResult()
         LocalAccount.authResult.postValue(authResult)
+        LocalAccount.requestCredential?.apply {
+            val myUserCredential = MyUserCredential(type,data)
+            viewModel.insertLocalUser(myUserCredential)
+        }
     }
 
     private fun searchListCharacters(name:String)

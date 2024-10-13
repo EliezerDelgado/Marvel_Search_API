@@ -87,4 +87,8 @@ class MainActivityViewModel @Inject constructor(
     {
         _googleAuthResult = MutableLiveData<AuthResult>()
     }
+
+    fun updateLocalDatabase() {
+        //Todo
+    }
 }

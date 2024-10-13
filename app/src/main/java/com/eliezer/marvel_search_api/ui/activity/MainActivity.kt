@@ -49,6 +49,11 @@ class MainActivity : AppCompatActivity() {
         _navigationMainActions = NavigationMainActions(binding!!.mainNavHostFragment)
         funImpl?.setMainToolbar()
         getLocalUser()
+        listeningChangesInAuthResult()
+    }
+
+    private fun listeningChangesInAuthResult() {
+        funImpl?.listeningChangesInAuthResult()
     }
 
     private fun getLocalUser() =     funImpl?.getLocalUserCredential()
