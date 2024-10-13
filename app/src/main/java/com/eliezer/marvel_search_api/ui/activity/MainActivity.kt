@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun listeningChangesInAuthResult() {
-        funImpl?.listeningChangesInAuthResult()
+       // funImpl?.listeningChangesInAuthResult()
     }
 
     private fun getLocalUser() =     funImpl?.getLocalUserCredential()

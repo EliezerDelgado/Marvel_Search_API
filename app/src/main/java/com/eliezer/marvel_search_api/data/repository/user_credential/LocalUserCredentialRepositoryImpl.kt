@@ -15,7 +15,15 @@ class LocalUserCredentialRepositoryImpl @Inject constructor() : LocalUserCredent
     private val myUserCredentialDao = LocalDatabase.db?.myUserCredential()
 
     override fun insert(myUserCredential: MyUserCredential) {
-        myUserCredentialDao?.insert(myUserCredential)
+        Thread{
+            try {
+                myUserCredentialDao?.insert(myUserCredential)
+            }
+            catch (_ :Exception)
+            {
+                myUserCredentialDao?.update(myUserCredential)
+            }
+        }.start()
     }
 
     override fun getUserCredential(): Flow<MyUserCredential?> {
@@ -25,6 +33,8 @@ class LocalUserCredentialRepositoryImpl @Inject constructor() : LocalUserCredent
     }
 
     override fun clear() {
-        myUserCredentialDao?.clear()
+        Thread {
+            myUserCredentialDao?.clear()
+        }.start()
     }
 }
