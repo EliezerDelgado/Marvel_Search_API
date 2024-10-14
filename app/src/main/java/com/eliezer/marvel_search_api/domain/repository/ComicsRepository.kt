@@ -10,8 +10,9 @@ interface ComicsRepository {
     fun getListComicsByCharacterId(characterId : Int): Flow<Comics>
     fun getFavoriteListComics() : Flow<List<Comic>?>
     fun setListTmpComics(id :String, params: Comics)
-    fun setListComicInDatabase(vararg comic: Comic)
+    fun setComicInDatabase(comic: Comic)
     fun setListComicInDatabase(comics: List<Comic>)
+    fun deleteComicInDatabase(comic: Comic)
     fun resetTmpList()
     fun clearDatabaseList()
 }

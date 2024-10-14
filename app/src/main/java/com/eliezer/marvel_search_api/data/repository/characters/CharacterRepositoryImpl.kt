@@ -36,12 +36,20 @@ class CharacterRepositoryImpl @Inject constructor(
     override fun getListCharactersByComicId(comicId: Int): Flow<Characters> =
          datasource.getDataContainer(comicId, list[comicId.toString()]?.listCharacters?.size ?: 0)
 
-    override fun setListCharacterInDatabase(vararg character: Character) {
-            setListCharacterInDatabase(character.toList())
+    override fun setCharacterInDatabase(character: Character) {
+        Thread{
+            characterDao?.insert(character)
+        }.start()
     }
     override fun setListCharacterInDatabase(characters: List<Character>) {
         Thread{
             characterDao?.insertAll(characters)
+        }.start()
+    }
+
+    override fun deleteCharacterInDatabase(character: Character) {
+        Thread{
+            characterDao?.delete(character)
         }.start()
     }
 

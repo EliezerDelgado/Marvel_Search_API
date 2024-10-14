@@ -57,11 +57,12 @@ class ComicsListFunctionImplement (
         LocalAccount.authResult.value?.run {
                 if (comic.favorite) {
                     comicListFunctionManagerRepository.insertFavoriteComic(comic.id)
+                    comicListFunctionManagerRepository.insertFavoriteComicInDatabase.call(comic)
                     functionManagerRecyclerAdapter.adapter!!.setFavoriteComic(comic)
                 }
                 else {
                     comicListFunctionManagerRepository.deleteFavoriteComic(comic.id)
-
+                    comicListFunctionManagerRepository.deleteFavoriteComicInDatabase.call(comic)
                     functionManagerRecyclerAdapter.adapter!!.setNoFavoriteComic(comic)
                 }
                 true

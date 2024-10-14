@@ -11,8 +11,9 @@ interface CharactersRepository {
     fun getFavoriteListCharacters() : Flow<List<Character>?>
     fun setListTmpCharacters(id : String, params: Characters)
     fun getListCharactersByComicId (comicId : Int): Flow<Characters>
-    fun setListCharacterInDatabase(vararg character: Character)
+    fun setCharacterInDatabase( character: Character)
     fun setListCharacterInDatabase(characters: List<Character>)
+    fun deleteCharacterInDatabase(character: Character)
     fun resetTmpList()
     fun clearDatabaseList()
 }
