@@ -8,14 +8,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.eliezer.marvel_search_api.core.base.BaseViewModel
 import com.eliezer.marvel_search_api.data.repository.characters.mock.SetCharactersRepository
-import com.eliezer.marvel_search_api.domain.usecase.GetListCharactersOffNameUseCase
 import com.eliezer.marvel_search_api.data.repository.comics.mock.SetComicsRepository
 import com.eliezer.marvel_search_api.data.repository.user_credential.mock.LocalUserDeleteAll
 import com.eliezer.marvel_search_api.data.repository.user_credential.mock.LocalUserInsert
-import com.eliezer.marvel_search_api.domain.usecase.GetAuthResultGoogleAddNewAccountUseCase
-import com.eliezer.marvel_search_api.domain.usecase.GetListComicsOffNameUseCase
-import com.eliezer.marvel_search_api.domain.usecase.GetAuthResultGoogleExistingAccountUseCase
-import com.eliezer.marvel_search_api.domain.usecase.GetGoogleAuthResultWithCredentialUseCase
 import com.eliezer.marvel_search_api.models.dataclass.Characters
 import com.eliezer.marvel_search_api.models.dataclass.Comics
 import com.eliezer.marvel_search_api.models.dataclass.MyUserCredential

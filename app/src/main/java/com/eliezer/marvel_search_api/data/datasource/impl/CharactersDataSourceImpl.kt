@@ -3,6 +3,7 @@ package com.eliezer.marvel_search_api.data.datasource.impl
 import com.eliezer.marvel_search_api.data.datasource.CharactersDataSource
 import com.eliezer.marvel_search_api.data.mappers.mapToListCharacter
 import com.eliezer.marvel_search_api.data.retrofit.controllers.MarvelController
+import com.eliezer.marvel_search_api.models.dataclass.Character
 import com.eliezer.marvel_search_api.models.dataclass.Characters
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -21,6 +22,9 @@ class CharactersDataSourceImpl @Inject constructor(
         marvelController.findComicCharacters(idComic,offset).map { it.data?.mapToListCharacter() ?: Characters()}
 
     override fun getDataContainer(ids: ArrayList<Int>): Flow<Characters> = marvelController.findCharactersOffIds(ids).map { it.data?.mapToListCharacter() ?: Characters()}
+    override fun getFavoriteListCharacters(): Flow<List<Character>> {
+        TODO("Not yet implemented")
+    }
 
 
 }

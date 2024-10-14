@@ -46,12 +46,12 @@ class ComicsListFragment :
             funImpl?.getListSearchComicsRepository()
         }else if (mode == FAVORITE_ID) {
             funImpl?.disableMyOnScrolledListener()
-            funImpl?.getIdComicsModeFavorite()
+            funImpl?.getListComicsModeFavorite()
         }
     }
 
     override fun doReload() {
-        funImpl?.getIdComicsModeFavorite()
+        funImpl?.getListComicsModeFavorite()
     }
 
     override fun onDestroyView() {

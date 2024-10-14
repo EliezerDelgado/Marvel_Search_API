@@ -5,7 +5,6 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.eliezer.marvel_search_api.models.dataclass.Character
-import com.eliezer.marvel_search_api.models.dataclass.Comic
 
 @Dao
 interface CharacterDao
@@ -13,7 +12,11 @@ interface CharacterDao
     @Query("SELECT * FROM character")
     fun getFavoriteCharacter(): List<Character>
     @Insert
-    fun insertAll(vararg characters: Character)
+    fun insertAll(characters: List<Character>)
+    @Insert
+    fun insert(vararg character: Character)
     @Delete
     fun delete(character: Character)
+    @Query("DELETE FROM character")
+    fun clear()
 }

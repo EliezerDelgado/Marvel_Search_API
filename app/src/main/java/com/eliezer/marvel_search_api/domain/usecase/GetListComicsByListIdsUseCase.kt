@@ -9,12 +9,12 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 
-class GetListComicsOffListIdsUseCase @Inject constructor(
+class GetListComicsByListIdsUseCase @Inject constructor(
     @IoDispatcher dispatcher: CoroutineDispatcher,
     private val comicsRepository: ComicsRepository
 ): BaseFlowUseCase<ArrayList<Int>, Comics>(dispatcher) {
 
 
-    override fun execute(params: ArrayList<Int>): Flow<Comics> = comicsRepository.getListComics(params)
+    override fun execute(params: ArrayList<Int>): Flow<Comics> = comicsRepository.getListComicsApi(params)
 
 }

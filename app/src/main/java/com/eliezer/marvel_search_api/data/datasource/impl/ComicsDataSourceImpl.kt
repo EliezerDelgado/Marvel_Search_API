@@ -3,6 +3,7 @@ package com.eliezer.marvel_search_api.data.datasource.impl
 import com.eliezer.marvel_search_api.data.datasource.ComicsDataSource
 import com.eliezer.marvel_search_api.data.mappers.mapToListComic
 import com.eliezer.marvel_search_api.data.retrofit.controllers.MarvelController
+
 import com.eliezer.marvel_search_api.models.dataclass.Comics
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -22,4 +23,5 @@ class ComicsDataSourceImpl  @Inject constructor(
 
     override fun getDataContainer(ids: ArrayList<Int>): Flow<Comics> =
         marvelController.findComicsOffIds(ids).map { it.data.mapToListComic() }
+
 }

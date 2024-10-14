@@ -103,6 +103,7 @@ class ComicsListFunctionImplement (
         position?.also { functionManagerBinding.recyclerViewComicsScrollToPosition(it)}
     }
     private fun setFavoriteListComics(comics: Comics?) {
+        functionManagerViewModel.setListComicsNoObservesVM(owner)
         setComicFavorite(comics)
         comics?.apply {
             if (listComics.isNotEmpty())
@@ -121,25 +122,22 @@ class ComicsListFunctionImplement (
     }
 
     private fun getIdComicsModeSearch(owner: LifecycleOwner) {
-        functionManagerViewModel.setIdComicsObservesVM(owner,::setListIdFavoriteModeSearch)
-        functionManagerViewModel.getFavoriteIdsComicsList()
+        functionManagerViewModel.setListComicsObservesVM(owner,::setIdsComics)
+        functionManagerViewModel.getFavoriteComicsList()
+    }
+
+    private fun setIdsComics(comics: Comics) {
+        val ids = ArrayList<Int>()
+        comics.listComics.forEach {
+            ids.add(it.id)
+        }
+        functionManagerRecyclerAdapter.adapter?.setIdsFavoriteComics(ids)
     }
 
 
-    private fun setListIdFavoriteModeSearch(ids: ArrayList<Int>) {
-        functionManagerRecyclerAdapter.adapter?.setFavoriteComics(ids)
-    }
-
-
-    fun getIdComicsModeFavorite() {
-        functionManagerViewModel.setIdComicsObservesVM(owner,::getListComicsByIds)
-        functionManagerViewModel.getFavoriteIdsComicsList()
-
-    }
-    private fun getListComicsByIds(ids: ArrayList<Int>) {
-        functionManagerViewModel.setIdComicsNotObservesVM(owner)
+    fun getListComicsModeFavorite() {
         functionManagerViewModel.setListComicsObservesVM(owner,::setFavoriteListComics)
-        functionManagerViewModel.getFavoriteComicsList(ids)
+        functionManagerViewModel.getFavoriteComicsList()
     }
 }
 
@@ -180,14 +178,6 @@ private class FunctionManagerRecyclerAdapter(
 private class FunctionManagerViewModel(
     private val viewModel: ComicsListViewModel)
 {
-    fun setIdComicsObservesVM(owner: LifecycleOwner, observeComics: ((ArrayList<Int>)->(Unit))) {
-        viewModel.favoriteIdComics.observe(owner,observeComics)
-    }
-    fun setIdComicsNotObservesVM(owner: LifecycleOwner) {
-        viewModel.favoriteIdComics.removeObservers(owner)
-        viewModel.resetFavoriteIdComics()
-    }
-
     fun setListComicsObservesVM(owner: LifecycleOwner, observe : ((Comics)->(Unit))) {
         viewModel.listComic.observe(owner,observe)
     }
@@ -195,13 +185,9 @@ private class FunctionManagerViewModel(
         viewModel.listComic.removeObservers(owner)
         viewModel.resetComics()
     }
-    fun getFavoriteComicsList(ids : ArrayList<Int>)
+    fun getFavoriteComicsList()
     {
-        viewModel.getFavoriteComicsList(ids)
-    }
-    fun getFavoriteIdsComicsList()
-    {
-        viewModel.getFavoriteIdComicsList()
+        viewModel.getFavoriteComicsList()
     }
 
     fun searchComicList(title : String)

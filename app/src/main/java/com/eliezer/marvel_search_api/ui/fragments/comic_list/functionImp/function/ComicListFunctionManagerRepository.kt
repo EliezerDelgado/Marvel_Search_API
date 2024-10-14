@@ -18,5 +18,4 @@ class ComicListFunctionManagerRepository @Inject constructor(
     fun getListRepository(comic: String) = getComicsRepository.getListRepository(comic)
     fun insertFavoriteComic(comicId : Int) = insertComic.insertFavoriteComic(comicId)
     fun deleteFavoriteComic(comicId : Int) = deleteComic.deleteFavoriteComic(comicId)
-
 }

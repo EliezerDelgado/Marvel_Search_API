@@ -5,9 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.eliezer.marvel_search_api.core.base.BaseViewModel
 import com.eliezer.marvel_search_api.data.repository.comics.mock.SetComicsRepository
-import com.eliezer.marvel_search_api.domain.usecase.GetFavoriteIdComicsUseCase
-import com.eliezer.marvel_search_api.domain.usecase.GetListComicsOffListIdsUseCase
-import com.eliezer.marvel_search_api.domain.usecase.GetListComicsOffNameUseCase
+import com.eliezer.marvel_search_api.domain.usecase.GetFavoriteListComicsOnDatabaseUseCase
+import com.eliezer.marvel_search_api.domain.usecase.GetListComicsByListIdsUseCase
+import com.eliezer.marvel_search_api.domain.usecase.GetListComicsByTitleUseCase
+import com.eliezer.marvel_search_api.models.dataclass.Comic
 import com.eliezer.marvel_search_api.models.dataclass.Comics
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -19,20 +20,16 @@ import javax.inject.Inject
 @HiltViewModel
 class ComicsListViewModel @Inject constructor(
     private val setComicsRepository : SetComicsRepository,
-    private val getListComicsOffNameUseCase: GetListComicsOffNameUseCase,
-    private val getFavoriteIdComicsUseCase: GetFavoriteIdComicsUseCase,
-    private val getListComicsOffListIdsUseCase: GetListComicsOffListIdsUseCase
+    private val getListComicsByTitleUseCase: GetListComicsByTitleUseCase,
+    private val getFavoriteListComicsOnDatabaseUseCase: GetFavoriteListComicsOnDatabaseUseCase
 ): BaseViewModel()  {
 
     private var _listComic  = MutableLiveData<Comics>()
     val listComic: LiveData<Comics> get() = _listComic
 
-    private var _favoriteIdComics = MutableLiveData<ArrayList<Int>>()
-    val favoriteIdComics: LiveData<ArrayList<Int>> get() = _favoriteIdComics
-
     fun searchComicsList(title: String) =
         viewModelScope.launch {
-            getListComicsOffNameUseCase.invoke(title)
+            getListComicsByTitleUseCase.invoke(title)
                 .onStart { _loading.value = true }
                 .onCompletion { _loading.value = false }
                 .catch {
@@ -42,48 +39,32 @@ class ComicsListViewModel @Inject constructor(
                     onResultOfGetListComics(title,it)
                 }
         }
-    fun getFavoriteIdComicsList() =
+    fun getFavoriteComicsList() =
         viewModelScope.launch {
-            getFavoriteIdComicsUseCase.invoke(null)
+            getFavoriteListComicsOnDatabaseUseCase.invoke(null)
                 .onStart { _loading.value = true }
                 .onCompletion { _loading.value = false }
                 .catch {
                     _error.value = it
                 }
                 .collect {
-                    checkComicsListResult(it)
+                    setListComic(it)
                 }
         }
-    fun getFavoriteComicsList(ids: ArrayList<Int>) =
-        viewModelScope.launch {
-            getListComicsOffListIdsUseCase.invoke(ids)
-                .onStart { _loading.value = true }
-                .onCompletion { _loading.value = false }
-                .catch {
-                    _error.value = it
-                }
-                .collect {
-                    _listComic.postValue(it)
-                }
+
+    private fun setListComic(list: List<Comic>?) {
+        list?.also {
+            val comics = Comics()
+            comics.total = it.size
+            comics.listComics.addAll(it)
+            _listComic.postValue(comics)
         }
+    }
 
     private fun onResultOfGetListComics(title : String,comics: Comics) {
         setComicsRepository.setListRepository(title,comics)
         _listComic.postValue(comics)
     }
-    private fun checkComicsListResult(result: Result<ArrayList<Int>>)=
-        result.fold(
-            onFailure = { e ->
-                _error.value = e
-            },
-            onSuccess = {
-                _favoriteIdComics.postValue(it)
-            }
-        )
-    fun resetFavoriteIdComics() {
-        _favoriteIdComics  = MutableLiveData<ArrayList<Int>>()
-    }
-
     fun resetComics() {
         _listComic  = MutableLiveData<Comics>()
     }

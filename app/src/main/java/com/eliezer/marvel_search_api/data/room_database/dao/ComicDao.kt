@@ -12,7 +12,11 @@ interface ComicDao {
     @Query("SELECT * FROM comic")
     fun getFavoriteComic(): List<Comic>
     @Insert
-    fun insertAll(vararg comics: Comic)
+    fun insertAll(comics: List<Comic>)
+    @Insert
+    fun insert(vararg  comic:Comic)
     @Delete
     fun delete(comic : Comic)
+    @Query("DELETE FROM comic")
+    fun clear()
 }

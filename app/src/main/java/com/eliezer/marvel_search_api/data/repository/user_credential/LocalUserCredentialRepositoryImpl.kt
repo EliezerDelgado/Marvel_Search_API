@@ -12,7 +12,7 @@ import javax.inject.Singleton
 
 @Singleton
 class LocalUserCredentialRepositoryImpl @Inject constructor() : LocalUserCredentialRepository{
-    private val myUserCredentialDao = LocalDatabase.db?.myUserCredential()
+    private val myUserCredentialDao get() = LocalDatabase.db?.myUserCredential()
 
     override fun insert(myUserCredential: MyUserCredential) {
         Thread{
@@ -26,11 +26,10 @@ class LocalUserCredentialRepositoryImpl @Inject constructor() : LocalUserCredent
         }.start()
     }
 
-    override fun getUserCredential(): Flow<MyUserCredential?> {
-        return flow{
+    override fun getUserCredential(): Flow<MyUserCredential?> =flow{
             emit(myUserCredentialDao?.getLocalUser())
         }
-    }
+
 
     override fun clear() {
         Thread {

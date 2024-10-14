@@ -16,12 +16,15 @@ import com.eliezer.marvel_search_api.databinding.ActivityMainBinding
 import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
 import com.eliezer.marvel_search_api.ui.activity.funtionImp.MainActivityFunctionImplement
 import com.eliezer.marvel_search_api.ui.activity.viewmodel.MainActivityViewModel
+import com.eliezer.marvel_search_api.ui.fragments.character_list.functionImp.function.ComicListFunctionManagerRepository
+import com.eliezer.marvel_search_api.ui.fragments.character_list.functionImp.function.MainActivityFunctionManagerRepository
 import com.eliezer.marvel_search_api.ui.fragments.comic_list.functionImp.ComicsListFunctionImplement
 import com.eliezer.marvel_search_api.ui.fragments.marvel_search.viewmodel.MarvelSearchViewModel
 import com.google.android.material.appbar.AppBarLayout
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -32,6 +35,8 @@ class MainActivity : AppCompatActivity() {
     private var binding : ActivityMainBinding? = null
     private val viewModel: MainActivityViewModel by viewModels()
     private var funImpl : MainActivityFunctionImplement? = null
+    @Inject
+    lateinit var mainActivityFunctionManagerRepository: MainActivityFunctionManagerRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +50,7 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        funImpl = binding?.let { MainActivityFunctionImplement(it,viewModel,this)}
+        funImpl = binding?.let { MainActivityFunctionImplement(it,viewModel,mainActivityFunctionManagerRepository,this)}
         _navigationMainActions = NavigationMainActions(binding!!.mainNavHostFragment)
         funImpl?.setMainToolbar()
         getLocalUser()
@@ -53,7 +58,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun listeningChangesInAuthResult() {
-       // funImpl?.listeningChangesInAuthResult()
+       funImpl?.listeningChangesInAuthResult()
     }
 
     private fun getLocalUser() =     funImpl?.getLocalUserCredential()

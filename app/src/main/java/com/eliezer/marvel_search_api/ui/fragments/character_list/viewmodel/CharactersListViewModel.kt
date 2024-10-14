@@ -5,11 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.eliezer.marvel_search_api.core.base.BaseViewModel
 import com.eliezer.marvel_search_api.data.repository.characters.mock.SetCharactersRepository
-import com.eliezer.marvel_search_api.data.repository.firebase.mock.FireStoreDeleteCharacter
-import com.eliezer.marvel_search_api.data.repository.firebase.mock.FireStoreInsertCharacter
 import com.eliezer.marvel_search_api.domain.usecase.GetFavoriteIdCharactersUseCase
-import com.eliezer.marvel_search_api.domain.usecase.GetListCharactersOffListIdsUseCase
-import com.eliezer.marvel_search_api.domain.usecase.GetListCharactersOffNameUseCase
+import com.eliezer.marvel_search_api.domain.usecase.GetListCharactersByListIdsUseCase
+import com.eliezer.marvel_search_api.domain.usecase.GetListCharactersByNameUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
@@ -21,9 +19,9 @@ import com.eliezer.marvel_search_api.models.dataclass.Characters
 @HiltViewModel
 class CharactersListViewModel @Inject constructor(
     private val setCharactersRepository : SetCharactersRepository,
-    private val getListCharactersOffNameUseCase: GetListCharactersOffNameUseCase,
+    private val getListCharactersByNameUseCase: GetListCharactersByNameUseCase,
     private val getFavoriteIdCharactersUseCase: GetFavoriteIdCharactersUseCase,
-    private val getListCharactersOffListIdsUseCase: GetListCharactersOffListIdsUseCase,
+    private val getListCharactersByListIdsUseCase: GetListCharactersByListIdsUseCase,
 ): BaseViewModel()  {
 
     private var _listCharacter  = MutableLiveData<Characters>()
@@ -35,7 +33,7 @@ class CharactersListViewModel @Inject constructor(
 
     fun searchCharactersList(name: String) {
         viewModelScope.launch {
-            getListCharactersOffNameUseCase.invoke(name)
+            getListCharactersByNameUseCase.invoke(name)
                 .onStart { _loading.value = true }
                 .onCompletion { _loading.value = false }
                 .catch {
@@ -60,7 +58,7 @@ class CharactersListViewModel @Inject constructor(
         }
     fun getFavoriteComicsList(ids: ArrayList<Int>) =
         viewModelScope.launch {
-            getListCharactersOffListIdsUseCase.invoke(ids)
+            getListCharactersByListIdsUseCase.invoke(ids)
                 .onStart { _loading.value = true }
                 .onCompletion { _loading.value = false }
                 .catch {

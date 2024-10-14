@@ -44,7 +44,7 @@ class ComicsListAdapter (items : ArrayList<Comic>,private val listener : ComicHo
         }
     }
 
-    fun setFavoriteComics(ids:ArrayList<Int>) {
+    fun setIdsFavoriteComics(ids:ArrayList<Int>) {
         for (comic in items)
         {
             if(ids.contains(comic.id)) {

@@ -49,7 +49,7 @@ abstract class BaseAdapter<T, S : BaseItemViewHolder<T>>(protected var items: Ar
     {
         diffUtils.start(this.items)
         items.forEach{
-            if(this.items.contains(it))
+            if(!this.items.contains(it))
                 this.items.add(it)
         }
         diffUtils.finish(this.items,this)
