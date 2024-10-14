@@ -22,9 +22,4 @@ class CharactersDataSourceImpl @Inject constructor(
         marvelController.findComicCharacters(idComic,offset).map { it.data?.mapToListCharacter() ?: Characters()}
 
     override fun getDataContainer(ids: ArrayList<Int>): Flow<Characters> = marvelController.findCharactersOffIds(ids).map { it.data?.mapToListCharacter() ?: Characters()}
-    override fun getFavoriteListCharacters(): Flow<List<Character>> {
-        TODO("Not yet implemented")
-    }
-
-
 }
