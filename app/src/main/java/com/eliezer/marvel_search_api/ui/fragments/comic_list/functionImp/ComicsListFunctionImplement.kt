@@ -56,13 +56,13 @@ class ComicsListFunctionImplement (
     override fun onImageButtonFavoriteListener(comic: Comic) {
         LocalAccount.authResult.value?.run {
                 if (comic.favorite) {
-                    comicListFunctionManagerRepository.insertFavoriteComic(comic.id)
-                    comicListFunctionManagerRepository.insertFavoriteComicInDatabase.call(comic)
+                    comicListFunctionManagerRepository.insertFavoriteComicFireStore(comic.id)
+                    comicListFunctionManagerRepository.insertFavoriteComicInDatabase(comic)
                     functionManagerRecyclerAdapter.adapter!!.setFavoriteComic(comic)
                 }
                 else {
-                    comicListFunctionManagerRepository.deleteFavoriteComic(comic.id)
-                    comicListFunctionManagerRepository.deleteFavoriteComicInDatabase.call(comic)
+                    comicListFunctionManagerRepository.deleteFavoriteComicFireStore(comic.id)
+                    comicListFunctionManagerRepository.deleteFavoriteComicInDatabase(comic)
                     functionManagerRecyclerAdapter.adapter!!.setNoFavoriteComic(comic)
                 }
                 true

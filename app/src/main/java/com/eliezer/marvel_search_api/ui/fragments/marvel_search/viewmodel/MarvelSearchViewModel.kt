@@ -81,9 +81,9 @@ class MarvelSearchViewModel @Inject constructor(
                 }
         }
     }
-    fun insertLocalUser(myUserCredential: MyUserCredential)
+    fun insertCredentialOfLocalUser(myUserCredential: MyUserCredential)
     {
-        localUserInsert.insertCredentialOfLocalUser(myUserCredential)
+        //localUserInsert.insertCredentialOfLocalUser(myUserCredential)
     }
     fun deleteAllLocalUser()
     {

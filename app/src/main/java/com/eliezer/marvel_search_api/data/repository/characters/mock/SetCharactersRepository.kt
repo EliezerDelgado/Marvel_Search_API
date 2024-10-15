@@ -14,16 +14,12 @@ class SetCharactersRepository @Inject constructor(
     }
     fun setInRoomDatabase(vararg character: Character)
     {
-        character.forEach {
-            charactersRepository.setCharacterInDatabase(it)
-        }
+            charactersRepository.setCharacterInDatabase(*character)
     }
 
     fun deleteInRoomDatabase(vararg character: Character)
     {
-        character.forEach {
-            charactersRepository.deleteCharacterInDatabase(it)
-        }
+            charactersRepository.deleteCharacterInDatabase(*character)
     }
     fun setListRoomDatabase(characters: List<Character>)
     {

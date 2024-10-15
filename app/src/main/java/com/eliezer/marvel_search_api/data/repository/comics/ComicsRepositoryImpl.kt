@@ -44,21 +44,21 @@ class ComicsRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun setComicInDatabase(comic: Comic) {
+    override fun setComicInDatabase(vararg comic: Comic) {
         Thread{
-            comicDao?.insert(comic)
+            comicDao?.insert(*comic)
         }.start()
     }
 
     override fun setListComicInDatabase(comics: List<Comic>) {
         Thread{
-            comicDao?.insertAll(comics)
+            comicDao?.insert(*comics.toTypedArray())
         }.start()
     }
 
-    override fun deleteComicInDatabase(comic: Comic) {
+    override fun deleteComicInDatabase(vararg comic: Comic) {
         Thread{
-            comicDao?.delete(comic)
+            comicDao?.delete(*comic)
         }.start()
     }
 

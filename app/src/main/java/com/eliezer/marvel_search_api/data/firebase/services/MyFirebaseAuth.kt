@@ -49,6 +49,7 @@ class MyFirebaseAuth @Inject constructor() {
                 val googleIdOption: GetGoogleIdOption =getGoogleExistingId(context)
                 // Check if the received credential is a valid Google ID Token
                 val credential = getCredential(context,credentialManager,googleIdOption)
+
                 return checkCredentials(credential)
             } catch (e: GetCredentialCancellationException) {
                 return Result.failure(e)
@@ -90,9 +91,13 @@ class MyFirebaseAuth @Inject constructor() {
                     GoogleIdTokenCredential.createFrom(credential.data)
                 val authCredential =
                     GoogleAuthProvider.getCredential(googleIdTokenCredential.idToken, null)
-                LocalAccount.requestCredential = credential
                 val authResult = firebaseAuth.signInWithCredential(authCredential).await()
-                return Result.success(authResult)
+                if(authResult==null)
+                    return Result.failure(Exception("Credential Expired"))
+                else {
+                    LocalAccount.requestCredential = credential
+                    return Result.success(authResult)
+                }
             } else {
                 return Result.failure(RuntimeException("Received an invalid credential type"))
             }

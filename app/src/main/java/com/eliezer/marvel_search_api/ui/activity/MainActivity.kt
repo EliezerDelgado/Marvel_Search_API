@@ -53,8 +53,8 @@ class MainActivity : AppCompatActivity() {
         funImpl = binding?.let { MainActivityFunctionImplement(it,viewModel,mainActivityFunctionManagerRepository,this)}
         _navigationMainActions = NavigationMainActions(binding!!.mainNavHostFragment)
         funImpl?.setMainToolbar()
-        getLocalUser()
         listeningChangesInAuthResult()
+        getLocalUser()
     }
 
     private fun listeningChangesInAuthResult() {

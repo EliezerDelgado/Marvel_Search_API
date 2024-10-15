@@ -188,10 +188,10 @@ class MainActivityViewModel @Inject constructor(
         _listComic  = MutableLiveData<Comics>()
     }
     fun resetFavoriteIdCharacters() {
-        _favoriteIdComics  = MutableLiveData<ArrayList<Int>>()
+        _favoriteIdCharacters  = MutableLiveData<ArrayList<Int>>()
     }
 
     fun resetCharacters() {
-        _listComic  = MutableLiveData<Comics>()
+        _listCharacter  = MutableLiveData<Characters>()
     }
 }

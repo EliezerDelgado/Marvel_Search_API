@@ -81,14 +81,14 @@ class MainActivityFunctionImplement(
 
     }
     private fun getListComicsByIds(ids: ArrayList<Int>) {
-        functionManagerViewModel.setIdComicsNotObservesVM(owner)
         functionManagerViewModel.setListComicsObservesVM(owner,::setFavoriteListComicsInDatabase)
         functionManagerViewModel.getFavoriteComicsList(ids)
+        functionManagerViewModel.setIdComicsNotObservesVM(owner)
     }
 
     private fun setFavoriteListComicsInDatabase(comics: Comics) {
-        functionManagerViewModel.setListComicsNoObservesVM(owner)
         mainActivityFunctionManagerRepository.insertDatabaseComics(comics.listComics)
+        functionManagerViewModel.setListComicsNoObservesVM(owner)
     }
     //Characters
     private fun getIdCharactersModeFavorite() {
@@ -97,14 +97,14 @@ class MainActivityFunctionImplement(
 
     }
     private fun getListCharactersByIds(ids: ArrayList<Int>) {
-        functionManagerViewModel.setIdCharactersNotObservesVM(owner)
         functionManagerViewModel.setListCharactersObservesVM(owner,::setFavoriteListCharactersInDatabase)
         functionManagerViewModel.getFavoriteCharactersList(ids)
+        functionManagerViewModel.setIdCharactersNotObservesVM(owner)
     }
 
     private fun setFavoriteListCharactersInDatabase(characters: Characters) {
-        functionManagerViewModel.setListCharactersNoObservesVM(owner)
         mainActivityFunctionManagerRepository.insertDatabaseCharacters(characters.listCharacters)
+        functionManagerViewModel.setListCharactersNoObservesVM(owner)
     }
 }
 
