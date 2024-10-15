@@ -9,6 +9,7 @@ import com.eliezer.marvel_search_api.models.dataclass.Character
 import com.eliezer.marvel_search_api.models.dataclass.Comic
 import com.eliezer.marvel_search_api.ui.fragments.character_list.CharactersListFragmentDirections
 import com.eliezer.marvel_search_api.ui.fragments.comic_list.ComicsListFragmentDirections
+import com.eliezer.marvel_search_api.ui.fragments.favorites.FavoritesFragmentDirections
 import com.eliezer.marvel_search_api.ui.fragments.marvel_search.MarvelSearchFragmentDirections
 
 class NavigationMainActions (private val navHostFragment: FragmentContainerView){
@@ -46,5 +47,18 @@ class NavigationMainActions (private val navHostFragment: FragmentContainerView)
     fun doActionMarvelSearchFragmentToFavoritesFragment()
     {
         navHostFragment.findNavController().navigate(R.id.action_marvelSearchFragment_to_favoritesFragment)
+    }
+    fun doActionFavoritesFragmentToCharacterProfileFragment(character: Character)
+    {
+
+        val action = FavoritesFragmentDirections.actionFavoritesFragmentToCharacterProfileFragment(character)
+        navHostFragment.findNavController().navigate(action)
+    }
+
+    fun doActionFavoritesFragmentToComicDescriptionFragment(comic: Comic)
+    {
+
+        val action = FavoritesFragmentDirections.actionFavoritesFragmentToComicDescriptionFragment(comic)
+        navHostFragment.findNavController().navigate(action)
     }
 }

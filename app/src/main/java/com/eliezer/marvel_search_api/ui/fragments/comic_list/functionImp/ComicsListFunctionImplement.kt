@@ -22,6 +22,7 @@ class ComicsListFunctionImplement (
     private val comicListFunctionManagerRepository: ComicListFunctionManagerRepository,
     private val owner : LifecycleOwner
 ) : ComicsListAdapter.ComicHolderListener {
+
     private var title: String? = null
     private var myOnScrolledListener : MyOnScrolledListener? = MyOnScrolledListener { getListComics() }
     private val functionManagerViewModel = FunctionManagerViewModel(viewModel)
@@ -50,7 +51,9 @@ class ComicsListFunctionImplement (
 
 
     override fun onComicItemClickListener(comic: Comic) {
-        navigationMainActions.doActionComicsListFragmentToComicDescriptionFragment(comic = comic)
+        title?.also {
+            navigationMainActions.doActionComicsListFragmentToComicDescriptionFragment(comic = comic)
+        } ?:  navigationMainActions.doActionFavoritesFragmentToComicDescriptionFragment(comic = comic)
     }
 
     override fun onImageButtonFavoriteListener(comic: Comic) {
