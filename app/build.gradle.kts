@@ -1,12 +1,17 @@
+import com.android.build.gradle.internal.tasks.databinding.DataBindingGenBaseClassesTask
+import org.gradle.configurationcache.extensions.capitalized
+import org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompileTool
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    id("org.jetbrains.kotlin.kapt")
     id("com.google.dagger.hilt.android")
     id("org.jetbrains.kotlin.plugin.serialization")
     id("androidx.navigation.safeargs.kotlin")
+    id("org.jetbrains.kotlin.kapt")
     // Add the Google services Gradle plugin
     id("com.google.gms.google-services")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -31,6 +36,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        ksp {
+            arg("room.schemaLocation", "$projectDir/schemas")
+        }
     }
 
     buildTypes {
@@ -63,10 +71,20 @@ android {
             signingConfig = signingConfigs.getByName("debug")
         }
     }
+    androidComponents {
+        onVariants(selector().all()) { variant ->
+            afterEvaluate {
+                project.tasks.getByName("ksp" + variant.name.capitalized() + "Kotlin") {
+                    val dataBindingTask =
+                        project.tasks.getByName("dataBindingGenBaseClasses" + variant.name.capitalized()) as DataBindingGenBaseClassesTask
+                    (this as AbstractKotlinCompileTool<*>).setSource(dataBindingTask.sourceOutFolder)
+                }
+            }
+        }
+    }
 }
 
 dependencies {
-
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.javax.inject)
     implementation(libs.gson)
@@ -91,11 +109,11 @@ dependencies {
 
     //Dagger
     implementation(libs.dagger)
-    kapt(libs.dagger.compiler)
+    ksp(libs.dagger.compiler)
 
     //Hilt
     implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
+    ksp(libs.hilt.android.compiler)
     implementation(libs.listenablefuture)
 
     //Serialization
@@ -128,9 +146,9 @@ dependencies {
 
     //RoomDatabase
     implementation(libs.androidx.room.runtime)
-    kapt(libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
 
     // To use Kotlin annotation processing tool (kapt)
-    kapt(libs.room.compiler)
+    ksp(libs.room.compiler)
     implementation(kotlin("reflect"))
 }

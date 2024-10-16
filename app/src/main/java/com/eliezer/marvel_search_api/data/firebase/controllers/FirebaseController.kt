@@ -26,11 +26,6 @@ class FirebaseController @Inject constructor(
             trySend(myFirebaseAuth.googleSignInExistingAccount(context))
             awaitClose { }
         }
-    fun signInGoogleAccountBefore(context: Context): Flow<Result<AuthResult>> =
-        callbackFlow {
-            trySend(myFirebaseAuth.googleSignInAccountBefore(context))
-            awaitClose { }
-        }
     fun signInWithCredentialsGoogleAccount(credential: Credential): Flow<Result<AuthResult>> =
         callbackFlow {
             trySend(myFirebaseAuth.googleSignInWithCredentialAccount(credential))

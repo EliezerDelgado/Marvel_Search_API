@@ -58,24 +58,6 @@ class MyFirebaseAuth @Inject constructor() {
                 return Result.failure(e)
             }
     }
-
-    suspend fun googleSignInAccountBefore(context: Context): Result<AuthResult> {
-        try {
-            // Initialize Credential Manage
-            val credentialManager: CredentialManager = CredentialManager.create(context)
-            // Generate a nonce (a random number used once)
-            val googleIdOption: GetGoogleIdOption =getGoogleAccountBefore(context)
-            // Check if the received credential is a valid Google ID Token
-            val credential = getCredential(context,credentialManager,googleIdOption)
-            return checkCredentials(credential)
-        } catch (e: GetCredentialCancellationException) {
-            return Result.failure(e)
-        }catch (e: NoCredentialException) {
-            return Result.failure(e)
-        } catch (e: Exception) {
-            return Result.failure(e)
-        }
-    }
     suspend fun googleSignInWithCredentialAccount(credential: Credential): Result<AuthResult>
         = try {
             checkCredentials(credential)
@@ -90,11 +72,6 @@ class MyFirebaseAuth @Inject constructor() {
     {
         val hashedNonce = FirebaseNonce.generateNonce()
         return FirebaseGoogle.getExistingGoogleAccount(context,hashedNonce)
-    }
-    private fun getGoogleAccountBefore(context: Context) : GetGoogleIdOption
-    {
-        val hashedNonce = FirebaseNonce.generateNonce()
-        return FirebaseGoogle.getExistingGoogleAccountBefore(context,hashedNonce)
     }
     private fun getSignInWithGoogleOption(context: Context): GetSignInWithGoogleOption
     {
