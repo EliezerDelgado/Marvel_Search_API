@@ -11,7 +11,7 @@ object LocalDatabase {
     {
         db = Room.databaseBuilder(
             context,
-            MarvelFavoriteDatabase::class.java, "marvelDB"
+            MarvelFavoriteDatabase::class.java, "favoriteMarvelDB"
         ).build()
     }
 }
