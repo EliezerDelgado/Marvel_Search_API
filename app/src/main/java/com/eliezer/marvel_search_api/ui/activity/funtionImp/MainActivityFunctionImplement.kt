@@ -2,17 +2,15 @@ package com.eliezer.marvel_search_api.ui.activity.funtionImp
 
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.credentials.Credential
 import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_search_api.databinding.ActivityMainBinding
 import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.eliezer.marvel_search_api.models.dataclass.Characters
 import com.eliezer.marvel_search_api.models.dataclass.Comics
-import com.eliezer.marvel_search_api.models.dataclass.MyUserCredential
+import com.eliezer.marvel_search_api.models.dataclass.UserAccount
 import com.eliezer.marvel_search_api.ui.activity.viewmodel.MainActivityViewModel
 import com.eliezer.marvel_search_api.ui.fragments.character_list.functionImp.function.MainActivityFunctionManagerRepository
 import com.google.android.material.appbar.AppBarLayout
-import com.google.firebase.auth.AuthResult
 
 class MainActivityFunctionImplement(
     binding: ActivityMainBinding,
@@ -28,42 +26,15 @@ class MainActivityFunctionImplement(
     )
 
     fun setMainToolbar() = functionManagerBinding.setMainToolbar()
-
-    fun getLocalUserCredential()
-    {
-        functionManagerViewModel.setMyUserCredentialObservesVM(owner,::getMyUserCredential)
-        functionManagerViewModel.getMyUserCredential()
-    }
-
-    private fun getMyUserCredential(myUserCredential: MyUserCredential?) {
-        functionManagerViewModel.setMyUserCredentialNotObservesVM(owner)
-        myUserCredential?.also {
-            sendCredential(it)
-        }
-    }
-    private fun sendCredential(myUserCredential: MyUserCredential)
-    {
-        functionManagerViewModel.setGetUserWithCredentialObserveVM(owner, ::getAuthResult)
-        val credential = Credential.createFrom(
-            type = myUserCredential.type,
-            data = myUserCredential.data
-        )
-        functionManagerViewModel.getGoogleSigInAuthResult(credential)
-    }
-    private fun getAuthResult(authResult: AuthResult)
-    {
-        functionManagerViewModel.setGetUserWithCredentialNotObserveVM(owner)
-        LocalAccount.authResult.postValue(authResult)
-    }
     fun setToolbarView(visibility: Boolean) = functionManagerBinding.setToolbarView(visibility)
 
     fun setSubToolbarView(visibility: Boolean) = functionManagerBinding.setSubToolbarView(visibility)
-    fun listeningChangesInAuthResult() {
-            functionManagerViewModel.setAuthResultObservesVM(owner, ::updateLocalDatabase)
+    fun listeningChangesInUserAccount() {
+            functionManagerViewModel.setUserAccountObservesVM(owner, ::updateLocalDatabase)
     }
 
-    private fun updateLocalDatabase(authResult: AuthResult?) {
-        LocalAccount.authResult.value?.also {
+    private fun updateLocalDatabase(userAccount : UserAccount?) {
+        LocalAccount.user.value?.also {
             mainActivityFunctionManagerRepository.clearDatabaseComic()
             mainActivityFunctionManagerRepository.clearDatabaseCharacter()
             updateDatabaseWithFavoriteComics()
@@ -106,6 +77,15 @@ class MainActivityFunctionImplement(
         mainActivityFunctionManagerRepository.insertDatabaseCharacters(characters.listCharacters)
         functionManagerViewModel.setListCharactersNoObservesVM(owner)
     }
+
+    fun getLocalUser() {
+        val currentUser = LocalAccount.auth.currentUser
+        LocalAccount.user.postValue(
+            currentUser?.run {
+                UserAccount(displayName!!, email!!, photoUrl)
+            }
+        )
+    }
 }
 
 private class FunctionManagerBinding(
@@ -136,31 +116,8 @@ private class FunctionManagerViewModel(
     private val viewModel : MainActivityViewModel
 )
 {
-    fun setMyUserCredentialObservesVM(owner: LifecycleOwner,observe : ((MyUserCredential?)-> (Unit)))
-    {
-        viewModel.myUserCredentialLiveData.observe(owner,observe)
-    }
-    fun setMyUserCredentialNotObservesVM(owner: LifecycleOwner) {
-        viewModel.myUserCredentialLiveData.removeObservers(owner)
-    }
-
-    fun setGetUserWithCredentialObserveVM(owner: LifecycleOwner, observe: (AuthResult) -> Unit) {
-        viewModel.googleAuthResult.observe(owner,observe)
-    }
-    fun setGetUserWithCredentialNotObserveVM(owner: LifecycleOwner) {
-        viewModel.googleAuthResult.removeObservers(owner)
-    }
-    fun getMyUserCredential()
-    {
-        viewModel.getLocalUserCredential()
-    }
-    fun getGoogleSigInAuthResult(credential: Credential)
-    {
-        viewModel.signInGoogle(credential)
-    }
-
-    fun setAuthResultObservesVM(owner: LifecycleOwner, observe: (AuthResult?) -> Unit) {
-        LocalAccount.authResult.observe(owner,observe)
+    fun setUserAccountObservesVM(owner: LifecycleOwner, observe: (UserAccount?) -> Unit) {
+        LocalAccount.user.observe(owner,observe)
     }
     //Comic
     fun setIdComicsObservesVM(owner: LifecycleOwner, observeComics: ((ArrayList<Int>)->(Unit))) {

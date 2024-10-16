@@ -1,26 +1,17 @@
 package com.eliezer.marvel_search_api.ui.activity
 
 import android.os.Bundle
-import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.fragment.app.viewModels
-import com.eliezer.marvel_search_api.data.firebase.services.MyFireStoreInserts
 import com.eliezer.marvel_search_api.data.firebase.services.MyFirebaseAnalytics
-import com.eliezer.marvel_search_api.data.firebase.services.MyFireStoreSelects
 import com.eliezer.marvel_search_api.databinding.ActivityMainBinding
 import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
 import com.eliezer.marvel_search_api.ui.activity.funtionImp.MainActivityFunctionImplement
 import com.eliezer.marvel_search_api.ui.activity.viewmodel.MainActivityViewModel
-import com.eliezer.marvel_search_api.ui.fragments.character_list.functionImp.function.ComicListFunctionManagerRepository
 import com.eliezer.marvel_search_api.ui.fragments.character_list.functionImp.function.MainActivityFunctionManagerRepository
-import com.eliezer.marvel_search_api.ui.fragments.comic_list.functionImp.ComicsListFunctionImplement
-import com.eliezer.marvel_search_api.ui.fragments.marvel_search.viewmodel.MarvelSearchViewModel
-import com.google.android.material.appbar.AppBarLayout
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,11 +48,12 @@ class MainActivity : AppCompatActivity() {
         getLocalUser()
     }
 
+
     private fun listeningChangesInAuthResult() {
-       funImpl?.listeningChangesInAuthResult()
+       funImpl?.listeningChangesInUserAccount()
     }
 
-    private fun getLocalUser() =     funImpl?.getLocalUserCredential()
+    private fun getLocalUser() = funImpl?.getLocalUser()
 
     fun setToolbarView(visibility : Boolean) =     funImpl?.setToolbarView(visibility)
     fun getToolBar() = binding?.mainToolbar

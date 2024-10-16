@@ -3,8 +3,8 @@ package com.eliezer.marvel_search_api.data.repository.firebase
 import android.content.Context
 import androidx.credentials.Credential
 import com.eliezer.marvel_search_api.data.datasource.FirebaseDataSource
-import com.eliezer.marvel_search_api.domain.local_property.LocalDatabase
 import com.eliezer.marvel_search_api.domain.repository.FirebaseRepository
+import com.eliezer.marvel_search_api.models.dataclass.UserAccount
 import com.google.firebase.auth.AuthResult
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -15,11 +15,8 @@ class FirebaseRepositoryImpl @Inject constructor(
     private val datasource: FirebaseDataSource,
 ) : FirebaseRepository {
 
-    private val characterDao = LocalDatabase.db?.characterDao()
-    private val comicDao = LocalDatabase.db?.comicDao()
-
-    override fun signInGoogleExistingAccount(context: Context) : Flow<Result<AuthResult>> = datasource.signInGoogleExistingAccount(context)
-    override fun signInAddGoogleNewAccount(context: Context) : Flow<Result<AuthResult>> = datasource.signInAddGoogleNewAccount(context)
+    override fun signInGoogleExistingAccount(context: Context) : Flow<Result<UserAccount>> = datasource.signInGoogleExistingAccount(context)
+    override fun signInAddGoogleNewAccount(context: Context) : Flow<Result<UserAccount>> = datasource.signInAddGoogleNewAccount(context)
     override fun getFavoriteIdCharacters(): Flow<Result<ArrayList<Int>>> =  datasource.getFavoriteIdCharacters()
 
     override fun getFavoriteIdComics(): Flow<Result<ArrayList<Int>>> = datasource.getFavoriteIdComics()

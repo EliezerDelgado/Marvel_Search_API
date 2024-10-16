@@ -49,7 +49,6 @@ class MyFirebaseAuth @Inject constructor() {
                 val googleIdOption: GetGoogleIdOption =getGoogleExistingId(context)
                 // Check if the received credential is a valid Google ID Token
                 val credential = getCredential(context,credentialManager,googleIdOption)
-
                 return checkCredentials(credential)
             } catch (e: GetCredentialCancellationException) {
                 return Result.failure(e)
@@ -58,6 +57,24 @@ class MyFirebaseAuth @Inject constructor() {
         } catch (e: Exception) {
                 return Result.failure(e)
             }
+    }
+
+    suspend fun googleSignInAccountBefore(context: Context): Result<AuthResult> {
+        try {
+            // Initialize Credential Manage
+            val credentialManager: CredentialManager = CredentialManager.create(context)
+            // Generate a nonce (a random number used once)
+            val googleIdOption: GetGoogleIdOption =getGoogleAccountBefore(context)
+            // Check if the received credential is a valid Google ID Token
+            val credential = getCredential(context,credentialManager,googleIdOption)
+            return checkCredentials(credential)
+        } catch (e: GetCredentialCancellationException) {
+            return Result.failure(e)
+        }catch (e: NoCredentialException) {
+            return Result.failure(e)
+        } catch (e: Exception) {
+            return Result.failure(e)
+        }
     }
     suspend fun googleSignInWithCredentialAccount(credential: Credential): Result<AuthResult>
         = try {
@@ -73,6 +90,11 @@ class MyFirebaseAuth @Inject constructor() {
     {
         val hashedNonce = FirebaseNonce.generateNonce()
         return FirebaseGoogle.getExistingGoogleAccount(context,hashedNonce)
+    }
+    private fun getGoogleAccountBefore(context: Context) : GetGoogleIdOption
+    {
+        val hashedNonce = FirebaseNonce.generateNonce()
+        return FirebaseGoogle.getExistingGoogleAccountBefore(context,hashedNonce)
     }
     private fun getSignInWithGoogleOption(context: Context): GetSignInWithGoogleOption
     {
@@ -92,11 +114,10 @@ class MyFirebaseAuth @Inject constructor() {
                 val authCredential =
                     GoogleAuthProvider.getCredential(googleIdTokenCredential.idToken, null)
                 val authResult = firebaseAuth.signInWithCredential(authCredential).await()
-                if(authResult==null)
-                    return Result.failure(Exception("Credential Expired"))
+                return if(authResult==null)
+                    Result.failure(Exception("Credential Expired"))
                 else {
-                    LocalAccount.requestCredential = credential
-                    return Result.success(authResult)
+                    Result.success(authResult)
                 }
             } else {
                 return Result.failure(RuntimeException("Received an invalid credential type"))

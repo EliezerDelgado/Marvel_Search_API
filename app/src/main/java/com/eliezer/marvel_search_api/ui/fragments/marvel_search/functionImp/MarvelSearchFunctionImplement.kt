@@ -8,9 +8,8 @@ import com.eliezer.marvel_search_api.R
 import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
 import com.eliezer.marvel_search_api.databinding.FragmentMarvelSearchBinding
-import com.eliezer.marvel_search_api.models.dataclass.MyUserCredential
+import com.eliezer.marvel_search_api.models.dataclass.UserAccount
 import com.eliezer.marvel_search_api.ui.fragments.marvel_search.viewmodel.MarvelSearchViewModel
-import com.google.firebase.auth.AuthResult
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -52,11 +51,8 @@ class MarvelSearchFunctionImplement(
             }
             marvelSearchImageButtonGoogleSignIn.apply {
                 setOnClickListener {
-                    setObserveAuthResult()
+                    setObserveUserAccount()
                     nameButtonPulse = id.toString()
-                    if(LocalAccount.requestCredential==null)
-                        googleSignIn(context)
-                    else
                         //Todo mientras este
                         googleSignIn(context)
 
@@ -65,13 +61,9 @@ class MarvelSearchFunctionImplement(
         }
     }
 
-    private fun googleSignWithCredential() {
-        viewModel.signInWithCredentialsGoogleAccount(LocalAccount.requestCredential!!)
-    }
-
     private fun googleSignIn(context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            viewModel.signInGoogle(context)
+            viewModel.signInGoogleAccount(context)
         }
     }
 
@@ -83,17 +75,13 @@ class MarvelSearchFunctionImplement(
     private fun setObserveSizeResult() {
         viewModel.sizeResult.observe(owner,::getSizeResultList)
     }
-    private fun setObserveAuthResult(){
+    private fun setObserveUserAccount(){
         viewModel.googleAuthResult.observe(owner,::setAccount)
     }
 
-    private fun setAccount(authResult: AuthResult) {
-        setNotObserveAuthResult()
-        LocalAccount.authResult.postValue(authResult)
-        LocalAccount.requestCredential?.apply {
-            val myUserCredential = MyUserCredential(type,data)
-           viewModel.insertCredentialOfLocalUser(myUserCredential)
-        }
+    private fun setAccount(userAccount: UserAccount) {
+        setNotObserveUserAccount()
+        LocalAccount.user.postValue(userAccount)
     }
 
     private fun searchListCharacters(name:String)
@@ -190,7 +178,7 @@ class MarvelSearchFunctionImplement(
         viewModel.sizeResult.removeObservers(owner)
         viewModel.resetSizeResult()
     }
-    private fun setNotObserveAuthResult() {
+    private fun setNotObserveUserAccount() {
         viewModel.googleAuthResult.removeObservers(owner)
         viewModel.resetAuthResult()
     }

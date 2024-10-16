@@ -8,6 +8,7 @@ import androidx.credentials.GetCredentialResponse
 import com.eliezer.marvel_search_api.data.firebase.configuration.FireStoreConfiguration
 import com.eliezer.marvel_search_api.data.firebase.controllers.FirebaseController
 import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
+import com.google.firebase.auth.FirebaseAuth
 import okhttp3.Request
 
 object FirebaseCredential {
@@ -16,8 +17,8 @@ object FirebaseCredential {
         // Request credentials
         val request = requestCredential(credentialOption)
         // Get the credential result
-        val credential =  credentialManager.getCredential(context, request)
-        return credential
+        val response =  credentialManager.getCredential(context, request)
+        return response
     }
     private fun requestCredential(credentialOption: CredentialOption) =GetCredentialRequest.Builder()
             .addCredentialOption(credentialOption)

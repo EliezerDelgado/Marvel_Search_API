@@ -6,8 +6,8 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 object FireStoreConfiguration
 {
-    val firestore: FirebaseFirestore? get() = getFireStore()
-    val usersCollection = firestore?.collection("users")
+    private val myFireStore: FirebaseFirestore? get() = getFireStore()
+    val usersCollection = myFireStore?.collection("users")
     private fun getFireStore() : FirebaseFirestore?=
         try {
             Firebase.firestore

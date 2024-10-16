@@ -1,19 +1,13 @@
 package com.eliezer.marvel_search_api.domain.local_property
 
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.Network
-import android.net.NetworkCapabilities
-import android.net.NetworkRequest
-import android.os.Build
-import androidx.credentials.Credential
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.firebase.auth.AuthResult
+import com.eliezer.marvel_search_api.models.dataclass.UserAccount
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 
 object LocalAccount {
-    var authResult = MutableLiveData<AuthResult?>()
-    var requestCredential : Credential? = null
-    val email get() = authResult.value?.user?.email.toString()
+    var user = MutableLiveData<UserAccount?>()
+    val auth get() = Firebase.auth
+    val email get() = Firebase.auth.currentUser?.email
 }

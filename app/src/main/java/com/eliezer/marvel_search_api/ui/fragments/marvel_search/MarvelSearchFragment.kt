@@ -13,9 +13,9 @@ import com.eliezer.marvel_search_api.data.expand.unregisterNetworkCallback
 import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.eliezer.marvel_search_api.data.mappers.mainActivity
 import com.eliezer.marvel_search_api.databinding.FragmentMarvelSearchBinding
+import com.eliezer.marvel_search_api.models.dataclass.UserAccount
 import com.eliezer.marvel_search_api.ui.fragments.marvel_search.functionImp.MarvelSearchFunctionImplement
 import com.eliezer.marvel_search_api.ui.fragments.marvel_search.viewmodel.MarvelSearchViewModel
-import com.google.firebase.auth.AuthResult
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -49,7 +49,7 @@ class MarvelSearchFragment : BaseFragment<FragmentMarvelSearchBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mainActivity(requireActivity()).setToolbarView(false)
-        LocalAccount.authResult.observe(this.viewLifecycleOwner, ::listenAuthResult)
+        LocalAccount.user.observe(this.viewLifecycleOwner, ::listenUserAccount)
         funImpl = MarvelSearchFunctionImplement(
             binding,
             searchViewModel,
@@ -66,15 +66,15 @@ class MarvelSearchFragment : BaseFragment<FragmentMarvelSearchBinding>(
         requireContext().registerNetworkCallback(networkCallback)
     }
 
-    private fun listenAuthResult(authResult: AuthResult?) {
-        authResult?.also{
+    private fun listenUserAccount(userAccount: UserAccount?) {
+        userAccount?.also{
             funImpl?.enableFavoriteButtons()
         } ?: funImpl?.disableFavoriteButtons()
     }
 
 
     private fun checkIsLogin() {
-        LocalAccount.authResult.value?.also{
+        LocalAccount.user.value?.also{
             funImpl?.enableFavoriteButtons()
         } ?: funImpl?.disableFavoriteButtons()
     }

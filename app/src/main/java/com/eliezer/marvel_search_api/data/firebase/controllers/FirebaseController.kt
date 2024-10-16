@@ -27,6 +27,11 @@ class FirebaseController @Inject constructor(
             trySend(myFirebaseAuth.googleSignInExistingAccount(context))
             awaitClose { }
         }
+    fun signInGoogleAccountBefore(context: Context): Flow<Result<AuthResult>> =
+        callbackFlow {
+            trySend(myFirebaseAuth.googleSignInAccountBefore(context))
+            awaitClose { }
+        }
     fun signInWithCredentialsGoogleAccount(credential: Credential): Flow<Result<AuthResult>> =
         callbackFlow {
             trySend(myFirebaseAuth.googleSignInWithCredentialAccount(credential))
@@ -40,30 +45,30 @@ class FirebaseController @Inject constructor(
         }
 
     fun getFavoritesIdCharacters(): Flow<Result<ArrayList<Int>>> =
-            myFireStoreSelects.getCharactersId(LocalAccount.email)
+            myFireStoreSelects.getCharactersId(LocalAccount.email!!)
 
     fun getFavoritesIdComics(): Flow<Result<ArrayList<Int>>> =
-        myFireStoreSelects.getComicsId(LocalAccount.email)
+        myFireStoreSelects.getComicsId(LocalAccount.email!!)
 
     fun insertFavoriteIdCharacter(idCharacter: Int) =
             myFireStoreInserts.insertCharacter(
-                idUser = LocalAccount.email,
+                idUser = LocalAccount.email!!,
                idCharacter =  idCharacter.toString()
             )
     fun insertFavoriteIdComic(idComic: Int) =
             myFireStoreInserts.insertComic(
-                idUser = LocalAccount.email,
+                idUser = LocalAccount.email!!,
                 idComic =  idComic.toString()
             )
 
     fun deleteFavoriteIdCharacter(idCharacter: Int)=
             myFireStoreDelete.deleteCharacter(
-                idUser = LocalAccount.email,
+                idUser = LocalAccount.email!!,
                 idCharacter =  idCharacter.toString()
             )
     fun deleteFavoriteIdComic(idComic: Int) =
             myFireStoreDelete.deleteComic(
-                idUser = LocalAccount.email,
+                idUser = LocalAccount.email!!,
                 idComic =  idComic.toString()
             )
 }

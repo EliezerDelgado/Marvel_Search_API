@@ -4,8 +4,11 @@ import android.content.Context
 import androidx.credentials.Credential
 import com.eliezer.marvel_search_api.data.datasource.FirebaseDataSource
 import com.eliezer.marvel_search_api.data.firebase.controllers.FirebaseController
+import com.eliezer.marvel_search_api.data.mappers.mapToUserAccount
+import com.eliezer.marvel_search_api.models.dataclass.UserAccount
 import com.google.firebase.auth.AuthResult
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -13,8 +16,12 @@ import javax.inject.Singleton
 class FirebaseDataSourceImpl @Inject constructor(
     private val firebaseController: FirebaseController
 ) : FirebaseDataSource {
-    override fun signInGoogleExistingAccount(context: Context) : Flow<Result<AuthResult>> =firebaseController.signInExistingGoogleAccount(context)
-    override fun signInAddGoogleNewAccount(context: Context) : Flow<Result<AuthResult>> =firebaseController.signInAddNewGoogleAccount(context)
+    override fun signInGoogleExistingAccount(context: Context) : Flow<Result<UserAccount>> =firebaseController.signInExistingGoogleAccount(context).map { result ->
+        result.map { it.mapToUserAccount() }
+    }
+    override fun signInAddGoogleNewAccount(context: Context) : Flow<Result<UserAccount>> =firebaseController.signInAddNewGoogleAccount(context).map { result ->
+        result.map { it.mapToUserAccount() }
+    }
     override fun getFavoriteIdCharacters(): Flow<Result<ArrayList<Int>>> =
         firebaseController.getFavoritesIdCharacters()
 
@@ -35,5 +42,6 @@ class FirebaseDataSourceImpl @Inject constructor(
 
     override fun signInWithCredentialsGoogleAccount(credential: Credential): Flow<Result<AuthResult>> =
         firebaseController.signInWithCredentialsGoogleAccount(credential)
+
 
 }
