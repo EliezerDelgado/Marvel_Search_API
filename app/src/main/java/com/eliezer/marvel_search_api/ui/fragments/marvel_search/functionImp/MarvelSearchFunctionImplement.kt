@@ -81,7 +81,7 @@ class MarvelSearchFunctionImplement(
 
     private fun setAccount(userAccount: UserAccount) {
         setNotObserveUserAccount()
-        LocalAccount.user.postValue(userAccount)
+        LocalAccount.userAccount.postValue(userAccount)
     }
 
     private fun searchListCharacters(name:String)

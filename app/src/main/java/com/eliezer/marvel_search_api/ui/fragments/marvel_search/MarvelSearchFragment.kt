@@ -49,7 +49,7 @@ class MarvelSearchFragment : BaseFragment<FragmentMarvelSearchBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mainActivity(requireActivity()).setToolbarView(false)
-        LocalAccount.user.observe(this.viewLifecycleOwner, ::listenUserAccount)
+        LocalAccount.userAccount.observe(this.viewLifecycleOwner, ::listenUserAccount)
         funImpl = MarvelSearchFunctionImplement(
             binding,
             searchViewModel,
@@ -74,7 +74,7 @@ class MarvelSearchFragment : BaseFragment<FragmentMarvelSearchBinding>(
 
 
     private fun checkIsLogin() {
-        LocalAccount.user.value?.also{
+        LocalAccount.userAccount.value?.also{
             funImpl?.enableFavoriteButtons()
         } ?: funImpl?.disableFavoriteButtons()
     }

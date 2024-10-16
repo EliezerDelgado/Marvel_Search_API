@@ -11,7 +11,6 @@ import com.google.firebase.auth.AuthResult
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -45,30 +44,30 @@ class FirebaseController @Inject constructor(
         }
 
     fun getFavoritesIdCharacters(): Flow<Result<ArrayList<Int>>> =
-            myFireStoreSelects.getCharactersId(LocalAccount.email!!)
+            myFireStoreSelects.getCharactersId(LocalAccount.currentUser!!.email)
 
     fun getFavoritesIdComics(): Flow<Result<ArrayList<Int>>> =
-        myFireStoreSelects.getComicsId(LocalAccount.email!!)
+        myFireStoreSelects.getComicsId(LocalAccount.currentUser!!.email)
 
     fun insertFavoriteIdCharacter(idCharacter: Int) =
             myFireStoreInserts.insertCharacter(
-                idUser = LocalAccount.email!!,
+                idUser = LocalAccount.currentUser!!.email,
                idCharacter =  idCharacter.toString()
             )
     fun insertFavoriteIdComic(idComic: Int) =
             myFireStoreInserts.insertComic(
-                idUser = LocalAccount.email!!,
+                idUser = LocalAccount.currentUser!!.email,
                 idComic =  idComic.toString()
             )
 
     fun deleteFavoriteIdCharacter(idCharacter: Int)=
             myFireStoreDelete.deleteCharacter(
-                idUser = LocalAccount.email!!,
+                idUser = LocalAccount.currentUser!!.email,
                 idCharacter =  idCharacter.toString()
             )
     fun deleteFavoriteIdComic(idComic: Int) =
             myFireStoreDelete.deleteComic(
-                idUser = LocalAccount.email!!,
+                idUser = LocalAccount.currentUser!!.email,
                 idComic =  idComic.toString()
             )
 }

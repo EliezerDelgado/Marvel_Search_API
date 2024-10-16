@@ -57,7 +57,7 @@ class ComicsListFunctionImplement (
     }
 
     override fun onImageButtonFavoriteListener(comic: Comic) {
-        LocalAccount.user.value?.run {
+        LocalAccount.userAccount.value?.run {
                 if (comic.favorite) {
                     comicListFunctionManagerRepository.insertFavoriteComicFireStore(comic.id)
                     comicListFunctionManagerRepository.insertFavoriteComicInDatabase(comic)

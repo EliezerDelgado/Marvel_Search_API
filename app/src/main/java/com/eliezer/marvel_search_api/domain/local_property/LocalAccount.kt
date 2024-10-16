@@ -7,7 +7,7 @@ import com.google.firebase.ktx.Firebase
 
 
 object LocalAccount {
-    var user = MutableLiveData<UserAccount?>()
+    var userAccount = MutableLiveData<UserAccount?>()
+    val currentUser get() = userAccount.value
     val auth get() = Firebase.auth
-    val email get() = Firebase.auth.currentUser?.email
 }

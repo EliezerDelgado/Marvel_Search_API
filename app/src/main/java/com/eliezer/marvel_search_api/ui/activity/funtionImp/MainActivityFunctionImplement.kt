@@ -34,7 +34,7 @@ class MainActivityFunctionImplement(
     }
 
     private fun updateLocalDatabase(userAccount : UserAccount?) {
-        LocalAccount.user.value?.also {
+        LocalAccount.userAccount.value?.also {
             mainActivityFunctionManagerRepository.clearDatabaseComic()
             mainActivityFunctionManagerRepository.clearDatabaseCharacter()
             updateDatabaseWithFavoriteComics()
@@ -80,7 +80,7 @@ class MainActivityFunctionImplement(
 
     fun getLocalUser() {
         val currentUser = LocalAccount.auth.currentUser
-        LocalAccount.user.postValue(
+        LocalAccount.userAccount.postValue(
             currentUser?.run {
                 UserAccount(displayName!!, email!!, photoUrl)
             }
@@ -117,7 +117,7 @@ private class FunctionManagerViewModel(
 )
 {
     fun setUserAccountObservesVM(owner: LifecycleOwner, observe: (UserAccount?) -> Unit) {
-        LocalAccount.user.observe(owner,observe)
+        LocalAccount.userAccount.observe(owner,observe)
     }
     //Comic
     fun setIdComicsObservesVM(owner: LifecycleOwner, observeComics: ((ArrayList<Int>)->(Unit))) {
