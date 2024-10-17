@@ -5,121 +5,197 @@ import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_search_api.databinding.FragmentCharactersListBinding
 import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
 import com.eliezer.marvel_search_api.domain.listener.MyOnScrolledListener
+import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.eliezer.marvel_search_api.models.dataclass.Character
 import com.eliezer.marvel_search_api.models.dataclass.Characters
-import com.eliezer.marvel_search_api.models.dataclass.Comic
+import com.eliezer.marvel_search_api.models.dataclass.Comics
 import com.eliezer.marvel_search_api.ui.fragments.character_list.CharactersListFragmentArgs
 import com.eliezer.marvel_search_api.ui.fragments.character_list.adapter.CharactersListAdapter
 import com.eliezer.marvel_search_api.ui.fragments.character_list.functionImp.function.CharacterListFunctionManagerRepository
 import com.eliezer.marvel_search_api.ui.fragments.character_list.viewmodel.CharactersListViewModel
 
 class CharactersListFunctionImplement(
-    private val binding: FragmentCharactersListBinding,
+    binding: FragmentCharactersListBinding,
+    viewModel: CharactersListViewModel,
     private val navigationMainActions: NavigationMainActions,
-    private val  viewModel: CharactersListViewModel,
     private val characterListFunctionManagerRepository: CharacterListFunctionManagerRepository,
     private val owner : LifecycleOwner
 ) : CharactersListAdapter.CharacterHolderListener{
 
-    private var adapter: CharactersListAdapter? = null
     private var searchCharacter : String? = null
-    private val myOnScrolledListener = MyOnScrolledListener { getListCharacters()}
+    private var myOnScrolledListener : MyOnScrolledListener?  = MyOnScrolledListener { getListCharacters()}
     private val functionManagerViewModel = FunctionManagerViewModel(viewModel)
+    private val functionManagerRecyclerAdapter = FunctionManagerRecyclerAdapter(this)
+    private val functionManagerBinding = FunctionManagerBinding(binding)
 
-    fun setAdapter() {
-        adapter = CharactersListAdapter(arrayListOf(),this)
-        binding.charactersListRecyclerView.setHasFixedSize(true)
-        binding.charactersListRecyclerView.adapter = adapter
-        binding.charactersListRecyclerView.addOnScrollListener(myOnScrolledListener)
-    }
     fun getListSearchCharactersRepository()
     {
         searchCharacter?.also {
             val characters = characterListFunctionManagerRepository.getListRepository(it)
-            setCharacterList(characters)
+            functionManagerRecyclerAdapter.setCharactersList(characters)
+            getIdCharactersModeSearch(owner)
         }
     }
-    fun getListFavoriteCharactersRepository(favoriteId : String)
+    fun disableMyOnScrolledListener()
     {
-        val characters = characterListFunctionManagerRepository.getListRepository(favoriteId)
-        setCharacterList(characters)
+        myOnScrolledListener = null
     }
-
-    private fun setCharacterList(characters: Characters?) =
-        adapter?.setCharacters(characters?.listCharacters ?: emptyList())
+    fun setAdapter() {
+        functionManagerBinding.setAdapter(functionManagerRecyclerAdapter.adapter!!)
+    }
+    fun setMyOnScrolledListener()
+    {
+        myOnScrolledListener!!.also { functionManagerBinding.recyclerViewCharactersAddScrollListener(it)}
+    }
 
     override fun onCharacterItemClickListener(character: Character) {
-        navigationMainActions.doActionCharacterListFragmentToCharacterProfileFragment(character =character)
+        searchCharacter?.also {
+            navigationMainActions.doActionCharacterListFragmentToCharacterProfileFragment(character = character)
+        } ?:  navigationMainActions.doActionFavoritesFragmentToCharacterProfileFragment(character = character)
     }
+
+    override fun onImageButtonFavoriteListener(character: Character) {
+        LocalAccount.userAccount.value?.run {
+            if (character.favorite) {
+                characterListFunctionManagerRepository.insertFavoriteCharacterFireStore(character.id)
+                characterListFunctionManagerRepository.insertFavoriteCharacterInDatabase(character)
+                functionManagerRecyclerAdapter.adapter!!.setFavoriteCharacter(character)
+            }
+            else {
+                characterListFunctionManagerRepository.deleteFavoriteCharacterFireStore(character.id)
+                characterListFunctionManagerRepository.deleteFavoriteCharacterInDatabase(character)
+                functionManagerRecyclerAdapter.adapter!!.setNoFavoriteCharacter(character)
+            }
+            true
+        } ?: {
+
+        }
+    }
+
+
     fun getMode(arguments: Bundle) = CharactersListFragmentArgs.fromBundle(arguments).argMode
 
     fun getCharactersArg(arguments: Bundle) {
         searchCharacter = CharactersListFragmentArgs.fromBundle(arguments).argSearchCharacter
     }
 
-    private fun setObservesVM() {
-        viewModel.listCharacter.observe(owner,::setListCharacters)
-    }
-
     private fun getListCharacters() {
-        binding.charactersListRecyclerView.removeOnScrollListener(myOnScrolledListener)
-        val characters = characterListFunctionManagerRepository.getListRepository(searchCharacter!!)
-        if(characters==null || characters.total > characters.listCharacters.size)
-        {
-            searchListCharacters()
-        }
-        else if (adapter!!.isListEmpty())
-        {
-            setListCharacters(characters)
+        myOnScrolledListener?.also { functionManagerBinding.recyclerViewCharactersRemoveScrollListener(it)}
+        val characters = searchCharacter?.let { characterListFunctionManagerRepository.getListRepository(searchCharacter!!)}
+        characters.also {
+            if (it == null || it.total > it.listCharacters.size)
+                searchListCharacters()
+            else if (functionManagerRecyclerAdapter.adapter!!.isListEmpty())
+                setListCharacters(it)
         }
     }
-
     private fun searchListCharacters() {
-            setObservesVM()
-            viewModel.searchCharactersList(searchCharacter!!)
+        functionManagerViewModel.setListCharactersObservesVM(owner, ::setListCharacters)
+        searchCharacter?.also { functionManagerViewModel.searchCharacterList(it)}
     }
 
     private fun setListCharacters(characters: Characters?) {
-        val position = myOnScrolledListener.position
+        val position = myOnScrolledListener?.position
         characters?.apply {
             if (listCharacters.isNotEmpty())
-                adapter?.setCharacters(listCharacters)
+                functionManagerRecyclerAdapter.adapter?.setCharacters(listCharacters)
         }
-        binding.charactersListRecyclerView.scrollToPosition(position)
-        resetRecyclerView()
-        setNotObservesVM()
+        myOnScrolledListener?.also { functionManagerBinding.resetRecyclerView(it)}
+        functionManagerViewModel.setListCharactersNoObservesVM(owner)
+        position?.also { functionManagerBinding.recyclerViewCharactersScrollToPosition(it)}
     }
 
-    fun getIdCharacters(owner: LifecycleOwner) =   functionManagerViewModel.setIdCharactersObservesVM(owner,::getListCharactersByIds)
+    private fun setFavoriteListCharacters(characters: Characters?) {
+        functionManagerViewModel.setListCharactersNoObservesVM(owner)
+        setCharacterFavorite(characters)
+        characters?.apply {
+            if (listCharacters.isNotEmpty())
+                functionManagerRecyclerAdapter.adapter?.setCharacters(listCharacters)
+            else
+                functionManagerRecyclerAdapter.adapter?.clearCharacters()
 
-    private fun getListCharactersByIds(ids: ArrayList<Int>) {
-        setObservesVM()
-        viewModel.getFavoriteComicsList(ids)
+        }
+        functionManagerViewModel.setListCharactersNoObservesVM(owner)
     }
 
-    private fun setNotObservesVM() {
-        viewModel.listCharacter.removeObservers(owner)
-        viewModel.resetCharacters()
+    private fun setCharacterFavorite(characters: Characters?) {
+        characters?.listCharacters?.forEach {
+            it.favorite = true
+        }
     }
-    private fun resetRecyclerView() {
+
+    private fun getIdCharactersModeSearch(owner: LifecycleOwner) {
+        functionManagerViewModel.setListCharactersObservesVM(owner,::setIdsCharacters)
+        functionManagerViewModel.getFavoriteCharactersList()
+    }
+
+    private fun setIdsCharacters(characters: Characters) {
+        val ids = ArrayList<Int>()
+        characters.listCharacters.forEach {
+            ids.add(it.id)
+        }
+        functionManagerRecyclerAdapter.adapter?.setIdsFavoriteCharacters(ids)
+    }
+
+    fun getListCharactersModeFavorite()
+    {
+        functionManagerViewModel.setListCharactersObservesVM(owner,::setFavoriteListCharacters)
+        functionManagerViewModel.getFavoriteCharactersList()
+    }
+}
+
+private class FunctionManagerBinding(
+    private val binding: FragmentCharactersListBinding,
+)
+{
+    fun setAdapter(adapter: CharactersListAdapter) {
+        binding.charactersListRecyclerView.setHasFixedSize(true)
+        binding.charactersListRecyclerView.adapter = adapter
+    }
+
+    fun recyclerViewCharactersAddScrollListener(myOnScrolledListener: MyOnScrolledListener) {
         binding.charactersListRecyclerView.addOnScrollListener(myOnScrolledListener)
     }
+    fun recyclerViewCharactersRemoveScrollListener(myOnScrolledListener: MyOnScrolledListener) {
+        binding.charactersListRecyclerView.removeOnScrollListener(myOnScrolledListener)
+    }
+    fun recyclerViewCharactersScrollToPosition(position : Int)
+    {
+        binding.charactersListRecyclerView.scrollToPosition(position)
+    }
+    fun resetRecyclerView(myOnScrolledListener: MyOnScrolledListener) {
+        binding.charactersListRecyclerView.addOnScrollListener(myOnScrolledListener)
+    }
+}
 
-    override fun onImageButtonFavoriteListener(character: Character) =
-        if(character.favorite)
-            characterListFunctionManagerRepository.insertFavoriteCharacter(character.id)
-        else
-            characterListFunctionManagerRepository.deleteFavoriteCharacter(character.id)
+private class FunctionManagerRecyclerAdapter(
+    listener: CharactersListAdapter.CharacterHolderListener
+)
+{
+    var adapter: CharactersListAdapter? = CharactersListAdapter(arrayListOf(),listener)
+        private set
+
+    fun setCharactersList(characters: Characters?) =
+        adapter?.addCharacters(characters?.listCharacters ?: emptyList())
 }
 private class FunctionManagerViewModel(
     private val viewModel: CharactersListViewModel
 )
 {
-    fun setIdCharactersObservesVM(owner: LifecycleOwner, observeCharacters: ((ArrayList<Int>)->(Unit))) {
-        viewModel.favoriteIdCharacters.observe(owner,observeCharacters)
+    fun setListCharactersObservesVM(owner: LifecycleOwner, observe : ((Characters)->(Unit))) {
+        viewModel.listCharacter.observe(owner,observe)
     }
-    fun setIdCharactersNotObservesVM(owner: LifecycleOwner) {
-        viewModel.favoriteIdCharacters.removeObservers(owner)
-        viewModel.resetFavoriteIdCharacters()
+    fun setListCharactersNoObservesVM(owner: LifecycleOwner) {
+        viewModel.listCharacter.removeObservers(owner)
+        viewModel.resetCharacters()
+    }
+    fun getFavoriteCharactersList()
+    {
+        viewModel.getFavoriteCharactersList()
+    }
+
+    fun searchCharacterList(name : String)
+    {
+        viewModel.searchCharactersList(name)
     }
 }

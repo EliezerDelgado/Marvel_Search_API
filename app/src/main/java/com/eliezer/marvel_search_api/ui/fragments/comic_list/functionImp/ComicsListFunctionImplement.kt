@@ -9,7 +9,7 @@ import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.eliezer.marvel_search_api.models.dataclass.Comic
 import com.eliezer.marvel_search_api.models.dataclass.Comics
 import com.eliezer.marvel_search_api.ui.fragments.character_list.CharactersListFragmentArgs
-import com.eliezer.marvel_search_api.ui.fragments.character_list.functionImp.function.ComicListFunctionManagerRepository
+import com.eliezer.marvel_search_api.ui.fragments.comic_list.functionImp.function.ComicListFunctionManagerRepository
 import com.eliezer.marvel_search_api.ui.fragments.comic_list.ComicsListFragmentArgs
 import com.eliezer.marvel_search_api.ui.fragments.comic_list.adapter.ComicsListAdapter
 import com.eliezer.marvel_search_api.ui.fragments.comic_list.viewmodel.ComicsListViewModel
@@ -23,7 +23,7 @@ class ComicsListFunctionImplement (
     private val owner : LifecycleOwner
 ) : ComicsListAdapter.ComicHolderListener {
 
-    private var title: String? = null
+    private var searchComic: String? = null
     private var myOnScrolledListener : MyOnScrolledListener? = MyOnScrolledListener { getListComics() }
     private val functionManagerViewModel = FunctionManagerViewModel(viewModel)
     private val functionManagerRecyclerAdapter = FunctionManagerRecyclerAdapter(this)
@@ -31,7 +31,7 @@ class ComicsListFunctionImplement (
 
 
     fun getListSearchComicsRepository() {
-        title?.also {
+        searchComic?.also {
             val comics = comicListFunctionManagerRepository.getListRepository(it)
             functionManagerRecyclerAdapter.setComicsList(comics)
             getIdComicsModeSearch(owner)
@@ -51,7 +51,7 @@ class ComicsListFunctionImplement (
 
 
     override fun onComicItemClickListener(comic: Comic) {
-        title?.also {
+        searchComic?.also {
             navigationMainActions.doActionComicsListFragmentToComicDescriptionFragment(comic = comic)
         } ?:  navigationMainActions.doActionFavoritesFragmentToComicDescriptionFragment(comic = comic)
     }
@@ -77,22 +77,24 @@ class ComicsListFunctionImplement (
 
     fun getMode(arguments: Bundle) = CharactersListFragmentArgs.fromBundle(arguments).argMode
     fun getComicsArg(arguments: Bundle) {
-        title = ComicsListFragmentArgs.fromBundle(arguments).argSearchComic
+        searchComic = ComicsListFragmentArgs.fromBundle(arguments).argSearchComic
     }
 
 
     private fun getListComics() {
         myOnScrolledListener?.also { functionManagerBinding.recyclerViewComicsRemoveScrollListener(it)}
-        val comics = title?.let { comicListFunctionManagerRepository.getListRepository(it)}
-        if (comics == null || comics.total > comics.listComics.size)
-            searchListComics()
-        else if (functionManagerRecyclerAdapter.adapter!!.isListEmpty())
-            setListComics(comics)
+        val comics = searchComic?.let { comicListFunctionManagerRepository.getListRepository(it)}
+        comics.also {
+            if (it == null || it.total > it.listComics.size)
+                searchListComics()
+            else if (functionManagerRecyclerAdapter.adapter!!.isListEmpty())
+                setListComics(it)
+        }
     }
 
     private fun searchListComics() {
         functionManagerViewModel.setListComicsObservesVM(owner, ::setListComics)
-        title?.also { functionManagerViewModel.searchComicList(it)}
+        searchComic?.also { functionManagerViewModel.searchComicList(it)}
     }
 
     private fun setListComics(comics: Comics?) {
@@ -180,7 +182,8 @@ private class FunctionManagerRecyclerAdapter(
         adapter?.addComics(comics?.listComics ?: emptyList())
 }
 private class FunctionManagerViewModel(
-    private val viewModel: ComicsListViewModel)
+    private val viewModel: ComicsListViewModel
+)
 {
     fun setListComicsObservesVM(owner: LifecycleOwner, observe : ((Comics)->(Unit))) {
         viewModel.listComic.observe(owner,observe)

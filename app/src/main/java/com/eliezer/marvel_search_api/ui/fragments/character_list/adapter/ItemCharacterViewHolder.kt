@@ -13,5 +13,9 @@ open class ItemCharacterViewHolder(override var binding: ItemCharacterBinding) :
         }
         t.start()
     }
-    fun itemCharacterImageButtonFavoriteListener(listener: ()->Unit)= listener.invoke()
+    fun itemCharacterImageButtonFavoriteListener(listener: ()->Unit){
+        binding.itemCharacterImageButtonFavorite.setOnClickListener {
+            listener.invoke()
+        }
+    }
 }

@@ -12,8 +12,15 @@ class CharactersListAdapter(items : ArrayList<Character>,private val listener : 
         fun onCharacterItemClickListener(character: Character)
         fun onImageButtonFavoriteListener(character : Character)
     }
+    fun addCharacters(characters : List<Character>) {
+        addListItems(characters)
+    }
     fun setCharacters(characters : List<Character>) =
         addListItems(characters)
+
+    fun clearCharacters() {
+        clearItems()
+    }
 
     override fun setViewHolder(inflater: LayoutInflater): ItemCharacterViewHolder {
         val binding = ItemCharacterBinding.inflate(inflater)
@@ -35,5 +42,24 @@ class CharactersListAdapter(items : ArrayList<Character>,private val listener : 
                 it.onImageButtonFavoriteListener(character)
             }
         }
+    }
+    fun setIdsFavoriteCharacters(ids:ArrayList<Int>) {
+        for (character in items)
+        {
+            if(ids.contains(character.id)) {
+                character.favorite = true
+                update(items.indexOf(character),items.indexOf(character)+1)
+            }
+        }
+    }
+    fun setFavoriteCharacter(character: Character) {
+        val index = items.indexOf(character)
+        items[index].favorite = true
+        update(index,index+1)
+    }
+    fun setNoFavoriteCharacter(character: Character) {
+        val index = items.indexOf(character)
+        items[index].favorite = false
+        update(index,index+1)
     }
 }

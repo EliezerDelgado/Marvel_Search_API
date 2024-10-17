@@ -1,4 +1,4 @@
-package com.eliezer.marvel_search_api.ui.fragments.character_list.functionImp.function
+package com.eliezer.marvel_search_api.ui.fragments.comic_list.functionImp.function
 
 import com.eliezer.marvel_search_api.data.repository.comics.mock.GetComicsRepository
 import com.eliezer.marvel_search_api.data.repository.comics.mock.SetComicsRepository

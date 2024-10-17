@@ -7,9 +7,8 @@ import com.eliezer.marvel_search_api.core.base.BaseFragment
 import com.eliezer.marvel_search_api.data.const.FAVORITE_ID
 import com.eliezer.marvel_search_api.data.const.SEARCH_ID
 import com.eliezer.marvel_search_api.data.mappers.mainActivity
-import com.eliezer.marvel_search_api.data.repository.comics.mock.GetComicsRepository
 import com.eliezer.marvel_search_api.databinding.FragmentComicsListBinding
-import com.eliezer.marvel_search_api.ui.fragments.character_list.functionImp.function.ComicListFunctionManagerRepository
+import com.eliezer.marvel_search_api.ui.fragments.comic_list.functionImp.function.ComicListFunctionManagerRepository
 import com.eliezer.marvel_search_api.ui.fragments.comic_list.functionImp.ComicsListFunctionImplement
 import com.eliezer.marvel_search_api.ui.fragments.comic_list.viewmodel.ComicsListViewModel
 import com.eliezer.marvel_search_api.ui.fragments.favorites.interfaces.FavoriteToolbarButtonsClickAction

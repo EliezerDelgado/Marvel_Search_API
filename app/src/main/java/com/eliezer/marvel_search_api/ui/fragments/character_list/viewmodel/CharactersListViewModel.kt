@@ -5,8 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.eliezer.marvel_search_api.core.base.BaseViewModel
 import com.eliezer.marvel_search_api.data.repository.characters.mock.SetCharactersRepository
-import com.eliezer.marvel_search_api.domain.usecase.GetFavoriteIdCharactersUseCase
-import com.eliezer.marvel_search_api.domain.usecase.GetListCharactersByListIdsUseCase
+import com.eliezer.marvel_search_api.domain.usecase.GetFavoriteListCharactersOnDatabaseUseCase
 import com.eliezer.marvel_search_api.domain.usecase.GetListCharactersByNameUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -15,21 +14,17 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.eliezer.marvel_search_api.models.dataclass.Characters
+import com.eliezer.marvel_search_api.models.dataclass.Character
 
 @HiltViewModel
 class CharactersListViewModel @Inject constructor(
     private val setCharactersRepository : SetCharactersRepository,
     private val getListCharactersByNameUseCase: GetListCharactersByNameUseCase,
-    private val getFavoriteIdCharactersUseCase: GetFavoriteIdCharactersUseCase,
-    private val getListCharactersByListIdsUseCase: GetListCharactersByListIdsUseCase,
+    private val getFavoriteListCharactersOnDatabaseUseCase : GetFavoriteListCharactersOnDatabaseUseCase
 ): BaseViewModel()  {
 
     private var _listCharacter  = MutableLiveData<Characters>()
     val listCharacter: LiveData<Characters> get() = _listCharacter
-
-
-    private var _favoriteIdCharacters  = MutableLiveData<ArrayList<Int>>()
-    val favoriteIdCharacters: LiveData<ArrayList<Int>> get() = _favoriteIdCharacters
 
     fun searchCharactersList(name: String) {
         viewModelScope.launch {
@@ -44,44 +39,26 @@ class CharactersListViewModel @Inject constructor(
                 }
         }
     }
-    fun getFavoriteIdCharactersList() =
+    fun getFavoriteCharactersList() =
         viewModelScope.launch {
-            getFavoriteIdCharactersUseCase.invoke(null)
+            getFavoriteListCharactersOnDatabaseUseCase.invoke(null)
                 .onStart { _loading.value = true }
                 .onCompletion { _loading.value = false }
                 .catch {
                     _error.value = it
                 }
                 .collect {
-                    checkCharactersListResult(it)
-                }
-        }
-    fun getFavoriteComicsList(ids: ArrayList<Int>) =
-        viewModelScope.launch {
-            getListCharactersByListIdsUseCase.invoke(ids)
-                .onStart { _loading.value = true }
-                .onCompletion { _loading.value = false }
-                .catch {
-                    _error.value = it
-                }
-                .collect {
-                    _listCharacter.postValue(it)
+                    setListCharacter(it)
                 }
         }
 
-
-    private fun checkCharactersListResult(result: Result<ArrayList<Int>>)=
-        result.fold(
-            onFailure = { e ->
-                _error.value = e
-            },
-            onSuccess = {
-                _favoriteIdCharacters.postValue(it)
-            }
-        )
-
-    fun resetFavoriteIdCharacters() {
-        _favoriteIdCharacters  = MutableLiveData<ArrayList<Int>>()
+    private fun setListCharacter(list: List<Character>?) {
+        list?.also {
+            val character = Characters()
+            character.total = it.size
+            character.listCharacters.addAll(it)
+            _listCharacter.postValue(character)
+        }
     }
 
     private fun onResultOfGetListCharacters(name: String, character: Characters) {

@@ -33,28 +33,33 @@ class CharactersListFragment :
         mainActivity(requireActivity()).setToolbarView(true)
         funImpl = CharactersListFunctionImplement(
             binding,
-            mainActivity(requireActivity()).navigationMainActions!!,
             characterListViewModel,
+            mainActivity(requireActivity()).navigationMainActions!!,
             characterListFunctionManagerRepository,
             this
         )
         mode = funImpl?.getMode(requireArguments())
         funImpl?.setAdapter()
         if(mode == SEARCH_ID) {
+            funImpl?.setMyOnScrolledListener()
             funImpl?.getCharactersArg(requireArguments())
             funImpl?.getListSearchCharactersRepository()
         }
         else if(mode == FAVORITE_ID)
-            funImpl?.getListFavoriteCharactersRepository(FAVORITE_ID)
+        {
+            funImpl?.disableMyOnScrolledListener()
+            funImpl?.getListCharactersModeFavorite()
+        }
     }
 
+
+    override fun doReload() {
+        funImpl?.getListCharactersModeFavorite()
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
         funImpl = null
     }
 
-    override fun doReload() {
-        //funImpl?.getListFavoriteCharactersRepository(FAVORITE_ID)
-    }
 }
