@@ -14,5 +14,5 @@ interface ComicsRepository {
     fun setListComicInDatabase(comics: List<Comic>)
     fun deleteComicInDatabase(vararg comic: Comic)
     fun resetTmpList()
-    fun clearDatabaseList()
+    fun clearDatabaseList() : Flow<Unit?>
 }

@@ -75,12 +75,20 @@ interface ApiMarvelHttpService {
 
 
     @GET(/* value = */ " /v1/public/comics/{comicId}")
-    suspend fun  getComics(
+    suspend fun  getComic(
         @Path("comicId") comicId : Int,
         @Query("ts") ts : Long,
         @Query("apikey") apikey : String,
         @Query("hash") hash : String,
     ) : ComicDataWrapper
+
+    @GET(/* value = */ " /v1/public/characters/{characterId}")
+    suspend fun  getCharacter(
+        @Path("characterId") characterId : Int,
+        @Query("ts") ts : Long,
+        @Query("apikey") apikey : String,
+        @Query("hash") hash : String,
+    ) : CharacterDataWrapper
 
     @GET(/* value = */ " /v1/public/comics/{comicId}/characters")
     suspend fun  getComicCharacters(

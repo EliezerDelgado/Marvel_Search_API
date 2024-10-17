@@ -1,5 +1,6 @@
 package com.eliezer.marvel_search_api.data.repository.characters
 
+import android.database.sqlite.SQLiteConstraintException
 import com.eliezer.marvel_search_api.data.const.API_SEARCH_LIMIT
 import com.eliezer.marvel_search_api.data.datasource.CharactersDataSource
 import com.eliezer.marvel_search_api.domain.local_property.LocalDatabase
@@ -24,10 +25,10 @@ class CharacterRepositoryImpl @Inject constructor(
     override fun getListCharactersApi(name : String): Flow<Characters> {
         val offset = list[name]?.listCharacters?.size ?: 0
        return datasource.getDataContainer(name, offset)
-
     }
 
-    override fun getListCharactersApi(ids: ArrayList<Int>): Flow<Characters> =  datasource.getDataContainer(ids)
+    override fun getListCharactersApi(ids: ArrayList<Int>): Flow<Characters> =
+        datasource.getDataContainer(ids)
     override fun getFavoriteListCharacters(): Flow<List<Character>?> = flow{
         emit(characterDao?.getFavoriteCharacter())
     }
@@ -42,9 +43,7 @@ class CharacterRepositoryImpl @Inject constructor(
         }.start()
     }
     override fun setListCharacterInDatabase(characters: List<Character>) {
-        Thread{
-            characterDao?.insert(*characters.toTypedArray())
-        }.start()
+            setCharacterInDatabase(*characters.toTypedArray())
     }
 
     override fun deleteCharacterInDatabase(vararg character: Character) {
@@ -57,11 +56,10 @@ class CharacterRepositoryImpl @Inject constructor(
         list.clear()
     }
 
-    override fun clearDatabaseList() {
-        Thread{
-            characterDao?.clear()
-        }.start()
-    }
+    override fun clearDatabaseList() =
+        flow{
+            emit(characterDao?.clear())
+        }
 
     override fun setListTmpCharacters(id : String, params: Characters) {
         list[id]?.apply {

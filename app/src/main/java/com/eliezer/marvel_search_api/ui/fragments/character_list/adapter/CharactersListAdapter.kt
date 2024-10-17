@@ -16,7 +16,7 @@ class CharactersListAdapter(items : ArrayList<Character>,private val listener : 
         addListItems(characters)
     }
     fun setCharacters(characters : List<Character>) =
-        addListItems(characters)
+        setListItems(characters)
 
     fun clearCharacters() {
         clearItems()

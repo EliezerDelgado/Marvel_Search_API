@@ -66,10 +66,9 @@ class ComicsRepositoryImpl @Inject constructor(
         list.clear()
     }
 
-    override fun clearDatabaseList() {
-        Thread{
-            comicDao?.clear()
-        }.start()
-    }
+    override fun clearDatabaseList() =
+        flow {
+            emit(comicDao?.clear())
+        }
 
 }

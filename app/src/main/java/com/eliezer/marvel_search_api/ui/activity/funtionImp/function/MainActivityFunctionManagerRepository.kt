@@ -1,4 +1,4 @@
-package com.eliezer.marvel_search_api.ui.fragments.character_list.functionImp.function
+package com.eliezer.marvel_search_api.ui.activity.funtionImp.function
 
 import com.eliezer.marvel_search_api.data.repository.characters.mock.SetCharactersRepository
 import com.eliezer.marvel_search_api.data.repository.comics.mock.SetComicsRepository
@@ -13,7 +13,5 @@ class MainActivityFunctionManagerRepository @Inject constructor(
 )
 {
     fun insertDatabaseComics(comics: List<Comic>) = setComicsRepository.setListInRoomDatabase(comics)
-    fun clearDatabaseComic() = setComicsRepository.clearListRoomDatabase()
     fun insertDatabaseCharacters(characters: List<Character>) = setCharactersRepository.setListRoomDatabase(characters)
-    fun clearDatabaseCharacter() = setCharactersRepository.clearListRoomDatabase()
 }

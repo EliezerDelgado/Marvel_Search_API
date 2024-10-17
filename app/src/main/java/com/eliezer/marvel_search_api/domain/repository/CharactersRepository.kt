@@ -15,5 +15,5 @@ interface CharactersRepository {
     fun setListCharacterInDatabase(characters: List<Character>)
     fun deleteCharacterInDatabase(vararg character: Character)
     fun resetTmpList()
-    fun clearDatabaseList()
+    fun clearDatabaseList() : Flow<Unit?>
 }

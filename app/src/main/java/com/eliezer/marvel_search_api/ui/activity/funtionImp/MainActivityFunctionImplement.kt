@@ -9,7 +9,7 @@ import com.eliezer.marvel_search_api.models.dataclass.Characters
 import com.eliezer.marvel_search_api.models.dataclass.Comics
 import com.eliezer.marvel_search_api.models.dataclass.UserAccount
 import com.eliezer.marvel_search_api.ui.activity.viewmodel.MainActivityViewModel
-import com.eliezer.marvel_search_api.ui.fragments.character_list.functionImp.function.MainActivityFunctionManagerRepository
+import com.eliezer.marvel_search_api.ui.activity.funtionImp.function.MainActivityFunctionManagerRepository
 import com.google.android.material.appbar.AppBarLayout
 
 class MainActivityFunctionImplement(
@@ -35,15 +35,22 @@ class MainActivityFunctionImplement(
 
     private fun updateLocalDatabase(userAccount : UserAccount?) {
         LocalAccount.userAccount.value?.also {
-            mainActivityFunctionManagerRepository.clearDatabaseComic()
-            mainActivityFunctionManagerRepository.clearDatabaseCharacter()
-            updateDatabaseWithFavoriteComics()
+            clearDatabase()
         }
     }
 
-    private fun updateDatabaseWithFavoriteComics() {
-        getIdComicsModeFavorite()
-        getIdCharactersModeFavorite()
+    private fun clearDatabase() {
+        functionManagerViewModel.setIsClearObservesVM(owner,::updateDatabase)
+        functionManagerViewModel.clearComicsList()
+        functionManagerViewModel.clearCharactersList()
+    }
+    private fun updateDatabase(numClearDatabase : Int) {
+        if(numClearDatabase >=2)
+        {
+            functionManagerViewModel.setIsClearNotObservesVM(owner)
+            getIdComicsModeFavorite()
+            getIdCharactersModeFavorite()
+        }
     }
     //Comics
     private fun getIdComicsModeFavorite() {
@@ -119,6 +126,9 @@ private class FunctionManagerViewModel(
     fun setUserAccountObservesVM(owner: LifecycleOwner, observe: (UserAccount?) -> Unit) {
         LocalAccount.userAccount.observe(owner,observe)
     }
+    fun setIsClearObservesVM(owner: LifecycleOwner, observe: (Int) -> Unit) {
+        viewModel.isClear.observe(owner,observe)
+    }
     //Comic
     fun setIdComicsObservesVM(owner: LifecycleOwner, observeComics: ((ArrayList<Int>)->(Unit))) {
         viewModel.favoriteIdComics.observe(owner,observeComics)
@@ -135,6 +145,10 @@ private class FunctionManagerViewModel(
     fun getFavoriteComicsList(ids : ArrayList<Int>)
     {
         viewModel.getFavoriteComicsList(ids)
+    }
+    fun clearComicsList()
+    {
+        viewModel.clearFavoritesComicsList()
     }
 
     fun setListComicsObservesVM(owner: LifecycleOwner, observe : ((Comics)->(Unit))) {
@@ -162,11 +176,19 @@ private class FunctionManagerViewModel(
         viewModel.getFavoriteCharactersList(ids)
     }
 
+    fun clearCharactersList()
+    {
+        viewModel.clearFavoritesCharactersList()
+    }
     fun setListCharactersObservesVM(owner: LifecycleOwner, observe : ((Characters)->(Unit))) {
         viewModel.listCharacter.observe(owner,observe)
     }
     fun setListCharactersNoObservesVM(owner: LifecycleOwner) {
         viewModel.listCharacter.removeObservers(owner)
         viewModel.resetCharacters()
+    }
+    fun setIsClearNotObservesVM(owner: LifecycleOwner) {
+        viewModel.isClear.removeObservers(owner)
+        viewModel.resetIsClear()
     }
 }

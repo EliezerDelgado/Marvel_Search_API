@@ -11,7 +11,7 @@ import com.eliezer.marvel_search_api.databinding.ActivityMainBinding
 import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
 import com.eliezer.marvel_search_api.ui.activity.funtionImp.MainActivityFunctionImplement
 import com.eliezer.marvel_search_api.ui.activity.viewmodel.MainActivityViewModel
-import com.eliezer.marvel_search_api.ui.fragments.character_list.functionImp.function.MainActivityFunctionManagerRepository
+import com.eliezer.marvel_search_api.ui.activity.funtionImp.function.MainActivityFunctionManagerRepository
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint

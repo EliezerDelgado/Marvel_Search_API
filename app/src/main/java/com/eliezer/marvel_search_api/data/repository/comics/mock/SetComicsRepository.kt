@@ -23,11 +23,6 @@ class SetComicsRepository @Inject constructor(
     {
         comicsRepository.setListComicInDatabase(comics)
     }
-    fun clearListRoomDatabase()
-    {
-        comicsRepository.clearDatabaseList()
-    }
-
     fun resetListRepository() {
         comicsRepository.resetTmpList()
     }

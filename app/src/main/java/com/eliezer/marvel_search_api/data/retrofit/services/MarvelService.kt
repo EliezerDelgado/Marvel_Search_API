@@ -66,12 +66,23 @@ class MarvelService @Inject constructor(
             hash = hash
         )
     }
-    suspend fun listComics(id : Int): ComicDataWrapper {
+    suspend fun comicById(id : Int): ComicDataWrapper {
         val ts = System.currentTimeMillis()
         val apiKey = RetrofitHash.publicKey
         val hash = RetrofitHash.generateHash(ts)
-        return apiMarvelHttpService.getComics(
+        return apiMarvelHttpService.getComic(
             comicId = id,
+            ts = ts,
+            apikey = apiKey,
+            hash = hash
+        )
+    }
+    suspend fun characterById(id : Int): CharacterDataWrapper {
+        val ts = System.currentTimeMillis()
+        val apiKey = RetrofitHash.publicKey
+        val hash = RetrofitHash.generateHash(ts)
+        return apiMarvelHttpService.getCharacter(
+            characterId = id,
             ts = ts,
             apikey = apiKey,
             hash = hash
