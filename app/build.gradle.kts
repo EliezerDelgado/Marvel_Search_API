@@ -151,4 +151,7 @@ dependencies {
     // To use Kotlin annotation processing tool (kapt)
     ksp(libs.room.compiler)
     implementation(kotlin("reflect"))
+
+    //Circle Image
+    implementation(libs.circleimageview)
 }

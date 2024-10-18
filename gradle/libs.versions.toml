@@ -1,5 +1,6 @@
 [versions]
 agp = "8.6.1"
+circleimageview = "3.1.0"
 compiler = "3.1.4"
 converterGson = "2.9.0"
 credentials = "1.5.0-alpha05"
@@ -42,6 +43,7 @@ androidx-navigation-safe-args-gradle-plugin = { module = "androidx.navigation:na
 androidx-room-compiler = { module = "androidx.room:room-compiler",version.ref = "roomCompiler" }
 androidx-room-runtime = { module = "androidx.room:room-runtime",version.ref = "roomRuntime"  }
 androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "workRuntime" }
+circleimageview = { module = "de.hdodenhof:circleimageview", version.ref = "circleimageview" }
 compiler = { module = "com.android.databinding:compiler", version.ref = "compiler" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }

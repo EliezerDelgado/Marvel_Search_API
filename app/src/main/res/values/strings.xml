@@ -65,4 +65,8 @@ DISPONIBILIDAD PARA VIAJAR:&#10;
 No posees disponibilidad para viajar&#10;
     </string>
     <string name="favorite_toolbar_menu_reload__title">Reload</string>
+    <string name="alert_dialog_user_information_text_view_name__text">Nombre</string>
+    <string name="alert_dialog_user_information_text_view_email__text">Correo</string>
+    <string name="alert_dialog_user_information_button_sign_out__text">Cerrar Sesión</string>
+    <string name="alert_dialog_user_information_button_close__contentDescription">Close Button</string>
 </resources>

@@ -5,6 +5,9 @@ import android.os.Build
 import androidx.annotation.StringRes
 import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_search_api.R
+import com.eliezer.marvel_search_api.core.utils.userDialog
+import com.eliezer.marvel_search_api.data.firebase.configuration.FireStoreConfiguration
+import com.eliezer.marvel_search_api.data.firebase.controllers.FirebaseController
 import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
 import com.eliezer.marvel_search_api.databinding.FragmentMarvelSearchBinding
@@ -54,11 +57,18 @@ class MarvelSearchFunctionImplement(
                     setObserveUserAccount()
                     nameButtonPulse = id.toString()
                         //Todo mientras este
-                        googleSignIn(context)
+                    LocalAccount.userAccount.value?.let {
+                         userDialog(context,it,::signOut).show()
+                    }?: googleSignIn(context)
 
                 }
             }
         }
+    }
+
+    private fun signOut() {
+        LocalAccount.auth.signOut()
+        LocalAccount.userAccount.value = null
     }
 
     private fun googleSignIn(context: Context) {

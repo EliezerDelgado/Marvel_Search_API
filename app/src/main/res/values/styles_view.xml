@@ -2,7 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="EliezerMarvel"/>
 
-    <style name="EliezerMarvel.TextView.Title" parent="TextAppearance.MaterialComponents.Headline4">
+    <style name="EliezerMarvel.TextView.Title" parent="TextAppearance.MaterialComponents.Headline5">
         <item name="android:textColor">?attr/textColorTitle</item>
         <item name="android:textAlignment">center</item>
         <item name="android:backgroundTint">@android:color/transparent</item>
@@ -41,5 +41,14 @@
         <item name="android:textColor">?attr/colorTertiary</item>
         <item name="android:textColorHint">?attr/colorTertiary</item>
         <item name="boxStrokeColor" tools:ignore="PrivateResource">@color/mtrl_textinput_default_box_stroke_color</item>
+    </style>
+    <style name="EliezerMarvel.RoundedCornersDialog" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="shapeAppearanceOverlay">@style/DialogCorners</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="DialogCorners">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
     </style>
 </resources>
