@@ -45,7 +45,7 @@
             android:layout_height="150dp"
             android:layout_margin="10dp"
             android:layout_gravity="top|center"
-            android:src="@drawable/unknown_men"
+            android:src="@drawable/img_unknown_men"
             style="@style/EliezerMarvel.ImageButton"
             app:layout_constraintTop_toBottomOf="@+id/alert_dialog_user_information_text_view_name"
             app:layout_constraintLeft_toLeftOf="parent"

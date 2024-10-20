@@ -69,4 +69,6 @@ No posees disponibilidad para viajar&#10;
     <string name="alert_dialog_user_information_text_view_email__text">Correo</string>
     <string name="alert_dialog_user_information_button_sign_out__text">Cerrar Sesión</string>
     <string name="alert_dialog_user_information_button_close__contentDescription">Close Button</string>
+    <string name="alert_dialog_message_text_view_message__text">Mensaje</string>
+    <string name="positive_button_error_name">Ok</string>
 </resources>

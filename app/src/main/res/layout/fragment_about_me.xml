@@ -27,7 +27,7 @@
         android:layout_height="200dp"
         android:layout_gravity="center"
         android:contentDescription="@string/about_me_image_view_photo__description"
-        android:src="@drawable/my_photo"
+        android:src="@drawable/img_my_photo"
         app:layout_constraintTop_toBottomOf="@+id/about_me_text_view_name"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>

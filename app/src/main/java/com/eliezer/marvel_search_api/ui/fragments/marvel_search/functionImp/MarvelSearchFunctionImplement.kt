@@ -6,8 +6,6 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_search_api.R
 import com.eliezer.marvel_search_api.core.utils.userDialog
-import com.eliezer.marvel_search_api.data.firebase.configuration.FireStoreConfiguration
-import com.eliezer.marvel_search_api.data.firebase.controllers.FirebaseController
 import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
 import com.eliezer.marvel_search_api.databinding.FragmentMarvelSearchBinding
@@ -56,11 +54,16 @@ class MarvelSearchFunctionImplement(
                 setOnClickListener {
                     setObserveUserAccount()
                     nameButtonPulse = id.toString()
-                        //Todo mientras este
                     LocalAccount.userAccount.value?.let {
                          userDialog(context,it,::signOut).show()
                     }?: googleSignIn(context)
 
+                }
+            }
+            marvelSearchImageButtonAboutMe.apply {
+                setOnClickListener{
+                    nameButtonPulse = id.toString()
+                    navigationMainActions.actionMarvelSearchFragmentToAboutMeFragment()
                 }
             }
         }
@@ -126,7 +129,7 @@ class MarvelSearchFunctionImplement(
         GlobalScope.launch {
             withContext(Dispatchers.Main) {
                 binding.marvelSearchImageButtonGoogleSignIn.isEnabled = false
-                binding.marvelSearchImageButtonGoogleSignIn.setImageResource(R.drawable.ic_google_sign_in_disable)
+                binding.marvelSearchImageButtonGoogleSignIn.setImageResource(R.drawable.img_google_sign_in_disable)
             }
         }
     }
@@ -134,7 +137,7 @@ class MarvelSearchFunctionImplement(
         GlobalScope.launch {
             withContext(Dispatchers.Main) {
                 binding.marvelSearchImageButtonGoogleSignIn.isEnabled = true
-                binding.marvelSearchImageButtonGoogleSignIn.setImageResource(R.drawable.ic_google_sign_in)
+                binding.marvelSearchImageButtonGoogleSignIn.setImageResource(R.drawable.img_google_sign_in)
             }
         }
     }

@@ -1,20 +1,11 @@
 package com.eliezer.marvel_search_api.ui.fragments.favorites.functionImp
 
-import android.content.Context
-import android.view.ViewGroup
-import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_search_api.R
 import com.eliezer.marvel_search_api.databinding.FragmentFavoritesBinding
-import com.eliezer.marvel_search_api.ui.fragments.character_list.CharactersListFragment
-import com.eliezer.marvel_search_api.ui.fragments.comic_list.ComicsListFragment
 import com.eliezer.marvel_search_api.domain.listener.MyOnTabSelectedListened
-import com.eliezer.marvel_search_api.models.dataclass.Comics
 import com.eliezer.marvel_search_api.ui.fragments.favorites.adapter.FavoritesPagerAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import android.content.res.Resources
-import android.content.res.Resources.Theme
-import com.eliezer.marvel_search_api.ui.fragments.character_profile.adapter.CharacterProfileComicsListAdapter
 
 class FavoritesFunctionImplement(binding: FragmentFavoritesBinding,pagerAdapter: FavoritesPagerAdapter) {
     private val functionPagerAdapter= FunctionPagerAdapter(binding,pagerAdapter)
@@ -64,12 +55,12 @@ private  class FunctionPagerAdapter(
         ) { tab: TabLayout.Tab, position: Int ->
             when (position) {
                 0 -> {
-                    tab.setIcon(R.drawable.ic_spiderman)
+                    tab.setIcon(R.drawable.img_spiderman)
                     tab.select()
                 }
 
                 1 -> {
-                    tab.setIcon(R.drawable.ic_comic)
+                    tab.setIcon(R.drawable.img_comic)
                 }
             }
         }.attach()
