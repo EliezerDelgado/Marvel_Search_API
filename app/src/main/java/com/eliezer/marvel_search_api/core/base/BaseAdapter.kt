@@ -9,7 +9,7 @@ import com.eliezer.marvel_search_api.models.SearchEncounter
 abstract class BaseAdapter<T, S : BaseItemViewHolder<T>>(protected var items: ArrayList<T>) : RecyclerView.Adapter<S>() {
 
     fun isListEmpty() : Boolean = items.isEmpty()
-    val diffUtils = MyDiffUtils<T>()
+    private val diffUtils = MyDiffUtils<T>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): S {
         val inflater = LayoutInflater.from(parent.context)

@@ -1,77 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-        <variable
-            name="item"
-            type="com.eliezer.marvel_search_api.models.dataclass.UserAccount" />
-        <variable
-            name="img"
-            type="android.graphics.drawable.Drawable" />
-    </data>
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/alert_dialog_user_information_button_close"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_close_windows"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/EliezerMarvel.ImageButton"
+        android:contentDescription="@string/alert_dialog_user_information_button_close__contentDescription"
+        android:layout_margin="4dp"
+        app:layout_constraintRight_toRightOf="parent" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/alert_dialog_user_information_text_view_name"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        style="@style/EliezerMarvel.TextView.Title"
+        android:textAlignment="center"
+        android:layout_margin="5dp"
+        android:text="@{item.name.toUpperCase()}"
+        app:layout_constraintTop_toBottomOf="@+id/alert_dialog_user_information_button_close"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/alert_dialog_user_information_button_close"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/ic_close_windows"
-            app:layout_constraintTop_toTopOf="parent"
-            style="@style/EliezerMarvel.ImageButton"
-            android:contentDescription="@string/alert_dialog_user_information_button_close__contentDescription"
-            android:layout_margin="4dp"
-            app:layout_constraintRight_toRightOf="parent" />
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/alert_dialog_user_information_image_view_photo"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_margin="10dp"
+        android:layout_gravity="top|center"
+        android:src="@drawable/img_unknown_men"
+        style="@style/EliezerMarvel.ImageButton"
+        app:layout_constraintTop_toBottomOf="@+id/alert_dialog_user_information_text_view_name"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/alert_dialog_user_information_text_view_name"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            style="@style/EliezerMarvel.TextView.Title"
-            android:textAlignment="center"
-            android:layout_margin="5dp"
-            android:text="@{item.name.toUpperCase()}"
-            app:layout_constraintTop_toBottomOf="@+id/alert_dialog_user_information_button_close"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/alert_dialog_user_information_text_view_email"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        style="@style/EliezerMarvel.TextView.Body"
+        android:textAlignment="center"
+        android:text="@{item.email}"
+        app:layout_constraintTop_toBottomOf="@+id/alert_dialog_user_information_image_view_photo"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/alert_dialog_user_information_image_view_photo"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_margin="10dp"
-            android:layout_gravity="top|center"
-            android:src="@drawable/img_unknown_men"
-            style="@style/EliezerMarvel.ImageButton"
-            app:layout_constraintTop_toBottomOf="@+id/alert_dialog_user_information_text_view_name"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/alert_dialog_user_information_text_view_email"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            style="@style/EliezerMarvel.TextView.Body"
-            android:textAlignment="center"
-            android:text="@{item.email}"
-            app:layout_constraintTop_toBottomOf="@+id/alert_dialog_user_information_image_view_photo"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/alert_dialog_user_information_button_sign_out"
-            style="@style/EliezerMarvel.Button.Round.Half"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:text="@string/alert_dialog_user_information_button_sign_out__text"
-            app:layout_constraintTop_toBottomOf="@+id/alert_dialog_user_information_text_view_email"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/alert_dialog_user_information_button_sign_out"
+        style="@style/EliezerMarvel.Button.Round.Half"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:text="@string/alert_dialog_user_information_button_sign_out__text"
+        app:layout_constraintTop_toBottomOf="@+id/alert_dialog_user_information_text_view_email"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

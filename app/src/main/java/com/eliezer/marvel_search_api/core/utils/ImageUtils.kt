@@ -1,13 +1,11 @@
 package com.eliezer.marvel_search_api.core.utils
 
-import android.R
 import android.content.ContentValues.TAG
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
 import android.util.Log
 import java.io.BufferedInputStream
-import java.io.FileNotFoundException
 import java.io.IOException
 import java.io.InputStream
 import java.net.URL

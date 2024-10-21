@@ -8,10 +8,12 @@ open class BasePagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment)
     private val listFragmentClass = ArrayList<Class<out Fragment>>()
     private val listFragmentClassArgs = HashMap<Class<out Fragment>,Bundle?>()
     val listFragmentInstance = ArrayList<Fragment>()
+
     fun addFragment(fragmentClass: Class<out Fragment>,args : Bundle?) {
         listFragmentClass.add(fragmentClass)
         listFragmentClassArgs[fragmentClass] = args
     }
+
     override fun createFragment(position: Int): Fragment {
         try {
             val fragmentInstance = listFragmentClass[position].getDeclaredConstructor()?.newInstance() as Fragment

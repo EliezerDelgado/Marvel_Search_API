@@ -16,9 +16,14 @@ abstract class BaseItemViewHolder<T>(protected open val binding: ViewDataBinding
         itemView.setOnClickListener{
             onItemCLickListener()
         }
+        itemView.setOnLongClickListener {
+            onItemLongClickListener()
+            true
+        }
     }
-
     open fun onItemCLickListener(){
+    }
+    open fun onItemLongClickListener(){
     }
 
     open fun onBindMethodCalled(item: T) {}

@@ -11,4 +11,7 @@ abstract class BaseViewModel : ViewModel() {
 
     protected val _error = MutableLiveData<Throwable>()
     val error: LiveData<Throwable> get() = _error
+
+    protected val _userError = MutableLiveData<Throwable>()
+    val userError: LiveData<Throwable> get() = _userError
 }
