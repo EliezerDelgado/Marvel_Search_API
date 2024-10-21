@@ -57,8 +57,11 @@ class NavigationMainActions (private val navHostFragment: FragmentContainerView)
 
     fun doActionFavoritesFragmentToComicDescriptionFragment(comic: Comic)
     {
-
         val action = FavoritesFragmentDirections.actionFavoritesFragmentToComicDescriptionFragment(comic)
         navHostFragment.findNavController().navigate(action)
+    }
+    fun actionMarvelSearchFragmentToAboutMeFragment()
+    {
+        navHostFragment.findNavController().navigate(R.id.action_marvelSearchFragment_to_aboutMeFragment)
     }
 }

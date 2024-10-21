@@ -10,6 +10,7 @@ import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.databinding.library.baseAdapters.BR
 import com.eliezer.marvel_search_api.R
+import com.eliezer.marvel_search_api.databinding.AlertDialogLoadingBinding
 import com.eliezer.marvel_search_api.databinding.AlertDialogMessageBinding
 import com.eliezer.marvel_search_api.databinding.AlertDialogUserInformationBinding
 import com.eliezer.marvel_search_api.models.dataclass.UserAccount
@@ -37,6 +38,16 @@ fun warningDialog(
     context: Context,
     message : String
 ): AlertDialog = messageAlertDialog(context,message,R.drawable.img_warning)
+
+fun loadingDialog(
+    context: Context
+): AlertDialog {
+    val inflater = LayoutInflater.from(context)
+    val binding = AlertDialogLoadingBinding.inflate(inflater)
+    val alert = createSimpleDialogWithViewRounded(context,binding.root,null)
+    return alert
+}
+
 
 private fun  messageAlertDialog(
     context: Context,
