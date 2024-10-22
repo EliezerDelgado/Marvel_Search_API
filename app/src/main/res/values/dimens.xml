@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="image_little_width">50dp</dimen>
+    <dimen name="image_little_height">50dp</dimen>
+    <dimen name="margin_big">40dp</dimen>
+    <dimen name="margin_biggest">80dp</dimen>
+    <dimen name="margin_intermediate">20dp</dimen>
+    <dimen name="margin_tiniest">4dp</dimen>
+    <dimen name="margin_tiny">10dp</dimen>
+    <dimen name="image_medium_width">70dp</dimen>
+    <dimen name="image_littlest_height">48dp</dimen>
+    <dimen name="image_littlest_width">48dp</dimen>
+    <dimen name="image_big_height">120dp</dimen>
+    <dimen name="image_big_width">120dp</dimen>
+    <dimen name="image_biggest_height">250dp</dimen>
+    <dimen name="image_biggest_width">250dp</dimen>
+</resources>

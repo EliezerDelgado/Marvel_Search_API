@@ -7,8 +7,8 @@
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/alert_dialog_user_information_button_close"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="@dimen/image_littlest_width"
+        android:layout_height="@dimen/image_littlest_width"
         android:src="@drawable/ic_close_windows"
         app:layout_constraintTop_toTopOf="parent"
         style="@style/EliezerMarvel.ImageButton"
@@ -18,12 +18,12 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/alert_dialog_user_information_text_view_name"
-        android:layout_width="250dp"
         android:layout_height="wrap_content"
+        android:layout_width="@dimen/image_biggest_width"
         android:layout_gravity="center"
         style="@style/EliezerMarvel.TextView.Title"
         android:textAlignment="center"
-        android:layout_margin="5dp"
+        android:layout_margin="@dimen/margin_tiniest"
         android:text="@{item.name.toUpperCase()}"
         app:layout_constraintTop_toBottomOf="@+id/alert_dialog_user_information_button_close"
         app:layout_constraintRight_toRightOf="parent"
@@ -31,9 +31,9 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/alert_dialog_user_information_image_view_photo"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_margin="10dp"
+        android:layout_width="@dimen/image_big_width"
+        android:layout_height="@dimen/image_big_width"
+        android:layout_margin="@dimen/margin_tiny"
         android:layout_gravity="top|center"
         android:src="@drawable/img_unknown_men"
         style="@style/EliezerMarvel.ImageButton"
@@ -57,7 +57,7 @@
         android:id="@+id/alert_dialog_user_information_button_sign_out"
         style="@style/EliezerMarvel.Button.Round.Half"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
+        android:layout_margin="@dimen/margin_tiny"
         android:text="@string/alert_dialog_user_information_button_sign_out__text"
         app:layout_constraintTop_toBottomOf="@+id/alert_dialog_user_information_text_view_email"
         app:layout_constraintRight_toRightOf="parent"
