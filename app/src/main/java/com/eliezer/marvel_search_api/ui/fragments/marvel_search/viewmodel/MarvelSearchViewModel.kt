@@ -12,7 +12,6 @@ import com.eliezer.marvel_search_api.models.dataclass.Characters
 import com.eliezer.marvel_search_api.models.dataclass.Comics
 import com.eliezer.marvel_search_api.models.dataclass.UserAccount
 import com.eliezer.marvel_search_api.ui.fragments.marvel_search.viewmodel.usecase.MarvelSearchUseCases
-import com.google.firebase.auth.AuthResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
@@ -135,35 +134,3 @@ class MarvelSearchViewModel @Inject constructor(
         _googleAuthResult = MutableLiveData<UserAccount>()
     }
 }
-
-/*
-        // GoogleIdToken credential
-        is CustomCredential -> {
-            if (credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
-                try {
-                    // Use googleIdTokenCredential and extract the ID to validate and
-                    // authenticate on your server.
-                    val googleIdTokenCredential = GoogleIdTokenCredential
-                        .createFrom(credential.data)
-                    // You can use the members of googleIdTokenCredential directly for UX
-                    // purposes, but don't use them to store or control access to user
-                    // data. For that you first need to validate the token:
-                    // pass googleIdTokenCredential.getIdToken() to the backend server.
-                    //GoogleIdTokenVerifier verifier = ... // see validation instructions
-                    //GoogleIdToken idToken = verifier.verify(idTokenString);
-                    // To get a stable account identifier (e.g. for storing user data),
-                    // use the subject ID:
-                    // idToken.getPayload().getSubject()
-                } catch (e: GoogleIdTokenParsingException) {
-                    Log.e(TAG, "Received an invalid google id token response", e)
-                }
-            } else {
-                // Catch any unrecognized custom credential type here.
-                Log.e(TAG, "Unexpected type of credential")
-            }
-        }
-
-        else -> {
-            // Catch any unrecognized credential type here.
-            Log.e(TAG, "Unexpected type of credential")
-        }*/
