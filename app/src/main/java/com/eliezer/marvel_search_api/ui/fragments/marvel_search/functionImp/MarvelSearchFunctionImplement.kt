@@ -5,10 +5,10 @@ import android.os.Build
 import androidx.annotation.StringRes
 import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_search_api.R
-import com.eliezer.marvel_search_api.core.utils.userDialog
 import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
 import com.eliezer.marvel_search_api.databinding.FragmentMarvelSearchBinding
+import com.eliezer.marvel_search_api.domain.alert_dialogs.userDialog
 import com.eliezer.marvel_search_api.models.dataclass.UserAccount
 import com.eliezer.marvel_search_api.ui.fragments.marvel_search.viewmodel.MarvelSearchViewModel
 import kotlinx.coroutines.DelicateCoroutinesApi

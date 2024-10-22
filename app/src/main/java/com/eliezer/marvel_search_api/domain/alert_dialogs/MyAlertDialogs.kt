@@ -52,7 +52,7 @@ private fun setUserBindings(
     signOutOnClick: () -> Unit
 ) {
     binding.alertDialogUserInformationTextViewName.text = userAccount.name
-    binding.alertDialogUserInformationTextViewEmail.text = userAccount.name
+    binding.alertDialogUserInformationTextViewEmail.text = userAccount.email
     binding.alertDialogUserInformationButtonSignOut.setOnClickListener {
         signOutOnClick.invoke()
         alert.cancel()

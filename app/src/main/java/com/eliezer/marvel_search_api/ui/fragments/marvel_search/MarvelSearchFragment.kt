@@ -7,9 +7,6 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import com.eliezer.marvel_search_api.core.base.BaseFragment
 import com.eliezer.marvel_search_api.core.base.BaseViewModel
-import com.eliezer.marvel_search_api.core.utils.errorDialog
-import com.eliezer.marvel_search_api.core.utils.loadingDialog
-import com.eliezer.marvel_search_api.core.utils.warningDialog
 import com.eliezer.marvel_search_api.data.expand.isInternetConnected
 import com.eliezer.marvel_search_api.data.expand.registerNetworkCallback
 import com.eliezer.marvel_search_api.data.expand.unregisterNetworkCallback
@@ -20,13 +17,6 @@ import com.eliezer.marvel_search_api.models.dataclass.UserAccount
 import com.eliezer.marvel_search_api.ui.fragments.marvel_search.functionImp.MarvelSearchFunctionImplement
 import com.eliezer.marvel_search_api.ui.fragments.marvel_search.viewmodel.MarvelSearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import java.util.concurrent.TimeUnit
-import kotlin.concurrent.thread
 
 @AndroidEntryPoint
 class MarvelSearchFragment : BaseFragment<FragmentMarvelSearchBinding>(
