@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="attr_color_primary">?attr/colorPrimary</color>
-    <color name="attr_color_secondary">?attr/colorSecondary</color>
-    <color name="attr_color_tertiary">?attr/colorTertiary</color>
-</resources>

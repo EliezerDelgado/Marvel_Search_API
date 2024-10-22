@@ -22,7 +22,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class MarvelSearchFragment : BaseFragment<FragmentMarvelSearchBinding>(
     FragmentMarvelSearchBinding::inflate
 ) {
-    //https://developer.android.com/identity/sign-in/credential-manager-siwg
 
 
     private val searchViewModel: MarvelSearchViewModel by viewModels()
@@ -51,10 +50,10 @@ class MarvelSearchFragment : BaseFragment<FragmentMarvelSearchBinding>(
         mainActivity(requireActivity()).setToolbarView(false)
         LocalAccount.userAccount.observe(this.viewLifecycleOwner, ::listenUserAccount)
         funImpl = MarvelSearchFunctionImplement(
-            binding,
-            searchViewModel,
-            mainActivity(requireActivity()).navigationMainActions!!,
-            viewLifecycleOwner
+            binding =  binding,
+            viewModel = searchViewModel,
+            navigationMainActions = mainActivity(requireActivity()).navigationMainActions!!,
+            owner = viewLifecycleOwner
         )
         funImpl?.resetLists()
         funImpl?.buttonListener(requireContext())
@@ -66,26 +65,21 @@ class MarvelSearchFragment : BaseFragment<FragmentMarvelSearchBinding>(
         requireContext().registerNetworkCallback(networkCallback)
     }
 
-    private fun listenUserAccount(userAccount: UserAccount?) {
+    override fun addViewModel(): BaseViewModel = searchViewModel
+
+    private fun listenUserAccount(userAccount: UserAccount?) =
         userAccount?.also{
             funImpl?.enableFavoriteButtons()
         } ?: funImpl?.disableFavoriteButtons()
-    }
 
-
-    private fun checkIsLogin() {
+    private fun checkIsLogin() =
         LocalAccount.userAccount.value?.also{
             funImpl?.enableFavoriteButtons()
         } ?: funImpl?.disableFavoriteButtons()
-    }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
         requireContext().unregisterNetworkCallback(networkCallback)
         funImpl = null
-    }
-    override fun addViewModel(): BaseViewModel {
-        return searchViewModel
     }
 }

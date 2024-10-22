@@ -49,7 +49,7 @@ class ComicDescriptionFunctionImplement (
         functionManagerBinding.recyclerViewComicsRemoveScrollListener(myOnScrolledListener)
         if(!getCharactersRepository())
         {
-            functionManagerViewModel.setObservesVM(owner,::adapterCharacters)
+            functionManagerViewModel.setObservesListCharacter(owner,::adapterCharacters)
             functionRepository.searchCharacters(functionManagerViewModel.viewModel)
         }
     }
@@ -74,7 +74,7 @@ class ComicDescriptionFunctionImplement (
     private fun adapterCharacters(characters: Characters?)
     {
         setAdapterCharacters(characters)
-        functionManagerViewModel.setNotObservesVM(owner)
+        functionManagerViewModel.setNotObservesListCharacter(owner)
         functionManagerBinding.setScrollPosition(myOnScrolledListener.position)
         functionManagerBinding.resetRecyclerView()
         functionManagerBinding.recyclerViewComicsAddScrollListener(myOnScrolledListener)
@@ -107,10 +107,10 @@ private class FunctionManagerViewModel(
     val viewModel: ComicDescriptionViewModel
 )
 {
-    fun setObservesVM(owner: LifecycleOwner,observeCharacters: ((Characters)->(Unit))) {
+    fun setObservesListCharacter(owner: LifecycleOwner, observeCharacters: ((Characters)->(Unit))) {
         viewModel.listCharacter.observe(owner,observeCharacters)
     }
-    fun setNotObservesVM(owner: LifecycleOwner) {
+    fun setNotObservesListCharacter(owner: LifecycleOwner) {
         viewModel.listCharacter.removeObservers(owner)
         viewModel.resetCharacters()
     }

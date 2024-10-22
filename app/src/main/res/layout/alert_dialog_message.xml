@@ -10,7 +10,7 @@
         android:layout_height="@dimen/image_medium_width"
         android:layout_margin="@dimen/margin_intermediate"
         android:layout_gravity="top|center"
-        android:src="@drawable/ic_autorenew"
+        android:src="@drawable/ic_auto_renew"
         style="@style/EliezerMarvel.ImageButton"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

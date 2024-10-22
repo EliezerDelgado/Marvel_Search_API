@@ -1,8 +1,10 @@
 package com.eliezer.marvel_search_api.ui.fragments.marvel_search.functionImp
 
 import android.content.Context
-import android.os.Build
+import android.widget.Button
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.appcompat.widget.AppCompatImageButton
 import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_search_api.R
 import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
@@ -11,60 +13,42 @@ import com.eliezer.marvel_search_api.databinding.FragmentMarvelSearchBinding
 import com.eliezer.marvel_search_api.domain.alert_dialogs.userDialog
 import com.eliezer.marvel_search_api.models.dataclass.UserAccount
 import com.eliezer.marvel_search_api.ui.fragments.marvel_search.viewmodel.MarvelSearchViewModel
-import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
-@OptIn(DelicateCoroutinesApi::class)
 class MarvelSearchFunctionImplement(
-    private val binding: FragmentMarvelSearchBinding,
-    private val viewModel: MarvelSearchViewModel,
+    binding: FragmentMarvelSearchBinding,
+    viewModel: MarvelSearchViewModel,
     private val navigationMainActions: NavigationMainActions,
     private val owner : LifecycleOwner
 ) {
-    private var nameButtonPulse : String? = null
+    private val functionManagerBinding = FunctionManagerBinding(binding)
+    private val functionManagerViewModel = FunctionManagerViewModel(viewModel)
 
     fun buttonListener(context: Context){
-        binding.apply {
-            marvelSearchButtonGoComicsList.apply {
-                setOnClickListener {
-                    val textSearch  = marvelSearchTextInputSearch.editText?.text.toString()
-                    setObserveSizeResult()
-                    nameButtonPulse = id.toString()
-                    searchListComics(textSearch)
-                }
+        functionManagerBinding.apply {
+            setOnClickListenerMarvelSearchButtonGoComicsList {
+                val textSearch  = getMarvelSearchTextInputSearchText()
+                setObserveSizeResult()
+                searchListComics(textSearch)
             }
-            marvelSearchButtonGoCharacterList.apply {
-                setOnClickListener {
-                    val textSearch  = marvelSearchTextInputSearch.editText?.text.toString()
-                    setObserveSizeResult()
-                    nameButtonPulse = id.toString()
-                    searchListCharacters(textSearch)
-                }
+            setOnClickListenerMarvelSearchButtonGoCharacterList {
+                val textSearch  = getMarvelSearchTextInputSearchText()
+                setObserveSizeResult()
+                searchListCharacters(textSearch)
             }
-            marvelSearchImageButtonGoFavorite.apply {
-                setOnClickListener {
-                    nameButtonPulse = id.toString()
-                    moveFragment()
-                }
+            setOnClickListenerMarvelSearchImageButtonGoFavorite {
+                moveFragment()
             }
-            marvelSearchImageButtonGoogleSignIn.apply {
-                setOnClickListener {
-                    setObserveUserAccount()
-                    nameButtonPulse = id.toString()
-                    LocalAccount.userAccount.value?.let {
-                         userDialog(context,it,::signOut).show()
-                    }?: googleSignIn(context)
-
-                }
+            setOnClickListenerMarvelSearchImageButtonGoogleSignIn {
+                setObserveUserAccount()
+                LocalAccount.userAccount.value?.let {
+                    userDialog(context,it,::signOut).show()
+                }?: googleSignIn(context)
             }
-            marvelSearchImageButtonAboutMe.apply {
-                setOnClickListener{
-                    nameButtonPulse = id.toString()
-                    navigationMainActions.actionMarvelSearchFragmentToAboutMeFragment()
-                }
+            setOnClickListenerMarvelSearchImageButtonAboutMe {
+                navigationMainActions.actionMarvelSearchFragmentToAboutMeFragment()
             }
         }
     }
@@ -75,22 +59,21 @@ class MarvelSearchFunctionImplement(
     }
 
     private fun googleSignIn(context: Context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            viewModel.signInGoogleAccount(context)
-        }
+            functionManagerViewModel.signInGoogleAccount(context)
     }
-
-
 
     private fun goCharacterListFragment()=
-        navigationMainActions.doActionMarvelSearchFragmentToCharacterListFragment(   binding.marvelSearchTextInputSearch.editText?.text.toString())
-    private fun goComicsListFragment() = navigationMainActions.doActionMarvelSearchFragmentToComicListFragment(   binding.marvelSearchTextInputSearch.editText?.text.toString())
-    private fun setObserveSizeResult() {
-        viewModel.sizeResult.observe(owner,::getSizeResultList)
-    }
-    private fun setObserveUserAccount(){
-        viewModel.googleAuthResult.observe(owner,::setAccount)
-    }
+        navigationMainActions.doActionMarvelSearchFragmentToCharacterListFragment(  functionManagerBinding.getMarvelSearchTextInputSearchText())
+
+    private fun goComicsListFragment() =
+        navigationMainActions.doActionMarvelSearchFragmentToComicListFragment(  functionManagerBinding.getMarvelSearchTextInputSearchText())
+
+    private fun setObserveSizeResult() =
+        functionManagerViewModel.setObservesSizeResult(owner,::getSizeResultList)
+
+    private fun setObserveUserAccount() =
+        functionManagerViewModel.setObservesGoogleAuthResult(owner,::setAccount)
+
 
     private fun setAccount(userAccount: UserAccount) {
         setNotObserveUserAccount()
@@ -101,60 +84,50 @@ class MarvelSearchFunctionImplement(
     {
         disableSearchButtons()
         disableGoogleButtons()
-        viewModel.searchCharactersList(name)
+        functionManagerViewModel.searchCharactersList(name)
     }
+
     private fun searchListComics(title: String) {
         disableSearchButtons()
         disableGoogleButtons()
-        viewModel.searchComicsList(title)
-    }
-    fun disableSearchButtons() {
-        GlobalScope.launch {
-            withContext(Dispatchers.Main) {
-                binding.marvelSearchButtonGoComicsList.isEnabled = false
-                binding.marvelSearchButtonGoCharacterList.isEnabled = false
-            }
-        }
-    }
-    fun enableSearchButtons() {
-        GlobalScope.launch {
-            withContext(Dispatchers.Main) {
-                binding.marvelSearchButtonGoComicsList.isEnabled = true
-                binding.marvelSearchButtonGoCharacterList.isEnabled = true
-            }
-        }
+        functionManagerViewModel.searchComicsList(title)
     }
 
-    fun disableGoogleButtons() {
-        GlobalScope.launch {
-            withContext(Dispatchers.Main) {
-                binding.marvelSearchImageButtonGoogleSignIn.isEnabled = false
-                binding.marvelSearchImageButtonGoogleSignIn.setImageResource(R.drawable.img_google_sign_in_disable)
-            }
+    fun disableSearchButtons() =
+        CoroutineScope(Dispatchers.Main).launch {
+                functionManagerBinding.setEnableMarvelSearchButtonGoComicsList(false)
+                functionManagerBinding.setEnableMarvelSearchButtonGoCharacterList(false)
         }
-    }
-    fun enableGoogleButtons() {
-        GlobalScope.launch {
-            withContext(Dispatchers.Main) {
-                binding.marvelSearchImageButtonGoogleSignIn.isEnabled = true
-                binding.marvelSearchImageButtonGoogleSignIn.setImageResource(R.drawable.img_google_sign_in)
-            }
+
+    fun enableSearchButtons() =
+        CoroutineScope(Dispatchers.Main).launch {
+                functionManagerBinding.setEnableMarvelSearchButtonGoComicsList(true)
+                functionManagerBinding.setEnableMarvelSearchButtonGoCharacterList(true)
         }
-    }
-    fun disableFavoriteButtons() {
-        GlobalScope.launch {
-            withContext(Dispatchers.Main) {
-                binding.marvelSearchImageButtonGoFavorite.isEnabled = false
-            }
+
+
+    fun disableGoogleButtons() =
+        CoroutineScope(Dispatchers.Main).launch {
+                functionManagerBinding.setEnableMarvelSearchImageButtonGoogleSignIn(false)
+                functionManagerBinding.setDrawableMarvelSearchImageButtonGoogleSignIn(R.drawable.img_google_sign_in_disable)
         }
-    }
-    fun enableFavoriteButtons() {
-        GlobalScope.launch {
-            withContext(Dispatchers.Main) {
-                binding.marvelSearchImageButtonGoFavorite.isEnabled = true
-            }
+
+    fun enableGoogleButtons() =
+        CoroutineScope(Dispatchers.Main).launch {
+                functionManagerBinding.setEnableMarvelSearchImageButtonGoogleSignIn(true)
+                functionManagerBinding.setDrawableMarvelSearchImageButtonGoogleSignIn(R.drawable.img_google_sign_in)
         }
-    }
+
+    fun disableFavoriteButtons() =
+        CoroutineScope(Dispatchers.Main).launch {
+            functionManagerBinding.setEnableMarvelSearchImageButtonGoFavorite(false)
+        }
+
+    fun enableFavoriteButtons() =
+        CoroutineScope(Dispatchers.Main).launch {
+            functionManagerBinding.setEnableMarvelSearchImageButtonGoFavorite(true)
+        }
+
 
 
     private fun getSizeResultList(size: Int){
@@ -169,35 +142,123 @@ class MarvelSearchFunctionImplement(
     }
 
     private fun moveFragment() {
-        when(nameButtonPulse)
+        when(functionManagerBinding.nameButtonPulse)
         {
-            binding.marvelSearchButtonGoComicsList.id.toString() -> goComicsListFragment()
-            binding.marvelSearchButtonGoCharacterList.id.toString() -> goCharacterListFragment()
-            binding.marvelSearchImageButtonGoFavorite.id.toString() -> goFavoriteFragment()
+            functionManagerBinding.idMarvelSearchButtonGoComicsList() -> goComicsListFragment()
+            functionManagerBinding.idMarvelSearchButtonGoCharacterList() -> goCharacterListFragment()
+            functionManagerBinding.idMarvelSearchImageButtonGoFavorite() -> goFavoriteFragment()
         }
-        nameButtonPulse=null
+        functionManagerBinding.resetNameButtonPulse()
     }
 
-    private fun goFavoriteFragment() {
-        navigationMainActions.doActionMarvelSearchFragmentToFavoritesFragment()
-    }
+    private fun goFavoriteFragment() = navigationMainActions.doActionMarvelSearchFragmentToFavoritesFragment()
 
     private fun showError(@StringRes idError: Int) {
         //todo e un utils
        // viewModel.error
     }
 
-    private fun setNotObserveSizeResult() {
+    private fun setNotObserveSizeResult() =
+        functionManagerViewModel.setNotObservesSizeResult(owner)
+
+    private fun setNotObserveUserAccount() =
+        functionManagerViewModel.setNotObservesGoogleAuthResult(owner)
+
+    fun resetLists() =  functionManagerViewModel.resetLists()
+}
+
+private class FunctionManagerViewModel(
+    val viewModel: MarvelSearchViewModel
+)
+{
+    fun setObservesSizeResult(owner: LifecycleOwner,observe: ((Int)->(Unit))) =
+        viewModel.sizeResult.observe(owner,observe)
+
+    fun setNotObservesSizeResult(owner: LifecycleOwner) {
         viewModel.sizeResult.removeObservers(owner)
         viewModel.resetSizeResult()
     }
-    private fun setNotObserveUserAccount() {
+
+    fun setObservesGoogleAuthResult(owner: LifecycleOwner,observe: ((UserAccount)->(Unit))) =
+        viewModel.googleAuthResult.observe(owner,observe)
+
+    fun setNotObservesGoogleAuthResult(owner: LifecycleOwner) {
         viewModel.googleAuthResult.removeObservers(owner)
         viewModel.resetAuthResult()
     }
 
-    fun resetLists() {
-        viewModel.resetLists()
+    fun signInGoogleAccount(context: Context) = viewModel.signInGoogleAccount(context)
+
+    fun  searchCharactersList(name:String)  =  viewModel.searchCharactersList(name)
+
+    fun  searchComicsList(title:String)  =  viewModel.searchComicsList(title)
+
+    fun resetLists() = viewModel.resetLists()
+
+}
+
+private class FunctionManagerBinding(
+    private val binding: FragmentMarvelSearchBinding,
+)
+{
+    var nameButtonPulse : String? = null
+        private set
+    fun resetNameButtonPulse() {
+        nameButtonPulse=null
+    }
+    fun getMarvelSearchTextInputSearchText() =binding.marvelSearchTextInputSearch.editText?.text.toString()
+
+    fun setOnClickListenerMarvelSearchButtonGoComicsList(execute : ()-> Unit) =  buttonListening(binding.marvelSearchButtonGoComicsList,execute)
+
+    fun setOnClickListenerMarvelSearchButtonGoCharacterList(execute : ()-> Unit) =  buttonListening(binding.marvelSearchButtonGoCharacterList,execute)
+
+    fun setOnClickListenerMarvelSearchImageButtonGoFavorite(execute : ()-> Unit) =  buttonListening(binding.marvelSearchImageButtonGoFavorite,execute)
+
+    fun setOnClickListenerMarvelSearchImageButtonGoogleSignIn(execute : ()-> Unit) =  buttonListening(binding.marvelSearchImageButtonGoogleSignIn,execute)
+
+    fun setOnClickListenerMarvelSearchImageButtonAboutMe(execute : ()-> Unit) =  buttonListening(binding.marvelSearchImageButtonAboutMe,execute)
+
+    fun setEnableMarvelSearchButtonGoComicsList(enable: Boolean) {
+        binding.marvelSearchButtonGoComicsList.isEnabled = enable
+    }
+    fun setEnableMarvelSearchButtonGoCharacterList(enable: Boolean) {
+        binding.marvelSearchButtonGoCharacterList.isEnabled = enable
+    }
+    fun setEnableMarvelSearchImageButtonGoogleSignIn(enable: Boolean) {
+        binding.marvelSearchImageButtonGoogleSignIn.isEnabled = enable
+    }
+
+    fun setEnableMarvelSearchImageButtonGoFavorite(enable: Boolean) {
+        binding.marvelSearchImageButtonGoFavorite.isEnabled = enable
+    }
+
+    fun idMarvelSearchButtonGoComicsList() =   binding.marvelSearchButtonGoComicsList.id.toString()
+
+    fun idMarvelSearchButtonGoCharacterList() =   binding.marvelSearchButtonGoCharacterList.id.toString()
+
+    fun idMarvelSearchImageButtonGoFavorite() =   binding.marvelSearchImageButtonGoFavorite.id.toString()
+
+    fun setDrawableMarvelSearchImageButtonGoogleSignIn(@DrawableRes drawable: Int) =  binding.marvelSearchImageButtonGoogleSignIn.setImageResource(drawable)
+
+
+    private fun buttonListening(button: Button,execute : ()-> Any?)
+    {
+        button.apply {
+            setOnClickListener{
+                nameButtonPulse = id.toString()
+                execute.invoke()
+            }
+        }
+    }
+    private fun buttonListening(imageButton: AppCompatImageButton,execute : ()-> Any?)
+    {
+        imageButton.apply {
+            setOnClickListener{
+                nameButtonPulse = id.toString()
+                execute.invoke()
+            }
+        }
     }
 }
+
 

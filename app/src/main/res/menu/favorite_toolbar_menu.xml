@@ -2,6 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/favorite_toolbar_menu_reload" android:title="@string/favorite_toolbar_menu_reload__title"  app:showAsAction="always" android:icon="@drawable/ic_autorenew"
+    <item android:id="@+id/favorite_toolbar_menu_reload" android:title="@string/favorite_toolbar_menu_reload__title"  app:showAsAction="always" android:icon="@drawable/ic_auto_renew"
         android:iconTint="?attr/colorTertiary"/>
 </menu>
