@@ -17,6 +17,7 @@ import com.eliezer.marvel_search_api.models.dataclass.UserAccount
 import com.eliezer.marvel_search_api.ui.fragments.marvel_search.functionImp.MarvelSearchFunctionImplement
 import com.eliezer.marvel_search_api.ui.fragments.marvel_search.viewmodel.MarvelSearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
 
 @AndroidEntryPoint
 class MarvelSearchFragment : BaseFragment<FragmentMarvelSearchBinding>(

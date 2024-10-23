@@ -93,6 +93,7 @@ class MainActivityFunctionImplement(
             }
         )
     }
+
 }
 
 private class FunctionManagerBinding(

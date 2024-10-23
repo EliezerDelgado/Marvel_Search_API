@@ -8,10 +8,15 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.eliezer.marvel_search_api.databinding.ActivityMainBinding
 import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
+import com.eliezer.marvel_search_api.domain.alert_dialogs.errorDialog
+import com.eliezer.marvel_search_api.domain.local_property.LocalAlertDialog
 import com.eliezer.marvel_search_api.ui.activity.funtionImp.MainActivityFunctionImplement
 import com.eliezer.marvel_search_api.ui.activity.viewmodel.MainActivityViewModel
 import com.eliezer.marvel_search_api.ui.activity.funtionImp.function.MainActivityFunctionManagerRepository
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -40,6 +45,14 @@ class MainActivity : AppCompatActivity() {
         funImpl?.setMainToolbar()
         listeningChangesInAuthResult()
         getLocalUser()
+        /*
+        CoroutineScope(Dispatchers.IO).launch {
+            errorDialog(baseContext, "Mensaje 1").show()
+            //LocalAlertDialog.alertDialogShow.showAlertDialog(errorDialog(baseContext, "Mensaje 1"))
+            //LocalAlertDialog.alertDialogShow.showAlertDialog(errorDialog(baseContext, "Mensaje 2"))
+        }
+
+         */
     }
 
 
