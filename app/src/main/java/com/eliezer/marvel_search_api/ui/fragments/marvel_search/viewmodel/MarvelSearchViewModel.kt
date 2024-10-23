@@ -5,6 +5,7 @@ import androidx.credentials.exceptions.NoCredentialException
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.eliezer.marvel_search_api.R
 import com.eliezer.marvel_search_api.core.base.BaseViewModel
 import com.eliezer.marvel_search_api.data.repository.characters.mock.SetCharactersRepository
 import com.eliezer.marvel_search_api.data.repository.comics.mock.SetComicsRepository
@@ -39,6 +40,7 @@ class MarvelSearchViewModel @Inject constructor(
                 .onCompletion { _loading.value = false }
                 .catch {
                     _error.value = it
+                    _userErrorMessage.value =  R.string.error_empty_search
                 }
                 .collect {
                     onResultOfGetListCharacter(it, name)
@@ -53,6 +55,7 @@ class MarvelSearchViewModel @Inject constructor(
                 .onCompletion { _loading.value = false }
                 .catch {
                     _error.value = it
+                    _userErrorMessage.value =  R.string.error_empty_search
                 }
                 .collect {
                     onResultOfGetListComics(it, title)

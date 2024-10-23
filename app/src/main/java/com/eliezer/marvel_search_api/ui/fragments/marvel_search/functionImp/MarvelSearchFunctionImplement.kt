@@ -10,7 +10,9 @@ import com.eliezer.marvel_search_api.R
 import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
 import com.eliezer.marvel_search_api.databinding.FragmentMarvelSearchBinding
+import com.eliezer.marvel_search_api.domain.alert_dialogs.errorDialog
 import com.eliezer.marvel_search_api.domain.alert_dialogs.userDialog
+import com.eliezer.marvel_search_api.domain.alert_dialogs.warningDialog
 import com.eliezer.marvel_search_api.models.dataclass.UserAccount
 import com.eliezer.marvel_search_api.ui.fragments.marvel_search.viewmodel.MarvelSearchViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -21,7 +23,8 @@ class MarvelSearchFunctionImplement(
     binding: FragmentMarvelSearchBinding,
     viewModel: MarvelSearchViewModel,
     private val navigationMainActions: NavigationMainActions,
-    private val owner : LifecycleOwner
+    private val owner : LifecycleOwner,
+    private val context: Context
 ) {
     private val functionManagerBinding = FunctionManagerBinding(binding)
     private val functionManagerViewModel = FunctionManagerViewModel(viewModel)
@@ -45,7 +48,7 @@ class MarvelSearchFunctionImplement(
                 setObserveUserAccount()
                 LocalAccount.userAccount.value?.let {
                     userDialog(context,it,::signOut).show()
-                }?: googleSignIn(context)
+                }?: googleSignIn()
             }
             setOnClickListenerMarvelSearchImageButtonAboutMe {
                 navigationMainActions.actionMarvelSearchFragmentToAboutMeFragment()
@@ -58,15 +61,15 @@ class MarvelSearchFunctionImplement(
         LocalAccount.userAccount.value = null
     }
 
-    private fun googleSignIn(context: Context) {
+    private fun googleSignIn() {
             functionManagerViewModel.signInGoogleAccount(context)
     }
 
     private fun goCharacterListFragment()=
-        navigationMainActions.doActionMarvelSearchFragmentToCharacterListFragment(  functionManagerBinding.getMarvelSearchTextInputSearchText())
+        navigationMainActions.doActionMarvelSearchFragmentToCharacterListFragment(functionManagerBinding.getMarvelSearchTextInputSearchText())
 
     private fun goComicsListFragment() =
-        navigationMainActions.doActionMarvelSearchFragmentToComicListFragment(  functionManagerBinding.getMarvelSearchTextInputSearchText())
+        navigationMainActions.doActionMarvelSearchFragmentToComicListFragment(functionManagerBinding.getMarvelSearchTextInputSearchText())
 
     private fun setObserveSizeResult() =
         functionManagerViewModel.setObservesSizeResult(owner,::getSizeResultList)
@@ -128,6 +131,12 @@ class MarvelSearchFunctionImplement(
             functionManagerBinding.setEnableMarvelSearchImageButtonGoFavorite(true)
         }
 
+    fun checkFavorite() =  CoroutineScope(Dispatchers.Main).launch {
+        LocalAccount.userAccount.value?.also {
+            functionManagerBinding.setEnableMarvelSearchImageButtonGoFavorite(true)
+        }
+    }
+
 
 
     private fun getSizeResultList(size: Int){
@@ -136,7 +145,7 @@ class MarvelSearchFunctionImplement(
             moveFragment()
         }
         else if(size==0)
-            showError(R.string.marvel_search_button_go_character_list__text)
+            showWarning(R.string.warning_size_list_search_is_0)
         enableSearchButtons()
         enableGoogleButtons()
     }
@@ -154,8 +163,10 @@ class MarvelSearchFunctionImplement(
     private fun goFavoriteFragment() = navigationMainActions.doActionMarvelSearchFragmentToFavoritesFragment()
 
     private fun showError(@StringRes idError: Int) {
-        //todo e un utils
-       // viewModel.error
+        errorDialog(context,context.resources.getString(idError))
+    }
+    private fun showWarning(@StringRes idError: Int) {
+        warningDialog(context,context.resources.getString(idError)).show()
     }
 
     private fun setNotObserveSizeResult() =
@@ -165,6 +176,9 @@ class MarvelSearchFunctionImplement(
         functionManagerViewModel.setNotObservesGoogleAuthResult(owner)
 
     fun resetLists() =  functionManagerViewModel.resetLists()
+    fun showWarningNetworkLost() =  CoroutineScope(Dispatchers.Main).launch {
+        showWarning(R.string.warning_not_network)
+    }
 }
 
 private class FunctionManagerViewModel(
@@ -178,6 +192,17 @@ private class FunctionManagerViewModel(
         viewModel.sizeResult.removeObservers(owner)
         viewModel.resetSizeResult()
     }
+    fun setObservesError(owner: LifecycleOwner,observe: ((Throwable)->(Unit))) =
+        viewModel.error.observe(owner,observe)
+
+    fun setNotObservesError(owner: LifecycleOwner) =
+        viewModel.error.removeObservers(owner)
+
+    fun setObservesUserErrorMessage(owner: LifecycleOwner,observe: ((Int)->(Unit))) =
+        viewModel.userErrorMessage.observe(owner,observe)
+
+    fun setNotObservesUserErrorMessage(owner: LifecycleOwner) =
+        viewModel.userErrorMessage.removeObservers(owner)
 
     fun setObservesGoogleAuthResult(owner: LifecycleOwner,observe: ((UserAccount)->(Unit))) =
         viewModel.googleAuthResult.observe(owner,observe)

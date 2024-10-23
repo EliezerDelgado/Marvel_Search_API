@@ -5,6 +5,7 @@ import android.net.Network
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import com.eliezer.marvel_search_api.R
 import com.eliezer.marvel_search_api.core.base.BaseFragment
 import com.eliezer.marvel_search_api.core.base.BaseViewModel
 import com.eliezer.marvel_search_api.data.expand.isInternetConnected
@@ -17,7 +18,6 @@ import com.eliezer.marvel_search_api.models.dataclass.UserAccount
 import com.eliezer.marvel_search_api.ui.fragments.marvel_search.functionImp.MarvelSearchFunctionImplement
 import com.eliezer.marvel_search_api.ui.fragments.marvel_search.viewmodel.MarvelSearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
 
 @AndroidEntryPoint
 class MarvelSearchFragment : BaseFragment<FragmentMarvelSearchBinding>(
@@ -33,6 +33,7 @@ class MarvelSearchFragment : BaseFragment<FragmentMarvelSearchBinding>(
             funImpl?.apply {
                 enableSearchButtons()
                 enableGoogleButtons()
+                checkFavorite()
             }
         }
 
@@ -42,9 +43,11 @@ class MarvelSearchFragment : BaseFragment<FragmentMarvelSearchBinding>(
                 disableSearchButtons()
                 disableGoogleButtons()
                 disableFavoriteButtons()
+                showWarningNetworkLost()
             }
         }
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -54,7 +57,8 @@ class MarvelSearchFragment : BaseFragment<FragmentMarvelSearchBinding>(
             binding =  binding,
             viewModel = searchViewModel,
             navigationMainActions = mainActivity(requireActivity()).navigationMainActions!!,
-            owner = viewLifecycleOwner
+            owner = viewLifecycleOwner,
+            context = requireContext()
         )
         funImpl?.resetLists()
         funImpl?.buttonListener(requireContext())
