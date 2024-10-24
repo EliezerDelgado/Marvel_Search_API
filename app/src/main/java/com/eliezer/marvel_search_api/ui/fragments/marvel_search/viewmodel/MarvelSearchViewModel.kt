@@ -79,7 +79,7 @@ class MarvelSearchViewModel @Inject constructor(
         }
     }
 
-    private fun signInNewGoogleAccount(context: Context) {
+    fun signInNewGoogleAccount(context: Context) {
         viewModelScope.launch {
             marvelSearchUseCases.getGoogleAddNewAccountUseCase.invoke(context)
                 .onStart { _loading.value = true }
@@ -105,9 +105,6 @@ class MarvelSearchViewModel @Inject constructor(
             },
             onFailure = { e ->
                 _error.value = e
-                //TODO Cambiar
-                if (e is NoCredentialException)
-                    context?.also { signInNewGoogleAccount(it) }
             }
         )
     }

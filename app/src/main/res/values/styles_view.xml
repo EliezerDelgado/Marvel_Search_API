@@ -44,7 +44,7 @@
     </style>
     <style name="EliezerMarvel.RoundedCornersDialog" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="shapeAppearanceOverlay">@style/DialogCorners</item>
-        <item name="android:background">@color/white</item>
+        <item name="android:background">?attr/colorSecondary</item>
     </style>
 
     <style name="DialogCorners">

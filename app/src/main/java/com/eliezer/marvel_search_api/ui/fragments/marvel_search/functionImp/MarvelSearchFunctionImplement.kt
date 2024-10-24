@@ -1,16 +1,20 @@
 package com.eliezer.marvel_search_api.ui.fragments.marvel_search.functionImp
 
 import android.content.Context
+import android.nfc.Tag
+import android.util.Log
 import android.widget.Button
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.widget.AppCompatImageButton
+import androidx.credentials.exceptions.NoCredentialException
 import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_search_api.R
 import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
 import com.eliezer.marvel_search_api.databinding.FragmentMarvelSearchBinding
 import com.eliezer.marvel_search_api.domain.alert_dialogs.errorDialog
+import com.eliezer.marvel_search_api.domain.alert_dialogs.loadingDialog
 import com.eliezer.marvel_search_api.domain.alert_dialogs.userDialog
 import com.eliezer.marvel_search_api.domain.alert_dialogs.warningDialog
 import com.eliezer.marvel_search_api.models.dataclass.UserAccount
@@ -18,6 +22,7 @@ import com.eliezer.marvel_search_api.ui.fragments.marvel_search.viewmodel.Marvel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
 class MarvelSearchFunctionImplement(
     binding: FragmentMarvelSearchBinding,
@@ -28,6 +33,7 @@ class MarvelSearchFunctionImplement(
 ) {
     private val functionManagerBinding = FunctionManagerBinding(binding)
     private val functionManagerViewModel = FunctionManagerViewModel(viewModel)
+    private val loadingAlertDialog = loadingDialog(context)
 
     fun buttonListener(context: Context){
         functionManagerBinding.apply {
@@ -88,12 +94,14 @@ class MarvelSearchFunctionImplement(
         disableSearchButtons()
         disableGoogleButtons()
         functionManagerViewModel.searchCharactersList(name)
+        loadingAlertDialog.show()
     }
 
     private fun searchListComics(title: String) {
         disableSearchButtons()
         disableGoogleButtons()
         functionManagerViewModel.searchComicsList(title)
+        loadingAlertDialog.show()
     }
 
     fun disableSearchButtons() =
@@ -141,6 +149,7 @@ class MarvelSearchFunctionImplement(
 
     private fun getSizeResultList(size: Int){
         setNotObserveSizeResult()
+        loadingAlertDialog.cancel()
         if(size>0) {
             moveFragment()
         }
@@ -163,7 +172,7 @@ class MarvelSearchFunctionImplement(
     private fun goFavoriteFragment() = navigationMainActions.doActionMarvelSearchFragmentToFavoritesFragment()
 
     private fun showError(@StringRes idError: Int) {
-        errorDialog(context,context.resources.getString(idError))
+        errorDialog(context,context.resources.getString(idError)).show()
     }
     private fun showWarning(@StringRes idError: Int) {
         warningDialog(context,context.resources.getString(idError)).show()
@@ -178,6 +187,33 @@ class MarvelSearchFunctionImplement(
     fun resetLists() =  functionManagerViewModel.resetLists()
     fun showWarningNetworkLost() =  CoroutineScope(Dispatchers.Main).launch {
         showWarning(R.string.warning_not_network)
+    }
+
+    fun errorListener() {
+        functionManagerViewModel.setObservesError(owner,::createErrorLog)
+        functionManagerViewModel.setObservesUserErrorMessage(owner,::showErrorToUser)
+    }
+    fun stopErrorListener() {
+        functionManagerViewModel.setNotObservesError(owner)
+        functionManagerViewModel.setNotObservesUserErrorMessage(owner)
+    }
+
+    private fun showErrorToUser(@StringRes idString: Int) = showError(idString)
+
+
+    private fun createErrorLog(throwable: Throwable) {
+        if(throwable is NoCredentialException)
+            functionManagerViewModel.signInNewGoogleAccount(context)
+        else if(throwable is HttpException){
+            errorEmptySearch(throwable)
+        }
+    }
+
+    private fun errorEmptySearch(throwable:  Throwable) {
+        Log.e("***",throwable.message,throwable)
+        loadingAlertDialog.cancel()
+        enableSearchButtons()
+        enableGoogleButtons()
     }
 }
 
@@ -219,6 +255,9 @@ private class FunctionManagerViewModel(
     fun  searchComicsList(title:String)  =  viewModel.searchComicsList(title)
 
     fun resetLists() = viewModel.resetLists()
+    fun signInNewGoogleAccount(context: Context) {
+        viewModel.signInNewGoogleAccount(context)
+    }
 
 }
 

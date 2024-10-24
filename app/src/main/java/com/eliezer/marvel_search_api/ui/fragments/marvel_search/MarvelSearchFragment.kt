@@ -61,6 +61,7 @@ class MarvelSearchFragment : BaseFragment<FragmentMarvelSearchBinding>(
             context = requireContext()
         )
         funImpl?.resetLists()
+        funImpl?.errorListener()
         funImpl?.buttonListener(requireContext())
         checkIsLogin()
         if (requireContext().isInternetConnected)
@@ -85,6 +86,7 @@ class MarvelSearchFragment : BaseFragment<FragmentMarvelSearchBinding>(
     override fun onDestroyView() {
         super.onDestroyView()
         requireContext().unregisterNetworkCallback(networkCallback)
+        funImpl?.stopErrorListener()
         funImpl = null
     }
 }
