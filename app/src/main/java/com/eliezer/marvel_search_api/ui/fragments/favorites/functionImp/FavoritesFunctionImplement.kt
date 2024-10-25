@@ -32,9 +32,9 @@ private  class FunctionPagerAdapter(
     }
 
     fun createTabLayout(myOnTabSelectedListened :MyOnTabSelectedListened) {
-        binding.favoritesTabLayout.setTabIndicatorFullWidth(true)
         tabLayoutMediator()
         setTabLayout(myOnTabSelectedListened)
+        binding.favoritesTabLayout.requestLayout()
     }
 
     private fun setTabLayout(myOnTabSelectedListened :MyOnTabSelectedListened) {
@@ -65,25 +65,4 @@ private  class FunctionPagerAdapter(
             }
         }.attach()
     }
-}
-
-
-
-private class  FunctionManagerRecyclerAdapter()
-{
-    /*
-    var adapter: CharacterProfileComicsListAdapter = CharacterProfileComicsListAdapter(
-        arrayListOf(),
-        listener
-    )
-        private set
-    fun adapterIsEmpty()=  adapter.isListEmpty()
-    fun setComics(comics: Comics)
-    {
-        adapter.setComics(comics.listComics)
-    }*/
-}
-private class FunctionManagerBinding(private val binding: FragmentFavoritesBinding)
-{
-
 }
