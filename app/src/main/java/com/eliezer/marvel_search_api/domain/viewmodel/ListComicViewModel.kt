@@ -1,4 +1,4 @@
-package com.eliezer.marvel_search_api.ui.activity.viewmodel
+package com.eliezer.marvel_search_api.domain.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

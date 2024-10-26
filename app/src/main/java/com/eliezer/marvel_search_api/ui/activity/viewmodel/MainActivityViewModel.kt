@@ -8,7 +8,9 @@ import com.eliezer.marvel_search_api.domain.usecase.ClearCharactersDatabaseUseCa
 import com.eliezer.marvel_search_api.domain.usecase.ClearComicsDatabaseUseCase
 import com.eliezer.marvel_search_api.domain.usecase.GetResultsInsertCharactersInDatabaseUseCase
 import com.eliezer.marvel_search_api.domain.usecase.GetResultsInsertComicsInDatabaseUseCase
+import com.eliezer.marvel_search_api.domain.viewmodel.CharactersDatabaseViewModel
 import com.eliezer.marvel_search_api.domain.viewmodel.CharactersViewModel
+import com.eliezer.marvel_search_api.domain.viewmodel.ComicsDatabaseViewModel
 import com.eliezer.marvel_search_api.domain.viewmodel.ComicsViewModel
 import com.eliezer.marvel_search_api.domain.viewmodel.FavoriteIdCharactersViewModel
 import com.eliezer.marvel_search_api.domain.viewmodel.FavoriteIdComicsViewModel
@@ -25,33 +27,9 @@ class MainActivityViewModel @Inject constructor(
     val favoriteIdCharactersViewModel: FavoriteIdCharactersViewModel,
     val comicsViewModel: ComicsViewModel,
     val charactersViewModel: CharactersViewModel,
+    val charactersDatabaseViewModel: CharactersDatabaseViewModel,
+    val comicsDatabaseViewModel: ComicsDatabaseViewModel,
     private val getResultsInsertCharactersInDatabaseUseCase: GetResultsInsertCharactersInDatabaseUseCase,
     private val getResultsInsertComicsInDatabaseUseCase: GetResultsInsertComicsInDatabaseUseCase,
-
-    private val clearComicsDatabaseUseCase: ClearComicsDatabaseUseCase
 ): BaseViewModel() {
-
-    private var _isClear  = MutableLiveData<Int>()
-    val isClear: LiveData<Int> get() = _isClear
-
-    fun clearFavoritesComicsList() =
-        viewModelScope.launch {
-            clearComicsDatabaseUseCase.invoke(null)
-                .onStart { _loading.value = true }
-                .onCompletion { _loading.value = false }
-                .catch {
-                    _error.value = it
-                }
-                .collect {
-                    clearComplete()
-                }
-        }
-    private fun clearComplete()
-    {
-        var value =  _isClear.value  ?:0
-        _isClear.value = ++value
-    }
-    fun resetIsClear() {
-        _isClear  = MutableLiveData<Int>()
-    }
 }
