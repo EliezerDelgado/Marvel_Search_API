@@ -242,32 +242,39 @@ private class FunctionManagerViewModel(
 {
     fun setObservesSearchComics(owner: LifecycleOwner,observe : (Comics)->(Unit))
     {
-        viewModel.searchComicsViewModel.comics.observe(owner,observe)
+        viewModel.comicsViewModel.comics.observe(owner,observe)
     }
 
     fun setNoObservesSearchComics(owner: LifecycleOwner)
     {
-        viewModel.searchComicsViewModel.comics.removeObservers(owner)
+        viewModel.comicsViewModel.comics.removeObservers(owner)
     }
     fun setObservesSearchCharacters(owner: LifecycleOwner,observe : (Characters)->(Unit))
     {
-        viewModel.searchCharactersViewModel.characters.observe(owner,observe)
+        viewModel.charactersViewModel.characters.observe(owner,observe)
     }
     fun setNoObservesSearchCharacters(owner: LifecycleOwner)
     {
-        viewModel.searchCharactersViewModel.characters.removeObservers(owner)
+        viewModel.charactersViewModel.characters.removeObservers(owner)
     }
+    //TODO ERRORES DE TODOS VIEW MODEL OBSERVE
     fun setObservesError(owner: LifecycleOwner,observe: ((Throwable)->(Unit))) =
         viewModel.error.observe(owner,observe)
 
-    fun setNoObservesError(owner: LifecycleOwner) =
-        viewModel.error.removeObservers(owner)
+    fun setNoObservesError(owner: LifecycleOwner) {
+        viewModel.charactersViewModel.error.removeObservers(owner)
+        viewModel.googleAuthResultViewModel.error.removeObservers(owner)
+        viewModel.comicsViewModel.error.removeObservers(owner)
+    }
 
     fun setObservesUserErrorMessage(owner: LifecycleOwner,observe: ((Int)->(Unit))) =
         viewModel.userErrorMessage.observe(owner,observe)
 
-    fun setNoObservesUserErrorMessage(owner: LifecycleOwner) =
-        viewModel.userErrorMessage.removeObservers(owner)
+    fun setNoObservesUserErrorMessage(owner: LifecycleOwner) {
+        viewModel.charactersViewModel.userErrorMessage.removeObservers(owner)
+        viewModel.googleAuthResultViewModel.userErrorMessage.removeObservers(owner)
+        viewModel.comicsViewModel.userErrorMessage.removeObservers(owner)
+    }
 
     fun setObservesGoogleAuthResult(owner: LifecycleOwner,observe: ((UserAccount)->(Unit))) =
         viewModel.googleAuthResultViewModel.googleAuthResult.observe(owner,observe)
@@ -279,13 +286,13 @@ private class FunctionManagerViewModel(
 
     fun signInGoogleAccount(context: Context) = viewModel.googleAuthResultViewModel.signInGoogleAccount(context)
 
-    fun  searchCharactersList(name:String)  =  viewModel.searchCharactersViewModel.searchCharactersList(name)
+    fun  searchCharactersList(name:String)  =  viewModel.charactersViewModel.searchCharactersList(name)
 
-    fun  searchComicsList(title:String)  =  viewModel.searchComicsViewModel.searchComicsList(title)
+    fun  searchComicsList(title:String)  =  viewModel.comicsViewModel.searchComicsList(title)
 
-    fun resetComics() = viewModel.searchComicsViewModel.resetComics()
+    fun resetComics() = viewModel.comicsViewModel.resetComics()
 
-    fun  resetCharacters() = viewModel.searchCharactersViewModel.resetCharacters()
+    fun  resetCharacters() = viewModel.charactersViewModel.resetCharacters()
 
     fun signInNewGoogleAccount(context: Context) =
         viewModel.googleAuthResultViewModel.signInNewGoogleAccount(context)
