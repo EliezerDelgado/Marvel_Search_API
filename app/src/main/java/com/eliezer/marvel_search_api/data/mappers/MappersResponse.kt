@@ -11,8 +11,10 @@ import com.google.firebase.auth.AuthResult
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
-fun CharacterDataContainer.mapToListCharacter() : Characters = Characters(total?:0,
-    ArrayList(results.map {
+fun CharacterDataContainer.mapToListCharacter() : Characters = Characters(
+    total = total?:0,
+    search = "",
+    listCharacters = ArrayList(results.map {
         Character(
             id = it.id?: -1,
             name = it.name ?: "",
@@ -20,8 +22,10 @@ fun CharacterDataContainer.mapToListCharacter() : Characters = Characters(total?
             description = it.description?: ""
         )
     }))
-fun ComicDataContainer.mapToListComic() :Comics = Comics(total?:0,
-    ArrayList(results.map {
+fun ComicDataContainer.mapToListComic() :Comics = Comics(
+    total = total?:0,
+    search = "",
+    listComics = ArrayList(results.map {
         Comic(
             id = it.id?: -1,
             title = it.title ?: "",

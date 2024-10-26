@@ -10,6 +10,8 @@ import com.eliezer.marvel_search_api.domain.usecase.GetFavoriteIdCharactersUseCa
 import com.eliezer.marvel_search_api.domain.usecase.GetFavoriteIdComicsUseCase
 import com.eliezer.marvel_search_api.domain.usecase.GetListCharactersByListIdsUseCase
 import com.eliezer.marvel_search_api.domain.usecase.GetListComicsByListIdsUseCase
+import com.eliezer.marvel_search_api.domain.usecase.GetResultsInsertCharactersInDatabaseUseCase
+import com.eliezer.marvel_search_api.domain.usecase.GetResultsInsertComicsInDatabaseUseCase
 import com.eliezer.marvel_search_api.models.dataclass.Characters
 import com.eliezer.marvel_search_api.models.dataclass.Comics
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,6 +27,8 @@ class MainActivityViewModel @Inject constructor(
     private val getFavoriteIdCharactersUseCase: GetFavoriteIdCharactersUseCase,
     private val getListComicsByListIdsUseCase: GetListComicsByListIdsUseCase,
     private val getListCharactersByListIdsUseCase: GetListCharactersByListIdsUseCase,
+    private val getResultsInsertCharactersInDatabaseUseCase: GetResultsInsertCharactersInDatabaseUseCase,
+    private val getResultsInsertComicsInDatabaseUseCase: GetResultsInsertComicsInDatabaseUseCase,
     private val clearCharactersDatabaseUseCase: ClearCharactersDatabaseUseCase,
     private val clearComicsDatabaseUseCase: ClearComicsDatabaseUseCase
 ): BaseViewModel() {

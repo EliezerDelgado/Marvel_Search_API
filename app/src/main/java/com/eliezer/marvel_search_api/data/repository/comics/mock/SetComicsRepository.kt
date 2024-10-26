@@ -8,7 +8,7 @@ import javax.inject.Inject
 class SetComicsRepository @Inject constructor(
     private val comicsRepository: ComicsRepository,
 ){
-    fun setListRepository(id : String,params: Comics){
+    fun setListTmpComics(id : String, params: Comics){
         comicsRepository.setListTmpComics(id,params)
     }
     fun setInRoomDatabase(vararg comic: Comic)
@@ -18,10 +18,6 @@ class SetComicsRepository @Inject constructor(
     fun deleteInRoomDatabase(vararg comic: Comic)
     {
             comicsRepository.deleteComicInDatabase(*comic)
-    }
-    fun setListInRoomDatabase(comics: List<Comic>)
-    {
-        comicsRepository.setListComicInDatabase(comics)
     }
     fun resetListRepository() {
         comicsRepository.resetTmpList()

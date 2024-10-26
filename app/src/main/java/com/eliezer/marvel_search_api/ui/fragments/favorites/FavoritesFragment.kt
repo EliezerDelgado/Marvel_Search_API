@@ -39,7 +39,6 @@ class FavoritesFragment :  BaseFragment<FragmentFavoritesBinding>(
         mainActivity(requireActivity()).setToolbarView(true)
         funImpl?.setFragments()
         funImpl?.setContentView()
-        //Cambiar la forma de pasar los colores
         funImpl?.createTabLayout(
             MyOnTabSelectedListened(
                 selectedColor = ThemeColors.getColorPrimary(requireContext()),

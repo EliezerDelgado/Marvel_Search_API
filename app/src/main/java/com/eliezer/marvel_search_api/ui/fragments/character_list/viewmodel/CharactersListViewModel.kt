@@ -62,7 +62,7 @@ class CharactersListViewModel @Inject constructor(
     }
 
     private fun onResultOfGetListCharacters(name: String, character: Characters) {
-        setCharactersRepository.setListRepository(name,character)
+        setCharactersRepository.setListTmpCharacters(name,character)
         _listCharacter.postValue(character)
     }
 

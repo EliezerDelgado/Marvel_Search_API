@@ -8,15 +8,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.eliezer.marvel_search_api.databinding.ActivityMainBinding
 import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
-import com.eliezer.marvel_search_api.domain.alert_dialogs.errorDialog
-import com.eliezer.marvel_search_api.domain.alert_dialogs.loadingDialog
 import com.eliezer.marvel_search_api.ui.activity.funtionImp.MainActivityFunctionImplement
 import com.eliezer.marvel_search_api.ui.activity.viewmodel.MainActivityViewModel
-import com.eliezer.marvel_search_api.ui.activity.funtionImp.function.MainActivityFunctionManagerRepository
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -27,8 +21,6 @@ class MainActivity : AppCompatActivity() {
     private var binding : ActivityMainBinding? = null
     private val viewModel: MainActivityViewModel by viewModels()
     private var funImpl : MainActivityFunctionImplement? = null
-    @Inject
-    lateinit var mainActivityFunctionManagerRepository: MainActivityFunctionManagerRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +32,9 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        funImpl = binding?.let { MainActivityFunctionImplement(it,viewModel,mainActivityFunctionManagerRepository,this)}
+        funImpl = binding?.let { MainActivityFunctionImplement(it,viewModel,
+            this,
+            this)}
         _navigationMainActions = NavigationMainActions(binding!!.mainNavHostFragment)
         funImpl?.setMainToolbar()
         listeningChangesInAuthResult()

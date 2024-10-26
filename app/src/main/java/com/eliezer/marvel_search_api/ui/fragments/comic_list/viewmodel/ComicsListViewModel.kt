@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.eliezer.marvel_search_api.core.base.BaseViewModel
 import com.eliezer.marvel_search_api.data.repository.comics.mock.SetComicsRepository
 import com.eliezer.marvel_search_api.domain.usecase.GetFavoriteListComicsOnDatabaseUseCase
-import com.eliezer.marvel_search_api.domain.usecase.GetListComicsByListIdsUseCase
 import com.eliezer.marvel_search_api.domain.usecase.GetListComicsByTitleUseCase
 import com.eliezer.marvel_search_api.models.dataclass.Comic
 import com.eliezer.marvel_search_api.models.dataclass.Comics
@@ -62,7 +61,7 @@ class ComicsListViewModel @Inject constructor(
     }
 
     private fun onResultOfGetListComics(title : String,comics: Comics) {
-        setComicsRepository.setListRepository(title,comics)
+        setComicsRepository.setListTmpComics(title,comics)
         _listComic.postValue(comics)
     }
     fun resetComics() {

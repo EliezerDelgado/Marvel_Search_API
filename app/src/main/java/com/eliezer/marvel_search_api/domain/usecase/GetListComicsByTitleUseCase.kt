@@ -13,7 +13,6 @@ class GetListComicsByTitleUseCase @Inject constructor(
     private val comicsRepository: ComicsRepository
 ): BaseFlowUseCase<String, Comics>(dispatcher) {
 
-
     override fun execute(params: String): Flow<Comics> =         comicsRepository.getListComicsApi(params)
 
 }

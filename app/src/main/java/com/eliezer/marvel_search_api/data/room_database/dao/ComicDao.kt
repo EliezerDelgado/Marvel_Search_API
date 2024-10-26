@@ -8,13 +8,15 @@ import com.eliezer.marvel_search_api.models.dataclass.Comic
 
 @Dao
 interface ComicDao {
-
     @Query("SELECT * FROM comic")
     fun getFavoriteComic(): List<Comic>
+
     @Insert
-    fun insert(vararg  comic:Comic)
+    fun insert(vararg  comic:Comic) : List<Long>
+
     @Delete
     fun delete(vararg comic : Comic)
+
     @Query("DELETE FROM comic")
     fun clear()
 }

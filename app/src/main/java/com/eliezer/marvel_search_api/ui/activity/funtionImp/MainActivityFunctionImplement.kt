@@ -1,22 +1,23 @@
 package com.eliezer.marvel_search_api.ui.activity.funtionImp
 
+import android.content.Context
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_search_api.databinding.ActivityMainBinding
+import com.eliezer.marvel_search_api.domain.alert_dialogs.loadingDialog
 import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.eliezer.marvel_search_api.models.dataclass.Characters
 import com.eliezer.marvel_search_api.models.dataclass.Comics
 import com.eliezer.marvel_search_api.models.dataclass.UserAccount
 import com.eliezer.marvel_search_api.ui.activity.viewmodel.MainActivityViewModel
-import com.eliezer.marvel_search_api.ui.activity.funtionImp.function.MainActivityFunctionManagerRepository
 import com.google.android.material.appbar.AppBarLayout
 
 class MainActivityFunctionImplement(
     binding: ActivityMainBinding,
     viewModel : MainActivityViewModel,
-    private val mainActivityFunctionManagerRepository: MainActivityFunctionManagerRepository,
-    private val owner: LifecycleOwner
+    private val owner: LifecycleOwner,
+    context: Context
 ) {
     private val functionManagerBinding = FunctionManagerBinding(
             binding
@@ -24,13 +25,15 @@ class MainActivityFunctionImplement(
     private val functionManagerViewModel = FunctionManagerViewModel(
         viewModel
     )
+    private val loadingDialog =        loadingDialog(context)
 
     fun setMainToolbar() = functionManagerBinding.setMainToolbar()
     fun setToolbarView(visibility: Boolean) = functionManagerBinding.setToolbarView(visibility)
 
     fun setSubToolbarView(visibility: Boolean) = functionManagerBinding.setSubToolbarView(visibility)
     fun listeningChangesInUserAccount() {
-            functionManagerViewModel.setUserAccountObservesVM(owner, ::updateLocalDatabase)
+        loadingDialog.show()
+        functionManagerViewModel.setUserAccountObservesVM(owner, ::updateLocalDatabase)
     }
 
     private fun updateLocalDatabase(userAccount : UserAccount?) {
@@ -65,8 +68,9 @@ class MainActivityFunctionImplement(
     }
 
     private fun setFavoriteListComicsInDatabase(comics: Comics) {
-        mainActivityFunctionManagerRepository.insertDatabaseComics(comics.listComics)
+       // mainActivityFunctionManagerRepository.insertDatabaseComics(comics.listComics)
         functionManagerViewModel.setListComicsNoObservesVM(owner)
+        if(loadingDialog.isShowing)  loadingDialog.cancel()
     }
     //Characters
     private fun getIdCharactersModeFavorite() {
@@ -81,8 +85,9 @@ class MainActivityFunctionImplement(
     }
 
     private fun setFavoriteListCharactersInDatabase(characters: Characters) {
-        mainActivityFunctionManagerRepository.insertDatabaseCharacters(characters.listCharacters)
+        //mainActivityFunctionManagerRepository.insertDatabaseCharacters(characters.listCharacters)
         functionManagerViewModel.setListCharactersNoObservesVM(owner)
+        if(loadingDialog.isShowing)  loadingDialog.cancel()
     }
 
     fun getLocalUser() {

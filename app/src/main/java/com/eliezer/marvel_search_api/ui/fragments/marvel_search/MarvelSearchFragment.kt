@@ -5,7 +5,6 @@ import android.net.Network
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import com.eliezer.marvel_search_api.R
 import com.eliezer.marvel_search_api.core.base.BaseFragment
 import com.eliezer.marvel_search_api.core.base.BaseViewModel
 import com.eliezer.marvel_search_api.data.expand.isInternetConnected
@@ -16,8 +15,10 @@ import com.eliezer.marvel_search_api.data.mappers.mainActivity
 import com.eliezer.marvel_search_api.databinding.FragmentMarvelSearchBinding
 import com.eliezer.marvel_search_api.models.dataclass.UserAccount
 import com.eliezer.marvel_search_api.ui.fragments.marvel_search.functionImp.MarvelSearchFunctionImplement
+import com.eliezer.marvel_search_api.ui.fragments.marvel_search.functionImp.function.MarvelSearchFunctionRepositoryManager
 import com.eliezer.marvel_search_api.ui.fragments.marvel_search.viewmodel.MarvelSearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MarvelSearchFragment : BaseFragment<FragmentMarvelSearchBinding>(
@@ -27,6 +28,10 @@ class MarvelSearchFragment : BaseFragment<FragmentMarvelSearchBinding>(
 
     private val searchViewModel: MarvelSearchViewModel by viewModels()
     private var funImpl: MarvelSearchFunctionImplement? = null
+
+    @Inject
+    lateinit var marvelSearchFunctionRepositoryManager: MarvelSearchFunctionRepositoryManager
+
     private val networkCallback = object : NetworkCallback() {
         override fun onAvailable(network: Network) {
             // Called when a network is available
@@ -56,11 +61,12 @@ class MarvelSearchFragment : BaseFragment<FragmentMarvelSearchBinding>(
         funImpl = MarvelSearchFunctionImplement(
             binding =  binding,
             viewModel = searchViewModel,
+            marvelSearchFunctionRepositoryManager = marvelSearchFunctionRepositoryManager,
             navigationMainActions = mainActivity(requireActivity()).navigationMainActions!!,
             owner = viewLifecycleOwner,
             context = requireContext()
         )
-        funImpl?.resetLists()
+        funImpl?.resetAll()
         funImpl?.errorListener()
         funImpl?.buttonListener(requireContext())
         checkIsLogin()

@@ -1,12 +1,12 @@
-package com.eliezer.marvel_search_api.ui.fragments.character_profile.viewmodel
+package com.eliezer.marvel_search_api.ui.activity.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eliezer.marvel_search_api.core.base.BaseViewModel
-import com.eliezer.marvel_search_api.data.repository.comics.mock.SetComicsRepository
-import com.eliezer.marvel_search_api.domain.usecase.GetListComicsByCharacterUseCase
+import com.eliezer.marvel_search_api.domain.usecase.GetListComicsByListIdsUseCase
+import com.eliezer.marvel_search_api.domain.usecase.GetListComicsByTitleUseCase
 import com.eliezer.marvel_search_api.models.dataclass.Comics
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -15,35 +15,25 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
-class CharacterProfileViewModel @Inject constructor(
-    private val setComicsRepository : SetComicsRepository,
-    private val getComicsUseCase: GetListComicsByCharacterUseCase
-): BaseViewModel()  {
+class ListComicViewModel (
+    private val getListComicsByListIdsUseCase: GetListComicsByListIdsUseCase
+) : BaseViewModel() {
 
     private var _listComic  = MutableLiveData<Comics>()
     val listComic: LiveData<Comics> get() = _listComic
 
-    fun searchComicsList(characterId: Int) {
+    fun getFavoriteComicsList(ids: ArrayList<Int>) =
         viewModelScope.launch {
-            getComicsUseCase.invoke(characterId)
+            getListComicsByListIdsUseCase.invoke(ids)
                 .onStart { _loading.value = true }
                 .onCompletion { _loading.value = false }
                 .catch {
                     _error.value = it
                 }
                 .collect {
-                    onResultOfGetListComics(characterId,it)
+                    _listComic.postValue(it)
                 }
         }
-    }
-
-
-    private fun onResultOfGetListComics(characterId : Int,comics: Comics) {
-        setComicsRepository.setListTmpComics(characterId.toString(),comics)
-        Log.d("ComicsVM","Llego")
-        _listComic.postValue(comics)
-    }
 
     fun resetComics() {
         _listComic  = MutableLiveData<Comics>()

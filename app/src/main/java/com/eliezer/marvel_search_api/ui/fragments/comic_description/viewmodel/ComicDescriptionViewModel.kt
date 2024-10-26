@@ -37,7 +37,7 @@ class ComicDescriptionViewModel @Inject constructor(
     }
 
     private fun onResultOfGetListCharacters(comicId: Int, character: Characters) {
-        setCharactersRepository.setListRepository(comicId.toString(),character)
+        setCharactersRepository.setListTmpCharacters(comicId.toString(),character)
         _listCharacter.postValue(character)
     }
 
