@@ -23,15 +23,15 @@ class CharactersListFragment :
 {
     @Inject
     lateinit var characterListFunctionManagerRepository: CharacterListFunctionManagerRepository
-
-
     private val characterListViewModel: CharactersListViewModel by viewModels()
     private var funImpl : CharactersListFunctionImplement? = null
     private var mode : String? = null
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         implementFunctions()
     }
+
     private fun implementFunctions() {
         funImpl = CharactersListFunctionImplement(
             binding = binding,
@@ -66,7 +66,6 @@ class CharactersListFragment :
         funImpl?.getListSearchCharactersRepository()
 
     }
-
 
     override fun doReload() {
         funImpl?.getListCharactersModeFavorite()
