@@ -7,7 +7,7 @@ import com.eliezer.marvel_search_api.models.dataclass.Character
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
-class GetResultsInsertCharactersInDatabaseUseCase @Inject constructor(
+class InsertCharactersInDatabaseUseCase @Inject constructor(
     @IoDispatcher dispatcher: CoroutineDispatcher,
     private val charactersRepository: CharactersRepository
 ): BaseFlowUseCase<ArrayList<Character>,List<Long>?>(dispatcher) {

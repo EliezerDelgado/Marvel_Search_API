@@ -6,8 +6,11 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_search_api.databinding.ActivityMainBinding
 import com.eliezer.marvel_search_api.domain.alert_dialogs.loadingDialog
+import com.eliezer.marvel_search_api.domain.function.FunctionLoadingManager
 import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
+import com.eliezer.marvel_search_api.models.dataclass.Character
 import com.eliezer.marvel_search_api.models.dataclass.Characters
+import com.eliezer.marvel_search_api.models.dataclass.Comic
 import com.eliezer.marvel_search_api.models.dataclass.Comics
 import com.eliezer.marvel_search_api.models.dataclass.UserAccount
 import com.eliezer.marvel_search_api.ui.activity.viewmodel.MainActivityViewModel
@@ -25,14 +28,14 @@ class MainActivityFunctionImplement(
     private val functionManagerViewModel = FunctionManagerViewModel(
         viewModel
     )
-    private val loadingDialog =        loadingDialog(context)
+    private val functionLoadingManager = FunctionLoadingManager(context)
 
     fun setMainToolbar() = functionManagerBinding.setMainToolbar()
     fun setToolbarView(visibility: Boolean) = functionManagerBinding.setToolbarView(visibility)
 
     fun setSubToolbarView(visibility: Boolean) = functionManagerBinding.setSubToolbarView(visibility)
     fun listeningChangesInUserAccount() {
-        loadingDialog.show()
+        functionLoadingManager.showLoadingDialog()
         functionManagerViewModel.setObservesUserAccount(owner, ::updateLocalDatabase)
     }
 
@@ -44,13 +47,14 @@ class MainActivityFunctionImplement(
 
     private fun clearDatabase() {
         functionManagerViewModel.setObservesIsCharactersDatabaseClear(owner,::updateCharacterDatabase)
+        functionManagerViewModel.setObservesIsComicsDatabaseClear(owner,::updateComicDatabase)
         functionManagerViewModel.clearComicsList()
         functionManagerViewModel.clearCharactersList()
     }
     private fun updateComicDatabase(isClearDatabase : Boolean) {
         if(isClearDatabase)
         {
-            functionManagerViewModel.setNotObservesIsComicsDatabaseClear(owner)
+            functionManagerViewModel.setNoObservesIsComicsDatabaseClear(owner)
             getIdComicsModeFavorite()
             getIdCharactersModeFavorite()
         }
@@ -58,7 +62,7 @@ class MainActivityFunctionImplement(
     private fun updateCharacterDatabase(isClearDatabase : Boolean) {
         if(isClearDatabase )
         {
-            functionManagerViewModel.setNotObservesIsCharactersDatabaseClear(owner)
+            functionManagerViewModel.setNoObservesIsCharactersDatabaseClear(owner)
             getIdComicsModeFavorite()
             getIdCharactersModeFavorite()
         }
@@ -72,14 +76,22 @@ class MainActivityFunctionImplement(
     private fun getListComicsByIds(ids: ArrayList<Int>) {
         functionManagerViewModel.setObservesListComics(owner,::setFavoriteListComicsInDatabase)
         functionManagerViewModel.getFavoriteComicsList(ids)
-        functionManagerViewModel.setNotObservesIdComics(owner)
+        functionManagerViewModel.setNoObservesIdComics(owner)
     }
 
     private fun setFavoriteListComicsInDatabase(comics: Comics) {
-       // TODO INSERT mainActivityFunctionManagerRepository.insertDatabaseComics(comics.listComics)
-        functionManagerViewModel.setNotObservesListComics(owner)
-        if(loadingDialog.isShowing)  loadingDialog.cancel()
+        functionManagerViewModel.setNoObservesListComics(owner)
+        functionManagerViewModel.setObservesInsertListComicsInDatabase(owner,::insertedComicsCompleted)
+        functionManagerViewModel.insertComicsListInDatabase(comics.listComics)
     }
+
+    private fun insertedComicsCompleted(longs: List<Long>) {
+        functionManagerViewModel.setNoObservesInsertListComicsInDatabase(owner)
+        functionLoadingManager.sumOperationsComplete(1)
+        functionLoadingManager.stopLoading(2)
+    }
+
+
     //Characters
     private fun getIdCharactersModeFavorite() {
         functionManagerViewModel.setObservesIdCharacters(owner,::getListCharactersByIds)
@@ -89,13 +101,19 @@ class MainActivityFunctionImplement(
     private fun getListCharactersByIds(ids: ArrayList<Int>) {
         functionManagerViewModel.setObservesListCharacters(owner,::setFavoriteListCharactersInDatabase)
         functionManagerViewModel.getFavoriteCharactersList(ids)
-        functionManagerViewModel.setNotObservesIdCharacters(owner)
+        functionManagerViewModel.setNoObservesIdCharacters(owner)
     }
 
     private fun setFavoriteListCharactersInDatabase(characters: Characters) {
-        //mainActivityFunctionManagerRepository.insertDatabaseCharacters(characters.listCharacters)
-        functionManagerViewModel.setNotObservesListCharacters(owner)
-        if(loadingDialog.isShowing)  loadingDialog.cancel()
+        functionManagerViewModel.setNoObservesListCharacters(owner)
+        functionManagerViewModel.setObservesInsertListCharactersInDatabase(owner,::insertedCharactersCompleted)
+        functionManagerViewModel.insertCharactersListInDatabase(characters.listCharacters)
+    }
+
+    private fun insertedCharactersCompleted(longs: List<Long>) {
+        functionManagerViewModel.setNoObservesInsertListCharactersInDatabase(owner)
+        functionLoadingManager.sumOperationsComplete(1)
+        functionLoadingManager.stopLoading(2)
     }
 
     fun getLocalUser() {
@@ -106,7 +124,6 @@ class MainActivityFunctionImplement(
             }
         )
     }
-
 }
 
 private class FunctionManagerBinding(
@@ -150,7 +167,7 @@ private class FunctionManagerViewModel(
     fun setObservesIdComics(owner: LifecycleOwner, observeComics: ((ArrayList<Int>)->(Unit))) {
         viewModel.favoriteIdComicsViewModel.favoriteIdComics.observe(owner,observeComics)
     }
-    fun setNotObservesIdComics(owner: LifecycleOwner) {
+    fun setNoObservesIdComics(owner: LifecycleOwner) {
         viewModel.favoriteIdComicsViewModel.favoriteIdComics.removeObservers(owner)
         viewModel.favoriteIdComicsViewModel.resetFavoriteIdComics()
     }
@@ -168,18 +185,34 @@ private class FunctionManagerViewModel(
         viewModel.comicsDatabaseViewModel.clearFavoritesComicsList()
     }
 
-    fun setObservesListComics(owner: LifecycleOwner, observe : ((Comics)->(Unit))) {
+    fun setObservesListComics(owner: LifecycleOwner, observe : ((Comics)->(Unit))) =
         viewModel.comicsViewModel.comics.observe(owner,observe)
-    }
-    fun setNotObservesListComics(owner: LifecycleOwner) {
+
+    fun setNoObservesListComics(owner: LifecycleOwner) {
         viewModel.comicsViewModel.comics.removeObservers(owner)
         viewModel.comicsViewModel.resetComics()
     }
+
+    fun setObservesInsertListComicsInDatabase(owner: LifecycleOwner, observe : ((List<Long>)->(Unit))) {
+        viewModel.comicsDatabaseViewModel.isInserted.observe(owner,observe)
+    }
+
+    fun setNoObservesInsertListComicsInDatabase(owner: LifecycleOwner) {
+        viewModel.comicsDatabaseViewModel.isInserted.removeObservers(owner)
+        viewModel.comicsDatabaseViewModel.resetIsInserted()
+    }
+
+    fun setNoObservesIsComicsDatabaseClear(owner: LifecycleOwner) {
+        viewModel.comicsDatabaseViewModel.isClear.removeObservers(owner)
+        viewModel.comicsDatabaseViewModel.resetIsClear()
+    }
+    fun insertComicsListInDatabase(comics : ArrayList<Comic>) = viewModel.comicsDatabaseViewModel.insertFavoritesComicsList(comics)
+
     // Character
     fun setObservesIdCharacters(owner: LifecycleOwner, observeCharacters: ((ArrayList<Int>)->(Unit))) {
         viewModel.favoriteIdCharactersViewModel.favoriteIdCharacters.observe(owner,observeCharacters)
     }
-    fun setNotObservesIdCharacters(owner: LifecycleOwner) {
+    fun setNoObservesIdCharacters(owner: LifecycleOwner) {
         viewModel.favoriteIdCharactersViewModel.favoriteIdCharacters.removeObservers(owner)
         viewModel.favoriteIdCharactersViewModel.resetFavoriteIdCharacters()
     }
@@ -192,7 +225,6 @@ private class FunctionManagerViewModel(
     {
         viewModel.charactersViewModel.getFavoriteCharactersList(ids)
     }
-
     fun clearCharactersList()
     {
         viewModel.charactersDatabaseViewModel.clearFavoritesCharactersList()
@@ -200,16 +232,22 @@ private class FunctionManagerViewModel(
     fun setObservesListCharacters(owner: LifecycleOwner, observe : ((Characters)->(Unit))) {
         viewModel.charactersViewModel.characters.observe(owner,observe)
     }
-    fun setNotObservesListCharacters(owner: LifecycleOwner) {
+    fun setNoObservesListCharacters(owner: LifecycleOwner) {
         viewModel.charactersViewModel.characters.removeObservers(owner)
         viewModel.charactersViewModel.resetCharacters()
     }
-    fun setNotObservesIsCharactersDatabaseClear(owner: LifecycleOwner) {
+    fun setNoObservesIsCharactersDatabaseClear(owner: LifecycleOwner) {
         viewModel.charactersDatabaseViewModel.isClear.removeObservers(owner)
         viewModel.charactersDatabaseViewModel.resetIsClear()
     }
-    fun setNotObservesIsComicsDatabaseClear(owner: LifecycleOwner) {
-        viewModel.comicsDatabaseViewModel.isClear.removeObservers(owner)
-        viewModel.comicsDatabaseViewModel.resetIsClear()
+
+    fun setObservesInsertListCharactersInDatabase(owner: LifecycleOwner, observe : ((List<Long>)->(Unit))) {
+        viewModel.charactersDatabaseViewModel.isInserted.observe(owner,observe)
     }
+
+    fun setNoObservesInsertListCharactersInDatabase(owner: LifecycleOwner) {
+        viewModel.charactersDatabaseViewModel.isInserted.removeObservers(owner)
+        viewModel.charactersDatabaseViewModel.resetIsInserted()
+    }
+    fun insertCharactersListInDatabase(characters: ArrayList<Character>) =  viewModel.charactersDatabaseViewModel.insertFavoritesCharactersList(characters)
 }

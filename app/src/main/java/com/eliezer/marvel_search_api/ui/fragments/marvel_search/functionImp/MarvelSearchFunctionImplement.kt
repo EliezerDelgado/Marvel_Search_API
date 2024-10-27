@@ -16,6 +16,7 @@ import com.eliezer.marvel_search_api.domain.alert_dialogs.errorDialog
 import com.eliezer.marvel_search_api.domain.alert_dialogs.loadingDialog
 import com.eliezer.marvel_search_api.domain.alert_dialogs.userDialog
 import com.eliezer.marvel_search_api.domain.alert_dialogs.warningDialog
+import com.eliezer.marvel_search_api.domain.function.FunctionLoadingManager
 import com.eliezer.marvel_search_api.models.dataclass.Characters
 import com.eliezer.marvel_search_api.models.dataclass.Comics
 import com.eliezer.marvel_search_api.models.dataclass.UserAccount
@@ -36,7 +37,7 @@ class MarvelSearchFunctionImplement(
 ) {
     private val functionManagerBinding = FunctionManagerBinding(binding)
     private val functionManagerViewModel = FunctionManagerViewModel(viewModel)
-    private val loadingAlertDialog = loadingDialog(context)
+    private val functionLoadingManager = FunctionLoadingManager(context)
 
     fun buttonListener(context: Context){
         functionManagerBinding.apply {
@@ -99,14 +100,14 @@ class MarvelSearchFunctionImplement(
         disableSearchButtons()
         disableGoogleButtons()
         functionManagerViewModel.searchCharactersList(name)
-        loadingAlertDialog.show()
+        functionLoadingManager.showLoadingDialog()
     }
 
     private fun searchListComics(title: String) {
         disableSearchButtons()
         disableGoogleButtons()
         functionManagerViewModel.searchComicsList(title)
-        loadingAlertDialog.show()
+        functionLoadingManager.showLoadingDialog()
     }
 
     fun disableSearchButtons() =
@@ -153,7 +154,7 @@ class MarvelSearchFunctionImplement(
 
 
     private fun getSizeResultList(size: Int){
-        loadingAlertDialog.cancel()
+        functionLoadingManager.stopLoading()
         if(size>0) {
             moveFragment()
         }
@@ -260,7 +261,7 @@ class MarvelSearchFunctionImplement(
 
     private fun errorEmptySearch(throwable:  Throwable) {
         Log.e("***",throwable.message,throwable)
-        loadingAlertDialog.cancel()
+        functionLoadingManager.stopLoading()
         enableSearchButtons()
         enableGoogleButtons()
     }
@@ -287,7 +288,7 @@ private class FunctionManagerViewModel(
     {
         viewModel.charactersViewModel.characters.removeObservers(owner)
     }
-    //TODO ERRORES DE TODOS VIEW MODEL OBSERVE
+
     fun setObservesCharactersViewModelError(owner: LifecycleOwner,observe: ((Throwable)->(Unit))) =
         viewModel.charactersViewModel.error.observe(owner,observe)
 
