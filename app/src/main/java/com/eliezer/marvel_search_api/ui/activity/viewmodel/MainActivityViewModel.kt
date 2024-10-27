@@ -13,12 +13,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class MainActivityViewModel @Inject constructor(
+data class MainActivityViewModel @Inject constructor(
     val favoriteIdComicsViewModel: FavoriteIdComicsViewModel,
     val favoriteIdCharactersViewModel: FavoriteIdCharactersViewModel,
     val comicsViewModel: ComicsViewModel,
     val charactersViewModel: CharactersViewModel,
     val charactersDatabaseViewModel: CharactersDatabaseViewModel,
     val comicsDatabaseViewModel: ComicsDatabaseViewModel,
-): BaseViewModel() {
-}
+): BaseViewModel()

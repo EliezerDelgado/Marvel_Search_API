@@ -5,8 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.eliezer.marvel_search_api.R
 import com.eliezer.marvel_search_api.core.base.BaseViewModel
+import com.eliezer.marvel_search_api.domain.usecase.GetFavoriteListCharactersOnDatabaseUseCase
 import com.eliezer.marvel_search_api.domain.usecase.GetListCharactersByListIdsUseCase
 import com.eliezer.marvel_search_api.domain.usecase.GetListCharactersByNameUseCase
+import com.eliezer.marvel_search_api.models.dataclass.Character
 import com.eliezer.marvel_search_api.models.dataclass.Characters
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
@@ -17,8 +19,9 @@ import javax.inject.Singleton
 
 
 class CharactersViewModel @Inject constructor(
-    private val getCharactersUseCase: GetListCharactersByNameUseCase,
+    private val getListCharactersByNameUseCase: GetListCharactersByNameUseCase,
     private val getListCharactersByListIdsUseCase: GetListCharactersByListIdsUseCase,
+    private val getFavoriteListCharactersOnDatabaseUseCase : GetFavoriteListCharactersOnDatabaseUseCase
     ):BaseViewModel(){
 
     private var _characters= MutableLiveData<Characters>()
@@ -26,7 +29,7 @@ class CharactersViewModel @Inject constructor(
 
     fun searchCharactersList(name: String) {
         viewModelScope.launch {
-            getCharactersUseCase.invoke(name)
+            getListCharactersByNameUseCase.invoke(name)
                 .onStart { _loading.value = true }
                 .onCompletion { _loading.value = false }
                 .catch {
@@ -52,6 +55,28 @@ class CharactersViewModel @Inject constructor(
                     _characters.postValue(it)
                 }
         }
+    fun getFavoriteCharactersList() =
+        viewModelScope.launch {
+            getFavoriteListCharactersOnDatabaseUseCase.invoke(null)
+                .onStart { _loading.value = true }
+                .onCompletion { _loading.value = false }
+                .catch {
+                    _error.value = it
+                }
+                .collect {
+                    setListCharacter(it)
+                }
+        }
+
+
+    private fun setListCharacter(list: List<Character>?) {
+        list?.also {
+            val character = Characters()
+            character.total = it.size
+            character.listCharacters.addAll(it)
+            _characters.postValue(character)
+        }
+    }
     fun resetCharacters()
     {
         _characters = MutableLiveData<Characters>()

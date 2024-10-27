@@ -5,8 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.eliezer.marvel_search_api.R
 import com.eliezer.marvel_search_api.core.base.BaseViewModel
+import com.eliezer.marvel_search_api.domain.usecase.GetFavoriteListComicsOnDatabaseUseCase
 import com.eliezer.marvel_search_api.domain.usecase.GetListComicsByListIdsUseCase
 import com.eliezer.marvel_search_api.domain.usecase.GetListComicsByTitleUseCase
+import com.eliezer.marvel_search_api.models.dataclass.Comic
 import com.eliezer.marvel_search_api.models.dataclass.Comics
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
@@ -17,6 +19,7 @@ import javax.inject.Inject
 class ComicsViewModel @Inject constructor(
     private val getComicsUseCase: GetListComicsByTitleUseCase,
     private val getListComicsByListIdsUseCase: GetListComicsByListIdsUseCase,
+    private val getFavoriteListComicsOnDatabaseUseCase: GetFavoriteListComicsOnDatabaseUseCase
 ) :BaseViewModel() {
     private var _comics = MutableLiveData<Comics>()
     val comics: LiveData<Comics> get() = _comics
@@ -48,6 +51,28 @@ class ComicsViewModel @Inject constructor(
                     _comics.postValue(it)
                 }
         }
+
+    fun getFavoriteComicsList() =
+        viewModelScope.launch {
+            getFavoriteListComicsOnDatabaseUseCase.invoke(null)
+                .onStart { _loading.value = true }
+                .onCompletion { _loading.value = false }
+                .catch {
+                    _error.value = it
+                }
+                .collect {
+                    setListComic(it)
+                }
+        }
+
+    private fun setListComic(list: List<Comic>?) {
+        list?.also {
+            val comics = Comics()
+            comics.total = it.size
+            comics.listComics.addAll(it)
+            _comics.postValue(comics)
+        }
+    }
 
     fun resetComics() {
         _comics = MutableLiveData<Comics>()

@@ -1,11 +1,11 @@
 package com.eliezer.marvel_search_api.ui.activity.funtionImp
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_search_api.databinding.ActivityMainBinding
-import com.eliezer.marvel_search_api.domain.alert_dialogs.loadingDialog
 import com.eliezer.marvel_search_api.domain.function.FunctionLoadingManager
 import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.eliezer.marvel_search_api.models.dataclass.Character
@@ -20,7 +20,7 @@ class MainActivityFunctionImplement(
     binding: ActivityMainBinding,
     viewModel : MainActivityViewModel,
     private val owner: LifecycleOwner,
-    context: Context
+    private val context: Context
 ) {
     private val functionManagerBinding = FunctionManagerBinding(
             binding
@@ -124,6 +124,25 @@ class MainActivityFunctionImplement(
             }
         )
     }
+
+    fun errorListener() {
+        functionManagerViewModel.apply {
+            setObservesComicsViewModelError(owner, ::createErrorLog)
+            setObservesCharactersViewModelError(owner, ::createErrorLog)
+            setObservesCharactersDatabaseViewModelError(owner, ::createErrorLog)
+            setObservesComicsDatabaseViewModelError(owner, ::createErrorLog)
+            setObservesFavoriteIdCharactersViewModelError(owner, ::createErrorLog)
+            setObservesFavoriteIdComicsViewModelError(owner, ::createErrorLog)
+        }
+    }
+
+    private fun createErrorLog(throwable: Throwable) =
+        Log.e("***",throwable.message,throwable)
+
+
+    fun stopErrorListener() {
+        functionManagerViewModel.setNoObservesError(owner)
+    }
 }
 
 private class FunctionManagerBinding(
@@ -206,7 +225,8 @@ private class FunctionManagerViewModel(
         viewModel.comicsDatabaseViewModel.isClear.removeObservers(owner)
         viewModel.comicsDatabaseViewModel.resetIsClear()
     }
-    fun insertComicsListInDatabase(comics : ArrayList<Comic>) = viewModel.comicsDatabaseViewModel.insertFavoritesComicsList(comics)
+    fun insertComicsListInDatabase(comics : ArrayList<Comic>) =
+        viewModel.comicsDatabaseViewModel.insertFavoritesComicsList(comics)
 
     // Character
     fun setObservesIdCharacters(owner: LifecycleOwner, observeCharacters: ((ArrayList<Int>)->(Unit))) {
@@ -249,5 +269,35 @@ private class FunctionManagerViewModel(
         viewModel.charactersDatabaseViewModel.isInserted.removeObservers(owner)
         viewModel.charactersDatabaseViewModel.resetIsInserted()
     }
-    fun insertCharactersListInDatabase(characters: ArrayList<Character>) =  viewModel.charactersDatabaseViewModel.insertFavoritesCharactersList(characters)
+    fun insertCharactersListInDatabase(characters: ArrayList<Character>) =
+        viewModel.charactersDatabaseViewModel.insertFavoritesCharactersList(characters)
+
+
+    fun setObservesCharactersViewModelError(owner: LifecycleOwner,observe: ((Throwable)->(Unit))) =
+        viewModel.charactersViewModel.error.observe(owner,observe)
+
+    fun setObservesComicsViewModelError(owner: LifecycleOwner,observe: ((Throwable)->(Unit))) =
+        viewModel.comicsViewModel.error.observe(owner,observe)
+
+    fun setObservesCharactersDatabaseViewModelError(owner: LifecycleOwner,observe: ((Throwable)->(Unit))) =
+        viewModel.charactersDatabaseViewModel.error.observe(owner,observe)
+
+    fun setObservesComicsDatabaseViewModelError(owner: LifecycleOwner,observe: ((Throwable)->(Unit))) =
+        viewModel.comicsDatabaseViewModel.error.observe(owner,observe)
+
+
+    fun setObservesFavoriteIdCharactersViewModelError(owner: LifecycleOwner,observe: ((Throwable)->(Unit))) =
+        viewModel.favoriteIdCharactersViewModel.error.observe(owner,observe)
+
+    fun setObservesFavoriteIdComicsViewModelError(owner: LifecycleOwner,observe: ((Throwable)->(Unit))) =
+        viewModel.favoriteIdComicsViewModel.error.observe(owner,observe)
+
+    fun setNoObservesError(owner: LifecycleOwner) {
+        viewModel.charactersViewModel.error.removeObservers(owner)
+        viewModel.comicsViewModel.error.removeObservers(owner)
+        viewModel.charactersDatabaseViewModel.error.removeObservers(owner)
+        viewModel.comicsDatabaseViewModel.error.removeObservers(owner)
+        viewModel.favoriteIdCharactersViewModel.error.removeObservers(owner)
+        viewModel.favoriteIdComicsViewModel.error.removeObservers(owner)
+    }
 }

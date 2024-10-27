@@ -59,6 +59,7 @@ class CharacterRepositoryImpl @Inject constructor(
 
     override fun setListTmpCharacters(id : String, params: Characters) {
         list[id]?.apply {
+            //ToDO Es el mismo total cuando se añade la continuacion de la lista de characters = / +=
             total = params.total
             listCharacters.addAll(params.listCharacters)
         } ?: apply {

@@ -5,6 +5,7 @@ import com.eliezer.marvel_search_api.data.repository.characters.mock.SetCharacte
 import com.eliezer.marvel_search_api.data.repository.firebase.mock.FireStoreDeleteCharacter
 import com.eliezer.marvel_search_api.data.repository.firebase.mock.FireStoreInsertCharacter
 import com.eliezer.marvel_search_api.models.dataclass.Character
+import com.eliezer.marvel_search_api.models.dataclass.Characters
 import javax.inject.Inject
 
 
@@ -20,4 +21,5 @@ class CharacterListFunctionManagerRepository @Inject constructor(
     fun deleteFavoriteCharacterInDatabase(vararg character : Character) = setCharactersRepository.deleteInRoomDatabase(*character)
     fun insertFavoriteCharacterFireStore(characterInt:Int) = insertCharacter.insertFavoriteCharacter(characterInt)
     fun deleteFavoriteCharacterFireStore(characterInt:Int) = deleteCharacter.deleteFavoriteCharacter(characterInt)
+    fun setListTmpCharacters(characters : Characters) = setCharactersRepository.setListTmpCharacters(characters.search,characters)
 }

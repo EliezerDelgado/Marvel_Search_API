@@ -58,6 +58,11 @@ class MarvelSearchFragment : BaseFragment<FragmentMarvelSearchBinding>(
         super.onViewCreated(view, savedInstanceState)
         mainActivity(requireActivity()).setToolbarView(false)
         LocalAccount.userAccount.observe(this.viewLifecycleOwner, ::listenUserAccount)
+        implementFunctions()
+        requireContext().registerNetworkCallback(networkCallback)
+    }
+
+    private fun implementFunctions() {
         funImpl = MarvelSearchFunctionImplement(
             binding =  binding,
             viewModel = searchViewModel,
@@ -67,14 +72,21 @@ class MarvelSearchFragment : BaseFragment<FragmentMarvelSearchBinding>(
             context = requireContext()
         )
         funImpl?.resetAll()
-        funImpl?.errorListener()
-        funImpl?.buttonListener(requireContext())
+        functionsListener()
         checkIsLogin()
+        checkInternet()
+    }
+
+    private fun checkInternet() {
         if (requireContext().isInternetConnected)
             funImpl?.enableSearchButtons()
         else
             funImpl?.disableSearchButtons()
-        requireContext().registerNetworkCallback(networkCallback)
+    }
+
+    private fun functionsListener() {
+        funImpl?.errorListener()
+        funImpl?.buttonListener(requireContext())
     }
 
     override fun addViewModel(): BaseViewModel = searchViewModel

@@ -30,26 +30,41 @@ class CharactersListFragment :
     private var mode : String? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mainActivity(requireActivity()).setToolbarView(true)
+        implementFunctions()
+    }
+    private fun implementFunctions() {
         funImpl = CharactersListFunctionImplement(
-            binding,
-            characterListViewModel,
-            mainActivity(requireActivity()).navigationMainActions!!,
-            characterListFunctionManagerRepository,
-            this
+            binding = binding,
+            viewModel = characterListViewModel,
+            navigationMainActions = mainActivity(requireActivity()).navigationMainActions!!,
+            characterListFunctionManagerRepository = characterListFunctionManagerRepository,
+            owner = this,
+            context = requireContext()
         )
+        funImpl?.errorListener()
         mode = funImpl?.getMode(requireArguments())
         funImpl?.setAdapter()
-        if(mode == SEARCH_ID) {
-            funImpl?.setMyOnScrolledListener()
-            funImpl?.getCharactersArg(requireArguments())
-            funImpl?.getListSearchCharactersRepository()
-        }
+        checkMode()
+
+    }
+
+    private fun checkMode() {
+        if(mode == SEARCH_ID)
+            functionsSearchMode()
         else if(mode == FAVORITE_ID)
-        {
-            funImpl?.disableMyOnScrolledListener()
-            funImpl?.getListCharactersModeFavorite()
-        }
+            functionsFavoriteMode()
+    }
+
+    private fun functionsFavoriteMode() {
+        funImpl?.disableMyOnScrolledListener()
+        funImpl?.getListCharactersModeFavorite()
+    }
+
+    private fun functionsSearchMode() {
+        funImpl?.setMyOnScrolledListener()
+        funImpl?.getCharactersArg(requireArguments())
+        funImpl?.getListSearchCharactersRepository()
+
     }
 
 
@@ -59,6 +74,7 @@ class CharactersListFragment :
 
     override fun onDestroyView() {
         super.onDestroyView()
+        funImpl?.stopErrorListener()
         funImpl = null
     }
 

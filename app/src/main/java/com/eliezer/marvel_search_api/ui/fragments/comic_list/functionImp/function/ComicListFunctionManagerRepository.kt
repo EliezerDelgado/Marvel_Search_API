@@ -4,7 +4,9 @@ import com.eliezer.marvel_search_api.data.repository.comics.mock.GetComicsReposi
 import com.eliezer.marvel_search_api.data.repository.comics.mock.SetComicsRepository
 import com.eliezer.marvel_search_api.data.repository.firebase.mock.FireStoreDeleteComic
 import com.eliezer.marvel_search_api.data.repository.firebase.mock.FireStoreInsertComic
+import com.eliezer.marvel_search_api.models.dataclass.Characters
 import com.eliezer.marvel_search_api.models.dataclass.Comic
+import com.eliezer.marvel_search_api.models.dataclass.Comics
 import javax.inject.Inject
 
 
@@ -20,4 +22,5 @@ class ComicListFunctionManagerRepository @Inject constructor(
     fun deleteFavoriteComicInDatabase(vararg comic : Comic) = setComicsRepository.deleteInRoomDatabase(*comic)
     fun insertFavoriteComicFireStore(comicId : Int) = insertComic.insertFavoriteComic(comicId)
     fun deleteFavoriteComicFireStore(comicId : Int) = deleteComic.deleteFavoriteComic(comicId)
+    fun setListTmpCharacters(comics: Comics) = setComicsRepository.setListTmpComics(comics.search,comics)
 }

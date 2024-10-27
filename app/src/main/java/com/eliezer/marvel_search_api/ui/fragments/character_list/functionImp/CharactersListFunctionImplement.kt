@@ -1,7 +1,10 @@
 package com.eliezer.marvel_search_api.ui.fragments.character_list.functionImp
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.LifecycleOwner
+import com.eliezer.marvel_search_api.data.repository.characters.mock.SetCharactersRepository
 import com.eliezer.marvel_search_api.databinding.FragmentCharactersListBinding
 import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
 import com.eliezer.marvel_search_api.domain.listener.MyOnScrolledListener
@@ -19,7 +22,8 @@ class CharactersListFunctionImplement(
     viewModel: CharactersListViewModel,
     private val navigationMainActions: NavigationMainActions,
     private val characterListFunctionManagerRepository: CharacterListFunctionManagerRepository,
-    private val owner : LifecycleOwner
+    private val owner : LifecycleOwner,
+    private val context: Context
 ) : CharactersListAdapter.CharacterHolderListener{
 
     private var searchCharacter : String? = null
@@ -68,7 +72,7 @@ class CharactersListFunctionImplement(
             }
             true
         } ?: {
-
+            //TODO("Warning inicia session para acceder a  favorito")
         }
     }
 
@@ -96,9 +100,10 @@ class CharactersListFunctionImplement(
 
     private fun setListCharacters(characters: Characters?) {
         val position = myOnScrolledListener?.position
-        characters?.apply {
-            if (listCharacters.isNotEmpty())
-                functionManagerRecyclerAdapter.adapter?.setCharacters(listCharacters)
+        characters?.also {
+            characterListFunctionManagerRepository.setListTmpCharacters(it)
+            if (it.listCharacters.isNotEmpty())
+                functionManagerRecyclerAdapter.adapter?.setCharacters(it.listCharacters)
         }
         myOnScrolledListener?.also { functionManagerBinding.resetRecyclerView(it)}
         functionManagerViewModel.setListCharactersNoObservesVM(owner)
@@ -113,7 +118,6 @@ class CharactersListFunctionImplement(
                 functionManagerRecyclerAdapter.adapter?.setCharacters(listCharacters)
             else
                 functionManagerRecyclerAdapter.adapter?.clearCharacters()
-
         }
         functionManagerViewModel.setListCharactersNoObservesVM(owner)
     }
@@ -142,6 +146,28 @@ class CharactersListFunctionImplement(
         functionManagerViewModel.setListCharactersObservesVM(owner,::setFavoriteListCharacters)
         functionManagerViewModel.getFavoriteCharactersList()
     }
+
+    fun errorListener() {
+        internalErrorListener()
+        errorsForUserListener()
+    }
+
+    private fun errorsForUserListener() {
+        //TODO("Not yet implemented")
+    }
+
+    private fun internalErrorListener() =
+        functionManagerViewModel.apply {
+            setObservesCharactersViewModelError(owner, ::createErrorLog)
+        }
+
+    private fun createErrorLog(throwable: Throwable) =
+        Log.e("***",throwable.message,throwable)
+
+
+    fun stopErrorListener() =
+        functionManagerViewModel.setNoObservesCharactersViewModelError(owner)
+
 }
 
 private class FunctionManagerBinding(
@@ -152,20 +178,18 @@ private class FunctionManagerBinding(
         binding.charactersListRecyclerView.setHasFixedSize(true)
         binding.charactersListRecyclerView.adapter = adapter
     }
+    fun recyclerViewCharactersAddScrollListener(myOnScrolledListener: MyOnScrolledListener) =
+        binding.charactersListRecyclerView.addOnScrollListener(myOnScrolledListener)
 
-    fun recyclerViewCharactersAddScrollListener(myOnScrolledListener: MyOnScrolledListener) {
-        binding.charactersListRecyclerView.addOnScrollListener(myOnScrolledListener)
-    }
-    fun recyclerViewCharactersRemoveScrollListener(myOnScrolledListener: MyOnScrolledListener) {
+    fun recyclerViewCharactersRemoveScrollListener(myOnScrolledListener: MyOnScrolledListener) =
         binding.charactersListRecyclerView.removeOnScrollListener(myOnScrolledListener)
-    }
-    fun recyclerViewCharactersScrollToPosition(position : Int)
-    {
+
+    fun recyclerViewCharactersScrollToPosition(position : Int)=
         binding.charactersListRecyclerView.scrollToPosition(position)
-    }
-    fun resetRecyclerView(myOnScrolledListener: MyOnScrolledListener) {
+
+    fun resetRecyclerView(myOnScrolledListener: MyOnScrolledListener) =
         binding.charactersListRecyclerView.addOnScrollListener(myOnScrolledListener)
-    }
+
 }
 
 private class FunctionManagerRecyclerAdapter(
@@ -183,19 +207,23 @@ private class FunctionManagerViewModel(
 )
 {
     fun setListCharactersObservesVM(owner: LifecycleOwner, observe : ((Characters)->(Unit))) {
-        viewModel.listCharacter.observe(owner,observe)
+        viewModel.charactersViewModel.characters.observe(owner,observe)
     }
     fun setListCharactersNoObservesVM(owner: LifecycleOwner) {
-        viewModel.listCharacter.removeObservers(owner)
-        viewModel.resetCharacters()
-    }
-    fun getFavoriteCharactersList()
-    {
-        viewModel.getFavoriteCharactersList()
+        viewModel.charactersViewModel.characters.removeObservers(owner)
+        viewModel.charactersViewModel.resetCharacters()
     }
 
-    fun searchCharacterList(name : String)
-    {
-        viewModel.searchCharactersList(name)
-    }
+    fun getFavoriteCharactersList() =
+        viewModel.charactersViewModel.getFavoriteCharactersList()
+
+    fun searchCharacterList(name : String)=
+        viewModel.charactersViewModel.searchCharactersList(name)
+
+    fun setObservesCharactersViewModelError(owner: LifecycleOwner,observe: ((Throwable)->(Unit))) =
+        viewModel.charactersViewModel.error.observe(owner,observe)
+
+
+    fun setNoObservesCharactersViewModelError(owner: LifecycleOwner) =
+        viewModel.charactersViewModel.error.removeObservers(owner)
 }

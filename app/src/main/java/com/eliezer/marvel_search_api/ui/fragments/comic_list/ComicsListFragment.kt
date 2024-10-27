@@ -30,23 +30,40 @@ class ComicsListFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        implementFunctions()
+    }
+
+    private fun implementFunctions() {
         funImpl = ComicsListFunctionImplement(
-            binding,
-            comicsListViewModel,
-            mainActivity(requireActivity()).navigationMainActions!!,
-            comicListFunctionManagerRepository,
-            this
+            binding = binding,
+            viewModel = comicsListViewModel,
+            navigationMainActions = mainActivity(requireActivity()).navigationMainActions!!,
+            comicListFunctionManagerRepository = comicListFunctionManagerRepository,
+            owner = this,
+            context = requireContext()
         )
+        funImpl?.errorListener()
         mode = funImpl?.getMode(requireArguments())
         funImpl?.setAdapter()
-        if(mode == SEARCH_ID) {
-            funImpl?.setMyOnScrolledListener()
-            funImpl?.getComicsArg(requireArguments())
-            funImpl?.getListSearchComicsRepository()
-        }else if (mode == FAVORITE_ID) {
-            funImpl?.disableMyOnScrolledListener()
-            funImpl?.getListComicsModeFavorite()
-        }
+        checkMode()
+    }
+
+    private fun checkMode() {
+        if(mode == SEARCH_ID)
+            functionsSearchMode()
+        else if(mode == FAVORITE_ID)
+            functionsFavoriteMode()
+    }
+
+    private fun functionsFavoriteMode() {
+        funImpl?.disableMyOnScrolledListener()
+        funImpl?.getListComicsModeFavorite()
+    }
+
+    private fun functionsSearchMode() {
+        funImpl?.setMyOnScrolledListener()
+        funImpl?.getComicsArg(requireArguments())
+        funImpl?.getListSearchComicsRepository()
     }
 
     override fun doReload() {
@@ -55,6 +72,7 @@ class ComicsListFragment :
 
     override fun onDestroyView() {
         super.onDestroyView()
+        funImpl?.stopErrorListener()
         funImpl = null
     }
 }

@@ -254,13 +254,16 @@ class MarvelSearchFunctionImplement(
     private fun createErrorLog(throwable: Throwable) {
         if(throwable is NoCredentialException)
             functionManagerViewModel.signInNewGoogleAccount(context)
-        else if(throwable is HttpException){
-            errorEmptySearch(throwable)
+        else
+        {
+            if(throwable is HttpException){
+                errorEmptySearch()
+            }
+            Log.e("***",throwable.message,throwable)
         }
     }
 
-    private fun errorEmptySearch(throwable:  Throwable) {
-        Log.e("***",throwable.message,throwable)
+    private fun errorEmptySearch() {
         functionLoadingManager.stopLoading()
         enableSearchButtons()
         enableGoogleButtons()

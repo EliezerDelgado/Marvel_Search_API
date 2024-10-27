@@ -1,9 +1,14 @@
 package com.eliezer.marvel_search_api.ui.fragments.comic_list.functionImp
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
+import androidx.annotation.StringRes
 import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_search_api.databinding.FragmentComicsListBinding
 import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
+import com.eliezer.marvel_search_api.domain.alert_dialogs.errorDialog
+import com.eliezer.marvel_search_api.domain.alert_dialogs.warningDialog
 import com.eliezer.marvel_search_api.domain.listener.MyOnScrolledListener
 import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.eliezer.marvel_search_api.models.dataclass.Comic
@@ -20,7 +25,8 @@ class ComicsListFunctionImplement (
     viewModel: ComicsListViewModel,
     private val navigationMainActions: NavigationMainActions,
     private val comicListFunctionManagerRepository: ComicListFunctionManagerRepository,
-    private val owner : LifecycleOwner
+    private val owner : LifecycleOwner,
+    private val context: Context
 ) : ComicsListAdapter.ComicHolderListener {
 
     private var searchComic: String? = null
@@ -70,7 +76,7 @@ class ComicsListFunctionImplement (
                 }
                 true
             } ?: {
-
+                //TODO("Warning inicia session para acceder a  favorito")
         }
     }
 
@@ -99,9 +105,10 @@ class ComicsListFunctionImplement (
 
     private fun setListComics(comics: Comics?) {
         val position = myOnScrolledListener?.position
-        comics?.apply {
-            if (listComics.isNotEmpty())
-                functionManagerRecyclerAdapter.adapter?.addComics(listComics)
+        comics?.also {
+            comicListFunctionManagerRepository.setListTmpCharacters(it)
+            if (it.listComics.isNotEmpty())
+                functionManagerRecyclerAdapter.adapter?.addComics(it.listComics)
 
         }
         myOnScrolledListener?.also { functionManagerBinding.resetRecyclerView(it)}
@@ -145,6 +152,39 @@ class ComicsListFunctionImplement (
         functionManagerViewModel.setListComicsObservesVM(owner,::setFavoriteListComics)
         functionManagerViewModel.getFavoriteComicsList()
     }
+
+
+    fun errorListener() {
+        internalErrorListener()
+        errorsForUserListener()
+    }
+
+    private fun errorsForUserListener() {
+        //TODO("Not yet implemented")
+    }
+
+    private fun internalErrorListener() =
+        functionManagerViewModel.apply {
+            setObservesCharactersViewModelError(owner, ::createErrorLog)
+        }
+
+
+    private fun createErrorLog(throwable: Throwable) =
+        Log.e("***",throwable.message,throwable)
+
+
+    fun stopErrorListener() =
+        functionManagerViewModel.setNoObservesCharactersViewModelError(owner)
+
+
+    private fun showErrorToUser(@StringRes idString: Int) = showError(idString)
+
+    private fun showError(@StringRes idError: Int) {
+        errorDialog(context,context.resources.getString(idError)).show()
+    }
+    private fun showWarning(@StringRes idError: Int) {
+        warningDialog(context,context.resources.getString(idError)).show()
+    }
 }
 
 private class FunctionManagerBinding(
@@ -186,19 +226,26 @@ private class FunctionManagerViewModel(
 )
 {
     fun setListComicsObservesVM(owner: LifecycleOwner, observe : ((Comics)->(Unit))) {
-        viewModel.listComic.observe(owner,observe)
+        viewModel.comicsViewModel.comics.observe(owner,observe)
     }
     fun setListComicsNoObservesVM(owner: LifecycleOwner) {
-        viewModel.listComic.removeObservers(owner)
-        viewModel.resetComics()
+        viewModel.comicsViewModel.comics.removeObservers(owner)
+        viewModel.comicsViewModel.resetComics()
     }
     fun getFavoriteComicsList()
     {
-        viewModel.getFavoriteComicsList()
+        viewModel.comicsViewModel.getFavoriteComicsList()
     }
 
     fun searchComicList(title : String)
     {
-        viewModel.searchComicsList(title)
+        viewModel.comicsViewModel.searchComicsList(title)
     }
+
+    fun setObservesCharactersViewModelError(owner: LifecycleOwner,observe: ((Throwable)->(Unit))) =
+        viewModel.comicsViewModel.error.observe(owner,observe)
+
+
+    fun setNoObservesCharactersViewModelError(owner: LifecycleOwner) =
+        viewModel.comicsViewModel.error.removeObservers(owner)
 }

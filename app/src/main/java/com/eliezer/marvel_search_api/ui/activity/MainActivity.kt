@@ -11,7 +11,6 @@ import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
 import com.eliezer.marvel_search_api.ui.activity.funtionImp.MainActivityFunctionImplement
 import com.eliezer.marvel_search_api.ui.activity.viewmodel.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -32,10 +31,20 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        funImpl = binding?.let { MainActivityFunctionImplement(it,viewModel,
-            this,
-            this)}
         _navigationMainActions = NavigationMainActions(binding!!.mainNavHostFragment)
+        implementFunctions()
+    }
+
+    private fun implementFunctions() {
+        funImpl = binding?.let {
+            MainActivityFunctionImplement(
+                binding =  it,
+                viewModel = viewModel,
+                owner = this,
+                context = this
+            )
+        }
+        funImpl?.errorListener()
         funImpl?.setMainToolbar()
         listeningChangesInAuthResult()
         getLocalUser()
@@ -59,6 +68,7 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         _navigationMainActions = null
+        funImpl?.stopErrorListener()
         funImpl = null
         binding = null
     }
