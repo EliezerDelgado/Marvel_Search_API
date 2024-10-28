@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.util.Log
 import androidx.annotation.StringRes
 import androidx.lifecycle.LifecycleOwner
+import com.eliezer.marvel_search_api.R
 import com.eliezer.marvel_search_api.databinding.FragmentComicsListBinding
 import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
 import com.eliezer.marvel_search_api.domain.alert_dialogs.errorDialog
 import com.eliezer.marvel_search_api.domain.alert_dialogs.warningDialog
+import com.eliezer.marvel_search_api.domain.function.FunctionLoadingManager
 import com.eliezer.marvel_search_api.domain.listener.MyOnScrolledListener
 import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.eliezer.marvel_search_api.models.dataclass.Comic
@@ -34,7 +36,7 @@ class ComicsListFunctionImplement (
     private val functionManagerViewModel = FunctionManagerViewModel(viewModel)
     private val functionManagerRecyclerAdapter = FunctionManagerRecyclerAdapter(this)
     private val functionManagerBinding = FunctionManagerBinding(binding)
-
+    private val functionLoadingManager = FunctionLoadingManager(context)
 
     fun getListSearchComicsRepository() {
         searchComic?.also {
@@ -75,8 +77,8 @@ class ComicsListFunctionImplement (
                     functionManagerRecyclerAdapter.adapter!!.setNoFavoriteComic(comic)
                 }
                 true
-            } ?: {
-                //TODO("Warning inicia session para acceder a  favorito")
+            } ?: also{
+            showWarning(R.string.warning_user_should_log_in)
         }
     }
 
@@ -99,8 +101,11 @@ class ComicsListFunctionImplement (
     }
 
     private fun searchListComics() {
+        functionLoadingManager.showLoadingDialog()
         functionManagerViewModel.setListComicsObservesVM(owner, ::setListComics)
-        searchComic?.also { functionManagerViewModel.searchComicList(it)}
+        searchComic?.also {
+            functionManagerViewModel.searchComicList(it)
+        }
     }
 
     private fun setListComics(comics: Comics?) {
@@ -114,6 +119,8 @@ class ComicsListFunctionImplement (
         myOnScrolledListener?.also { functionManagerBinding.resetRecyclerView(it)}
         functionManagerViewModel.setListComicsNoObservesVM(owner)
         position?.also { functionManagerBinding.recyclerViewComicsScrollToPosition(it)}
+        if(functionLoadingManager.isShowing())
+            functionLoadingManager.stopLoading()
     }
     private fun setFavoriteListComics(comics: Comics?) {
         functionManagerViewModel.setListComicsNoObservesVM(owner)

@@ -11,9 +11,9 @@ class SetComicsRepository @Inject constructor(
     fun setListTmpComics(id : String, params: Comics){
         comicsRepository.setListTmpComics(id,params)
     }
-    fun setInRoomDatabase(vararg comic: Comic)
+    fun setInRoomDatabase(comic: Comic)
     {
-            comicsRepository.setComicInDatabase(*comic)
+            comicsRepository.setComicInDatabase(comic)
     }
     fun deleteInRoomDatabase(vararg comic: Comic)
     {

@@ -5,17 +5,19 @@ import com.eliezer.marvel_search_api.core.base.BaseItemViewHolder
 import com.eliezer.marvel_search_api.core.utils.loadImageFromWebOperations
 import com.eliezer.marvel_search_api.databinding.ItemCharacterBinding
 import com.eliezer.marvel_search_api.models.dataclass.Character
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 open class ItemCharacterViewHolder(override var binding: ItemCharacterBinding) : BaseItemViewHolder<Character>(binding = binding ) {
     override fun onBindMethodCalled(item: Character) {
-        val t = Thread {
-            binding.setVariable(BR.img, loadImageFromWebOperations(item.urlPicture))
-        }
-        t.start()
+        CoroutineScope(Dispatchers.IO).launch {
+            val drawable = loadImageFromWebOperations(item.urlPicture)
+            binding.setVariable(BR.img, drawable)
+        }.start()
     }
-    fun itemCharacterImageButtonFavoriteListener(listener: ()->Unit){
+    fun itemCharacterImageButtonFavoriteListener(listener: ()->Unit) =
         binding.itemCharacterImageButtonFavorite.setOnClickListener {
             listener.invoke()
         }
-    }
 }

@@ -7,17 +7,21 @@ import com.eliezer.marvel_search_api.databinding.ItemComicBinding
 import com.eliezer.marvel_search_api.models.dataclass.Comic
 import com.eliezer.marvel_search_api.models.dataclass.Comics
 import com.eliezer.marvel_search_api.ui.fragments.comic_list.adapter.ComicsListAdapter.ComicHolderListener
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 open class ItemComicViewHolder (override var binding: ItemComicBinding) : BaseItemViewHolder<Comic>(binding = binding ) {
+
+
     override fun onBindMethodCalled(item: Comic) {
-        val t = Thread {
-            binding.setVariable(BR.img, loadImageFromWebOperations(item.urlPicture))
-        }
-        t.start()
+        CoroutineScope(Dispatchers.IO).launch {
+            val drawable = loadImageFromWebOperations(item.urlPicture)
+            binding.setVariable(BR.img, drawable)
+        }.start()
     }
-    fun itemComicImageButtonFavoriteListener(listener: ()->Unit){
+    fun itemComicImageButtonFavoriteListener(listener: ()->Unit)=
         binding.itemComicImageButtonFavorite.setOnClickListener{
             listener.invoke()
         }
-    }
 }

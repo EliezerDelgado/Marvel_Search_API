@@ -12,7 +12,11 @@ interface ComicDao {
     fun getFavoriteComic(): List<Comic>
 
     @Insert
-    fun insert(vararg  comic:Comic) : List<Long>
+    fun insertAll(vararg  comic:Comic) : List<Long>
+
+    @Insert
+    fun insert(comic:Comic) : Long
+
 
     @Delete
     fun delete(vararg comic : Comic)

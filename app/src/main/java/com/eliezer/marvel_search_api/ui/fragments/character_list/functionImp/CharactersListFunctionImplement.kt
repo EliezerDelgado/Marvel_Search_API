@@ -3,10 +3,15 @@ package com.eliezer.marvel_search_api.ui.fragments.character_list.functionImp
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import androidx.annotation.StringRes
 import androidx.lifecycle.LifecycleOwner
+import com.eliezer.marvel_search_api.R
 import com.eliezer.marvel_search_api.data.repository.characters.mock.SetCharactersRepository
 import com.eliezer.marvel_search_api.databinding.FragmentCharactersListBinding
 import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
+import com.eliezer.marvel_search_api.domain.alert_dialogs.errorDialog
+import com.eliezer.marvel_search_api.domain.alert_dialogs.warningDialog
+import com.eliezer.marvel_search_api.domain.function.FunctionLoadingManager
 import com.eliezer.marvel_search_api.domain.listener.MyOnScrolledListener
 import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.eliezer.marvel_search_api.models.dataclass.Character
@@ -31,6 +36,7 @@ class CharactersListFunctionImplement(
     private val functionManagerViewModel = FunctionManagerViewModel(viewModel)
     private val functionManagerRecyclerAdapter = FunctionManagerRecyclerAdapter(this)
     private val functionManagerBinding = FunctionManagerBinding(binding)
+    private val functionLoadingManager = FunctionLoadingManager(context)
 
     fun getListSearchCharactersRepository()
     {
@@ -71,8 +77,8 @@ class CharactersListFunctionImplement(
                 functionManagerRecyclerAdapter.adapter!!.setNoFavoriteCharacter(character)
             }
             true
-        } ?: {
-            //TODO("Warning inicia session para acceder a  favorito")
+        } ?:  also{
+            showWarning(R.string.warning_user_should_log_in)
         }
     }
 
@@ -94,6 +100,7 @@ class CharactersListFunctionImplement(
         }
     }
     private fun searchListCharacters() {
+        functionLoadingManager.showLoadingDialog()
         functionManagerViewModel.setListCharactersObservesVM(owner, ::setListCharacters)
         searchCharacter?.also { functionManagerViewModel.searchCharacterList(it)}
     }
@@ -103,11 +110,13 @@ class CharactersListFunctionImplement(
         characters?.also {
             characterListFunctionManagerRepository.setListTmpCharacters(it)
             if (it.listCharacters.isNotEmpty())
-                functionManagerRecyclerAdapter.adapter?.setCharacters(it.listCharacters)
+                functionManagerRecyclerAdapter.adapter?.addCharacters(it.listCharacters)
         }
         myOnScrolledListener?.also { functionManagerBinding.resetRecyclerView(it)}
         functionManagerViewModel.setListCharactersNoObservesVM(owner)
         position?.also { functionManagerBinding.recyclerViewCharactersScrollToPosition(it)}
+        if(functionLoadingManager.isShowing())
+            functionLoadingManager.stopLoading()
     }
 
     private fun setFavoriteListCharacters(characters: Characters?) {
@@ -167,6 +176,14 @@ class CharactersListFunctionImplement(
 
     fun stopErrorListener() =
         functionManagerViewModel.setNoObservesCharactersViewModelError(owner)
+
+
+    private fun showError(@StringRes idError: Int) {
+        errorDialog(context,context.resources.getString(idError)).show()
+    }
+    private fun showWarning(@StringRes idError: Int) {
+        warningDialog(context,context.resources.getString(idError)).show()
+    }
 
 }
 

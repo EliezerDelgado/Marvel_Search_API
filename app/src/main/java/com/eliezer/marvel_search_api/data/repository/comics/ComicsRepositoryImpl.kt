@@ -5,8 +5,11 @@ import com.eliezer.marvel_search_api.domain.local_property.LocalDatabase
 import com.eliezer.marvel_search_api.domain.repository.ComicsRepository
 import com.eliezer.marvel_search_api.models.dataclass.Comic
 import com.eliezer.marvel_search_api.models.dataclass.Comics
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -44,11 +47,18 @@ class ComicsRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun setComicInDatabase(vararg comic: Comic): Flow<List<Long>?> = flow {
-        emit(comicDao?.insert(*comic))
+    override fun setComicInDatabaseFlow(vararg comic: Comic): Flow<List<Long>?> = flow {
+        emit(comicDao?.insertAll(*comic))
     }
 
-    override fun setListComicInDatabase(comics: List<Comic>) : Flow<List<Long>?> = setComicInDatabase(*comics.toTypedArray())
+    override fun setComicInDatabase(comic: Comic)  {
+        CoroutineScope(Dispatchers.IO).launch {
+            comicDao?.insert(comic)
+        }.start()
+    }
+
+
+    override fun setListComicInDatabase(comics: List<Comic>) : Flow<List<Long>?> = setComicInDatabaseFlow(*comics.toTypedArray())
 
 
     override fun deleteComicInDatabase(vararg comic: Comic) {

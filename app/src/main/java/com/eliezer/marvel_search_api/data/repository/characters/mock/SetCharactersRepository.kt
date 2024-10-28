@@ -11,9 +11,9 @@ class SetCharactersRepository @Inject constructor(
     fun setListTmpCharacters(id :String, params: Characters){
         charactersRepository.setListTmpCharacters(id,params)
     }
-    fun setInRoomDatabase(vararg character: Character)
+    fun setInRoomDatabase(character: Character)
     {
-            charactersRepository.setCharacterInDatabase(*character)
+            charactersRepository.setCharacterInDatabase(character)
     }
 
     fun deleteInRoomDatabase(vararg character: Character)

@@ -7,9 +7,11 @@ import com.eliezer.marvel_search_api.BR
 abstract class BaseItemViewHolder<T>(protected open val binding: ViewDataBinding) : RecyclerView.ViewHolder(
     binding.root
 ) {
+    private var _item : T? = null
     fun bind(item: T) {
         binding.apply {
             setVariable(BR.item, item)
+            _item = item
             executePendingBindings()
         }
         onBindMethodCalled(item)

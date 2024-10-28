@@ -40,11 +40,8 @@ class MainActivityFunctionImplement(
     }
 
     private fun updateLocalDatabase(userAccount : UserAccount?) {
-        LocalAccount.userAccount.value?.also {
-            clearDatabase()
-        }
+        clearDatabase()
     }
-
     private fun clearDatabase() {
         functionManagerViewModel.setObservesIsCharactersDatabaseClear(owner,::updateCharacterDatabase)
         functionManagerViewModel.setObservesIsComicsDatabaseClear(owner,::updateComicDatabase)
@@ -52,20 +49,24 @@ class MainActivityFunctionImplement(
         functionManagerViewModel.clearCharactersList()
     }
     private fun updateComicDatabase(isClearDatabase : Boolean) {
-        if(isClearDatabase)
+        functionManagerViewModel.setNoObservesIsComicsDatabaseClear(owner)
+        if(isClearDatabase && LocalAccount.userAccount.value != null )
         {
-            functionManagerViewModel.setNoObservesIsComicsDatabaseClear(owner)
             getIdComicsModeFavorite()
             getIdCharactersModeFavorite()
         }
+        else
+            functionLoadingManager.stopLoading()
     }
     private fun updateCharacterDatabase(isClearDatabase : Boolean) {
-        if(isClearDatabase )
+        functionManagerViewModel.setNoObservesIsCharactersDatabaseClear(owner)
+        if(isClearDatabase && LocalAccount.userAccount.value != null )
         {
-            functionManagerViewModel.setNoObservesIsCharactersDatabaseClear(owner)
             getIdComicsModeFavorite()
             getIdCharactersModeFavorite()
         }
+        else
+            functionLoadingManager.stopLoading()
     }
     //Comics
     private fun getIdComicsModeFavorite() {

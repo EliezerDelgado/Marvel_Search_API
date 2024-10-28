@@ -17,7 +17,7 @@ class CharacterListFunctionManagerRepository @Inject constructor(
 )
 {
     fun getListRepository(character:String) = getCharactersRepository.getListRepository(character)
-    fun insertFavoriteCharacterInDatabase(vararg character : Character) = setCharactersRepository.setInRoomDatabase(*character)
+    fun insertFavoriteCharacterInDatabase(character : Character) = setCharactersRepository.setInRoomDatabase(character)
     fun deleteFavoriteCharacterInDatabase(vararg character : Character) = setCharactersRepository.deleteInRoomDatabase(*character)
     fun insertFavoriteCharacterFireStore(characterInt:Int) = insertCharacter.insertFavoriteCharacter(characterInt)
     fun deleteFavoriteCharacterFireStore(characterInt:Int) = deleteCharacter.deleteFavoriteCharacter(characterInt)

@@ -45,7 +45,6 @@ class CharactersListFragment :
         mode = funImpl?.getMode(requireArguments())
         funImpl?.setAdapter()
         checkMode()
-
     }
 
     private fun checkMode() {
@@ -61,6 +60,7 @@ class CharactersListFragment :
     }
 
     private fun functionsSearchMode() {
+        mainActivity(requireActivity()).setToolbarView(false)
         funImpl?.setMyOnScrolledListener()
         funImpl?.getCharactersArg(requireArguments())
         funImpl?.getListSearchCharactersRepository()

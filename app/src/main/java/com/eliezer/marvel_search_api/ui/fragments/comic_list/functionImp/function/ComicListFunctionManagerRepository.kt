@@ -18,7 +18,7 @@ class ComicListFunctionManagerRepository @Inject constructor(
 )
 {
     fun getListRepository(comic: String) = getComicsRepository.getListRepository(comic)
-    fun insertFavoriteComicInDatabase(vararg comic : Comic) = setComicsRepository.setInRoomDatabase(*comic)
+    fun insertFavoriteComicInDatabase(comic : Comic) = setComicsRepository.setInRoomDatabase(comic)
     fun deleteFavoriteComicInDatabase(vararg comic : Comic) = setComicsRepository.deleteInRoomDatabase(*comic)
     fun insertFavoriteComicFireStore(comicId : Int) = insertComic.insertFavoriteComic(comicId)
     fun deleteFavoriteComicFireStore(comicId : Int) = deleteComic.deleteFavoriteComic(comicId)

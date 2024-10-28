@@ -61,6 +61,7 @@ class ComicsListFragment :
     }
 
     private fun functionsSearchMode() {
+        mainActivity(requireActivity()).setToolbarView(false)
         funImpl?.setMyOnScrolledListener()
         funImpl?.getComicsArg(requireArguments())
         funImpl?.getListSearchComicsRepository()

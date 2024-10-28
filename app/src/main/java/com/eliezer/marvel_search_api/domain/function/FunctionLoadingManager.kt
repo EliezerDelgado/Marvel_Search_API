@@ -18,4 +18,5 @@ class FunctionLoadingManager(context: Context) {
     }
     fun stopLoading() =
             loadingDialog.cancel()
+    fun isShowing() =loadingDialog.isShowing
 }
