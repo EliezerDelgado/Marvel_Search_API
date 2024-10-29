@@ -1,13 +1,21 @@
 package com.eliezer.marvel_search_api.ui.fragments.comic_description.functionImp
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
+import androidx.annotation.StringRes
 import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_search_api.BR
 import com.eliezer.marvel_search_api.core.utils.loadImageFromWebOperations
 import com.eliezer.marvel_search_api.data.repository.characters.mock.GetCharactersRepository
+import com.eliezer.marvel_search_api.data.repository.characters.mock.SetCharactersRepository
 import com.eliezer.marvel_search_api.databinding.FragmentComicDescriptionBinding
+import com.eliezer.marvel_search_api.domain.alert_dialogs.errorDialog
+import com.eliezer.marvel_search_api.domain.alert_dialogs.warningDialog
+import com.eliezer.marvel_search_api.domain.function.FunctionManagerCharacterRepository
+import com.eliezer.marvel_search_api.domain.function.FunctionManagerComicRepository
 import com.eliezer.marvel_search_api.domain.function.FunctionToolbarSearch
 import com.eliezer.marvel_search_api.domain.listener.MyOnScrolledListener
 import com.eliezer.marvel_search_api.models.dataclass.Characters
@@ -19,11 +27,13 @@ import com.eliezer.marvel_search_api.ui.fragments.comic_description.viewmodel.Co
 class ComicDescriptionFunctionImplement (
     binding: FragmentComicDescriptionBinding,
     viewModel: ComicDescriptionViewModel,
-    private val getCharactersRepository : GetCharactersRepository,
-    private val owner : LifecycleOwner
+    getCharactersRepository : GetCharactersRepository,
+    setCharactersRepository: SetCharactersRepository,
+    private val owner : LifecycleOwner,
+    private val context: Context
 ) :ComicDescriptionCharacterListAdapter.ComicDescriptionComicHolderListener{
     private val myOnScrolledListener = MyOnScrolledListener { getListCharacters() }
-    private val functionRepository = FunctionRepository(getCharactersRepository)
+    private val functionRepository = FunctionRepository(getCharactersRepository,setCharactersRepository)
     private val functionManagerBinding = FunctionManagerBinding(binding)
     private val functionManagerRecyclerAdapter = FunctionManagerRecyclerAdapter(this)
     private val functionManagerViewModel = FunctionManagerViewModel(viewModel)
@@ -50,7 +60,7 @@ class ComicDescriptionFunctionImplement (
         if(!getCharactersRepository())
         {
             functionManagerViewModel.setObservesListCharacter(owner,::adapterCharacters)
-            functionRepository.searchCharacters(functionManagerViewModel.viewModel)
+            functionRepository.comic?.also { functionManagerViewModel.searchCharacters(it)}
         }
     }
     fun setAdapter() {
@@ -73,10 +83,13 @@ class ComicDescriptionFunctionImplement (
     }
     private fun adapterCharacters(characters: Characters?)
     {
-        setAdapterCharacters(characters)
+        characters?.also {
+            functionRepository.setListCharacters(characters)
+            setAdapterCharacters(characters)
+            functionManagerBinding.setScrollPosition(myOnScrolledListener.position)
+            functionManagerBinding.resetRecyclerView()
+        }
         functionManagerViewModel.setNotObservesListCharacter(owner)
-        functionManagerBinding.setScrollPosition(myOnScrolledListener.position)
-        functionManagerBinding.resetRecyclerView()
         functionManagerBinding.recyclerViewComicsAddScrollListener(myOnScrolledListener)
     }
     private fun getCharactersRepository() : Boolean
@@ -101,19 +114,55 @@ class ComicDescriptionFunctionImplement (
             }
         }
     }
+    fun errorListener() {
+        internalErrorListener()
+        errorsForUserListener()
+    }
+
+    private fun errorsForUserListener() {
+        //TODO("Not yet implemented")
+    }
+
+    private fun internalErrorListener() =
+        functionManagerViewModel.apply {
+            setObservesCharactersViewModelError(owner, ::createErrorLog)
+        }
+    private fun createErrorLog(throwable: Throwable) =
+        Log.e("***",throwable.message,throwable)
+
+    fun stopErrorListener() =
+        functionManagerViewModel.setNoObservesCharactersViewModelError(owner)
+
+
+    private fun showError(@StringRes idError: Int) {
+        errorDialog(context,context.resources.getString(idError)).show()
+    }
+    private fun showWarning(@StringRes idError: Int) {
+        warningDialog(context,context.resources.getString(idError)).show()
+    }
 }
 
 private class FunctionManagerViewModel(
-    val viewModel: ComicDescriptionViewModel
+    private val viewModel: ComicDescriptionViewModel
 )
 {
-    fun setObservesListCharacter(owner: LifecycleOwner, observeCharacters: ((Characters)->(Unit))) {
-        viewModel.listCharacter.observe(owner,observeCharacters)
-    }
+    fun setObservesListCharacter(owner: LifecycleOwner, observeCharacters: ((Characters)->(Unit))) =
+        viewModel.charactersViewModel.characters.observe(owner,observeCharacters)
+
     fun setNotObservesListCharacter(owner: LifecycleOwner) {
-        viewModel.listCharacter.removeObservers(owner)
-        viewModel.resetCharacters()
+        viewModel.charactersViewModel.characters.removeObservers(owner)
+        viewModel.charactersViewModel.resetCharacters()
     }
+
+    fun searchCharacters(comic: Comic) =
+            viewModel.charactersViewModel.searchCharactersList(comic.id)
+
+    fun setObservesCharactersViewModelError(owner: LifecycleOwner,observe: ((Throwable)->(Unit))) =
+        viewModel.charactersViewModel.error.observe(owner,observe)
+
+
+    fun setNoObservesCharactersViewModelError(owner: LifecycleOwner) =
+        viewModel.charactersViewModel.error.removeObservers(owner)
 
 }
 private class FunctionManagerRecyclerAdapter(listener:
@@ -177,7 +226,8 @@ private class FunctionManagerBinding(
     }
 }
 private class FunctionRepository(
-    private val getCharactersRepository: GetCharactersRepository
+    private val getCharactersRepository: GetCharactersRepository,
+    private val setCharactersRepository: SetCharactersRepository,
 )
 {
     var comic: Comic? = null
@@ -185,15 +235,11 @@ private class FunctionRepository(
     fun getIntentExtras(argument: Bundle) {
         comic = ComicDescriptionFragmentArgs.fromBundle(argument).argComic
     }
-    fun getListCharacters(): Characters?
-    {
-        return getCharactersRepository.getListRepository(comic?.id.toString())
-    }
-    fun searchCharacters(viewModel: ComicDescriptionViewModel) {
-        comic?.id?.also {
-            viewModel.searchCharactersList(it)
-        }
-    }
+    fun getListCharacters(): Characters?=
+        getCharactersRepository.getListRepository(comic?.id.toString())
+
+    fun  setListCharacters(characters: Characters)  =
+        setCharactersRepository.setListTmpCharacters(characters.search,characters)
 }
 
 

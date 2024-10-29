@@ -8,12 +8,16 @@ import com.eliezer.marvel_search_api.R
 import com.eliezer.marvel_search_api.core.base.BaseFragment
 import com.eliezer.marvel_search_api.data.mappers.mainActivity
 import com.eliezer.marvel_search_api.data.repository.comics.mock.GetComicsRepository
+import com.eliezer.marvel_search_api.data.repository.comics.mock.SetComicsRepository
 import com.eliezer.marvel_search_api.databinding.FragmentCharacterProfileBinding
+import com.eliezer.marvel_search_api.domain.function.FunctionManagerCharacterRepository
+import com.eliezer.marvel_search_api.domain.function.FunctionManagerComicRepository
 import com.eliezer.marvel_search_api.domain.listener.MyMenuProvider
 import com.eliezer.marvel_search_api.domain.listener.MyTextChangedListener
 import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.eliezer.marvel_search_api.ui.fragments.character_profile.functionImp.CharacterProfileFunctionImplement
 import com.eliezer.marvel_search_api.ui.fragments.character_profile.viewmodel.CharacterProfileViewModel
+import com.eliezer.marvel_search_api.ui.fragments.comic_description.functionImp.ComicDescriptionFunctionImplement
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.EmailAuthCredential
@@ -30,6 +34,9 @@ class CharacterProfileFragment :
     private val comicsListViewModel: CharacterProfileViewModel by viewModels()
     @Inject
     lateinit var getComicsRepository: GetComicsRepository
+
+    @Inject
+    lateinit var setComicsRepository: SetComicsRepository
 
     private val myToolbarMenuProvider = MyMenuProvider(R.menu.main_toolbar_menu){ item->
         when(item.itemId)
@@ -51,9 +58,21 @@ class CharacterProfileFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mainActivity(requireActivity()).setToolbarView(true)
-        funImpl = CharacterProfileFunctionImplement(binding,comicsListViewModel,getComicsRepository,this)
-        mainAddMenuProvider()
         mainActivity(requireActivity()).setToolbarView(true)
+        mainAddMenuProvider()
+        implementFunctions()
+    }
+
+    private fun implementFunctions() {
+        funImpl = CharacterProfileFunctionImplement(
+            binding  = binding,
+            viewModel = comicsListViewModel,
+            getComicsRepository = getComicsRepository,
+            setComicsRepository = setComicsRepository,
+            owner = this,
+            context = requireContext()
+        )
+        funImpl?.errorListener()
         funImpl?.getIntentExtras(requireArguments())
         funImpl?.setBindingVariable()
         funImpl?.setAdapter()
@@ -88,6 +107,7 @@ class CharacterProfileFragment :
         mainActivity(requireActivity()).getToolBar()?.removeMenuProvider(myToolbarMenuProvider)
         mainActivity(requireActivity()).getSubToolBar()?.removeMenuProvider(mySubToolbarMenuProvider)
         super.onDestroyView()
+        funImpl?.stopErrorListener()
         funImpl = null
     }
 }

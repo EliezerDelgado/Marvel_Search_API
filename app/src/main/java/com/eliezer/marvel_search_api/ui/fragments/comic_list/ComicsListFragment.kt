@@ -8,7 +8,7 @@ import com.eliezer.marvel_search_api.data.const.FAVORITE_ID
 import com.eliezer.marvel_search_api.data.const.SEARCH_ID
 import com.eliezer.marvel_search_api.data.mappers.mainActivity
 import com.eliezer.marvel_search_api.databinding.FragmentComicsListBinding
-import com.eliezer.marvel_search_api.ui.fragments.comic_list.functionImp.function.ComicListFunctionManagerRepository
+import com.eliezer.marvel_search_api.domain.function.FunctionManagerComicRepository
 import com.eliezer.marvel_search_api.ui.fragments.comic_list.functionImp.ComicsListFunctionImplement
 import com.eliezer.marvel_search_api.ui.fragments.comic_list.viewmodel.ComicsListViewModel
 import com.eliezer.marvel_search_api.ui.fragments.favorites.interfaces.FavoriteToolbarButtonsClickAction
@@ -23,7 +23,7 @@ class ComicsListFragment :
 {
 
     @Inject
-    lateinit var comicListFunctionManagerRepository: ComicListFunctionManagerRepository
+    lateinit var functionManagerComicRepository: FunctionManagerComicRepository
     private var funImpl : ComicsListFunctionImplement? = null
     private val comicsListViewModel: ComicsListViewModel by viewModels()
     private var mode : String? = null
@@ -38,7 +38,7 @@ class ComicsListFragment :
             binding = binding,
             viewModel = comicsListViewModel,
             navigationMainActions = mainActivity(requireActivity()).navigationMainActions!!,
-            comicListFunctionManagerRepository = comicListFunctionManagerRepository,
+            functionManagerComicRepository = functionManagerComicRepository,
             owner = this,
             context = requireContext()
         )

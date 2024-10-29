@@ -6,8 +6,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <ProgressBar
         android:id="@+id/alert_dialog_progress_bar_loading"
-        android:layout_width="@dimen/image_medium_width"
-        android:layout_height="@dimen/image_medium_width"
+        android:layout_width="@dimen/medium_width"
+        android:layout_height="@dimen/medium_width"
         android:layout_margin="@dimen/margin_biggest"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

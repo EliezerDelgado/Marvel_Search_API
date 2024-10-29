@@ -8,9 +8,11 @@ import com.eliezer.marvel_search_api.databinding.ItemComicHorizontalBinding
 import com.eliezer.marvel_search_api.domain.SearchRecycler
 import com.eliezer.marvel_search_api.domain.function.RecyclerAdapterSearchText
 import com.eliezer.marvel_search_api.models.SearchTextResult
+import com.eliezer.marvel_search_api.models.dataclass.Character
 import com.eliezer.marvel_search_api.models.dataclass.Comic
+import com.eliezer.marvel_search_api.ui.fragments.character_list.adapter.ItemCharacterViewHolder
 
-class CharacterProfileComicsListAdapter(items : ArrayList<Comic>,private val listener :CharacterProfileComicHolderListener) : BaseAdapter<Comic, ItemComicHorizontalViewHolder>(
+class CharacterProfileComicsListAdapter(items : ArrayList<Comic>,private val listener :CharacterProfileComicHolderListener?) : BaseAdapter<Comic, ItemComicHorizontalViewHolder>(
     items = items) ,RecyclerAdapterSearchText {
     interface CharacterProfileComicHolderListener
     {
@@ -63,7 +65,7 @@ class CharacterProfileComicsListAdapter(items : ArrayList<Comic>,private val lis
     private fun doScroll()
     {
         val position = getPositionItem(searchRecycler.itemsContainText[searchRecycler.index].id)
-        listener.onScroll(position)
+        listener?.onScroll(position)
     }
 
     override fun setViewHolder(inflater: LayoutInflater): ItemComicHorizontalViewHolder {
@@ -77,6 +79,8 @@ class CharacterProfileComicsListAdapter(items : ArrayList<Comic>,private val lis
         addItemContainTextAddAll(searchTextResult)
         paintSearchResult(searchTextResult,holder,item)
     }
+
+
     private fun createSearchTextResult(holder: ItemComicHorizontalViewHolder, item: Comic) : SearchTextResult?
     {
 
@@ -104,7 +108,6 @@ class CharacterProfileComicsListAdapter(items : ArrayList<Comic>,private val lis
             }
         }
     }
-
 
     private fun getPositionItem(idTextView: Int): Int =
         items.run{

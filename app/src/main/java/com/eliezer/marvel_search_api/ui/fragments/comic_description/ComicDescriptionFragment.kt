@@ -8,7 +8,10 @@ import com.eliezer.marvel_search_api.R
 import com.eliezer.marvel_search_api.core.base.BaseFragment
 import com.eliezer.marvel_search_api.data.mappers.mainActivity
 import com.eliezer.marvel_search_api.data.repository.characters.mock.GetCharactersRepository
+import com.eliezer.marvel_search_api.data.repository.characters.mock.SetCharactersRepository
 import com.eliezer.marvel_search_api.databinding.FragmentComicDescriptionBinding
+import com.eliezer.marvel_search_api.domain.function.FunctionManagerCharacterRepository
+import com.eliezer.marvel_search_api.domain.function.FunctionManagerComicRepository
 import com.eliezer.marvel_search_api.domain.listener.MyMenuProvider
 import com.eliezer.marvel_search_api.domain.listener.MyTextChangedListener
 import com.eliezer.marvel_search_api.ui.fragments.comic_description.functionImp.ComicDescriptionFunctionImplement
@@ -27,6 +30,8 @@ class ComicDescriptionFragment :
     @Inject
     lateinit var getCharactersRepository: GetCharactersRepository
 
+    @Inject
+    lateinit var setCharactersRepository: SetCharactersRepository
 
     private val myToolbarMenuProvider = MyMenuProvider(R.menu.main_toolbar_menu){ item->
         when(item.itemId)
@@ -49,9 +54,21 @@ class ComicDescriptionFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mainActivity(requireActivity()).setToolbarView(true)
-        funImpl = ComicDescriptionFunctionImplement(binding,characterListViewModel,getCharactersRepository,this)
         mainAddMenuProvider()
         mainActivity(requireActivity()).setToolbarView(true)
+        implementFunctions()
+    }
+
+    private fun implementFunctions() {
+        funImpl = ComicDescriptionFunctionImplement(
+            binding  = binding,
+            viewModel = characterListViewModel,
+            getCharactersRepository = getCharactersRepository,
+            setCharactersRepository = setCharactersRepository,
+            owner = this,
+            context = requireContext()
+        )
+        funImpl?.errorListener()
         funImpl?.getIntentExtras(requireArguments())
         funImpl?.setBindingVariable()
         funImpl?.setAdapter()
@@ -88,6 +105,7 @@ class ComicDescriptionFragment :
         mainActivity(requireActivity()).getToolBar()?.removeMenuProvider(myToolbarMenuProvider)
         mainActivity(requireActivity()).getSubToolBar()?.removeMenuProvider(mySubToolbarMenuProvider)
         super.onDestroyView()
+        funImpl?.stopErrorListener()
         funImpl = null
     }
 }

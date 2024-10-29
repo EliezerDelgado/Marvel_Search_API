@@ -1,16 +1,16 @@
-package com.eliezer.marvel_search_api.ui.fragments.comic_list.functionImp.function
+package com.eliezer.marvel_search_api.domain.function
 
 import com.eliezer.marvel_search_api.data.repository.comics.mock.GetComicsRepository
 import com.eliezer.marvel_search_api.data.repository.comics.mock.SetComicsRepository
 import com.eliezer.marvel_search_api.data.repository.firebase.mock.FireStoreDeleteComic
 import com.eliezer.marvel_search_api.data.repository.firebase.mock.FireStoreInsertComic
-import com.eliezer.marvel_search_api.models.dataclass.Characters
 import com.eliezer.marvel_search_api.models.dataclass.Comic
 import com.eliezer.marvel_search_api.models.dataclass.Comics
 import javax.inject.Inject
+import javax.inject.Singleton
 
-
-class ComicListFunctionManagerRepository @Inject constructor(
+@Singleton
+class FunctionManagerComicRepository @Inject constructor(
     private val getComicsRepository: GetComicsRepository,
     private val setComicsRepository: SetComicsRepository,
     private val insertComic: FireStoreInsertComic,

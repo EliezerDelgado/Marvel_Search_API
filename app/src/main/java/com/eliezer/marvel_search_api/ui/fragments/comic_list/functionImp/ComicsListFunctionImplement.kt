@@ -16,7 +16,7 @@ import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.eliezer.marvel_search_api.models.dataclass.Comic
 import com.eliezer.marvel_search_api.models.dataclass.Comics
 import com.eliezer.marvel_search_api.ui.fragments.character_list.CharactersListFragmentArgs
-import com.eliezer.marvel_search_api.ui.fragments.comic_list.functionImp.function.ComicListFunctionManagerRepository
+import com.eliezer.marvel_search_api.domain.function.FunctionManagerComicRepository
 import com.eliezer.marvel_search_api.ui.fragments.comic_list.ComicsListFragmentArgs
 import com.eliezer.marvel_search_api.ui.fragments.comic_list.adapter.ComicsListAdapter
 import com.eliezer.marvel_search_api.ui.fragments.comic_list.viewmodel.ComicsListViewModel
@@ -26,7 +26,7 @@ class ComicsListFunctionImplement (
     binding: FragmentComicsListBinding,
     viewModel: ComicsListViewModel,
     private val navigationMainActions: NavigationMainActions,
-    private val comicListFunctionManagerRepository: ComicListFunctionManagerRepository,
+    private val functionManagerComicRepository: FunctionManagerComicRepository,
     private val owner : LifecycleOwner,
     private val context: Context
 ) : ComicsListAdapter.ComicHolderListener {
@@ -40,7 +40,7 @@ class ComicsListFunctionImplement (
 
     fun getListSearchComicsRepository() {
         searchComic?.also {
-            val comics = comicListFunctionManagerRepository.getListRepository(it)
+            val comics = functionManagerComicRepository.getListRepository(it)
             functionManagerRecyclerAdapter.setComicsList(comics)
             getIdComicsModeSearch(owner)
         }
@@ -67,13 +67,13 @@ class ComicsListFunctionImplement (
     override fun onImageButtonFavoriteListener(comic: Comic) {
         LocalAccount.userAccount.value?.run {
                 if (comic.favorite) {
-                    comicListFunctionManagerRepository.insertFavoriteComicFireStore(comic.id)
-                    comicListFunctionManagerRepository.insertFavoriteComicInDatabase(comic)
+                    functionManagerComicRepository.insertFavoriteComicFireStore(comic.id)
+                    functionManagerComicRepository.insertFavoriteComicInDatabase(comic)
                     functionManagerRecyclerAdapter.adapter!!.setFavoriteComic(comic)
                 }
                 else {
-                    comicListFunctionManagerRepository.deleteFavoriteComicFireStore(comic.id)
-                    comicListFunctionManagerRepository.deleteFavoriteComicInDatabase(comic)
+                    functionManagerComicRepository.deleteFavoriteComicFireStore(comic.id)
+                    functionManagerComicRepository.deleteFavoriteComicInDatabase(comic)
                     functionManagerRecyclerAdapter.adapter!!.setNoFavoriteComic(comic)
                 }
                 true
@@ -91,7 +91,7 @@ class ComicsListFunctionImplement (
 
     private fun getListComics() {
         myOnScrolledListener?.also { functionManagerBinding.recyclerViewComicsRemoveScrollListener(it)}
-        val comics = searchComic?.let { comicListFunctionManagerRepository.getListRepository(it)}
+        val comics = searchComic?.let { functionManagerComicRepository.getListRepository(it)}
         comics.also {
             if (it == null || it.total > it.listComics.size)
                 searchListComics()
@@ -111,7 +111,7 @@ class ComicsListFunctionImplement (
     private fun setListComics(comics: Comics?) {
         val position = myOnScrolledListener?.position
         comics?.also {
-            comicListFunctionManagerRepository.setListTmpCharacters(it)
+            functionManagerComicRepository.setListTmpCharacters(it)
             if (it.listComics.isNotEmpty())
                 functionManagerRecyclerAdapter.adapter?.addComics(it.listComics)
 
@@ -183,8 +183,6 @@ class ComicsListFunctionImplement (
     fun stopErrorListener() =
         functionManagerViewModel.setNoObservesCharactersViewModelError(owner)
 
-
-    private fun showErrorToUser(@StringRes idString: Int) = showError(idString)
 
     private fun showError(@StringRes idError: Int) {
         errorDialog(context,context.resources.getString(idError)).show()

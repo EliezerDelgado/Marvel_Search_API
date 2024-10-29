@@ -10,15 +10,16 @@ import com.eliezer.marvel_search_api.databinding.ItemComicHorizontalBinding
 import com.eliezer.marvel_search_api.domain.SearchTextResultUtils
 import com.eliezer.marvel_search_api.models.SearchTextResult
 import com.eliezer.marvel_search_api.models.dataclass.Comic
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ItemComicHorizontalViewHolder(override var binding: ItemComicHorizontalBinding) : BaseItemViewHolder<Comic>(binding = binding ) {
     override fun onBindMethodCalled(item: Comic) {
-        val t = Thread {
+        CoroutineScope(Dispatchers.IO).launch {
             binding.setVariable(BR.img, loadImageFromWebOperations(item.urlPicture))
-        }
-        t.start()
+        }.start()
     }
-
     fun searchWord(idItem:Int,searchWord: String?,startPosition : Int) : SearchTextResult?{
         var searchTextResult : SearchTextResult?= null
         val hashMapItem = HashMap<Int,TextView>()

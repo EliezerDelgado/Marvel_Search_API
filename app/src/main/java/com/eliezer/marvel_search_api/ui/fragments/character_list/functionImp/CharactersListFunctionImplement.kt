@@ -6,7 +6,6 @@ import android.util.Log
 import androidx.annotation.StringRes
 import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_search_api.R
-import com.eliezer.marvel_search_api.data.repository.characters.mock.SetCharactersRepository
 import com.eliezer.marvel_search_api.databinding.FragmentCharactersListBinding
 import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
 import com.eliezer.marvel_search_api.domain.alert_dialogs.errorDialog
@@ -16,17 +15,16 @@ import com.eliezer.marvel_search_api.domain.listener.MyOnScrolledListener
 import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.eliezer.marvel_search_api.models.dataclass.Character
 import com.eliezer.marvel_search_api.models.dataclass.Characters
-import com.eliezer.marvel_search_api.models.dataclass.Comics
 import com.eliezer.marvel_search_api.ui.fragments.character_list.CharactersListFragmentArgs
 import com.eliezer.marvel_search_api.ui.fragments.character_list.adapter.CharactersListAdapter
-import com.eliezer.marvel_search_api.ui.fragments.character_list.functionImp.function.CharacterListFunctionManagerRepository
+import com.eliezer.marvel_search_api.domain.function.FunctionManagerCharacterRepository
 import com.eliezer.marvel_search_api.ui.fragments.character_list.viewmodel.CharactersListViewModel
 
 class CharactersListFunctionImplement(
     binding: FragmentCharactersListBinding,
     viewModel: CharactersListViewModel,
     private val navigationMainActions: NavigationMainActions,
-    private val characterListFunctionManagerRepository: CharacterListFunctionManagerRepository,
+    private val functionManagerCharacterRepository: FunctionManagerCharacterRepository,
     private val owner : LifecycleOwner,
     private val context: Context
 ) : CharactersListAdapter.CharacterHolderListener{
@@ -41,7 +39,7 @@ class CharactersListFunctionImplement(
     fun getListSearchCharactersRepository()
     {
         searchCharacter?.also {
-            val characters = characterListFunctionManagerRepository.getListRepository(it)
+            val characters = functionManagerCharacterRepository.getListRepository(it)
             functionManagerRecyclerAdapter.setCharactersList(characters)
             getIdCharactersModeSearch(owner)
         }
@@ -67,13 +65,13 @@ class CharactersListFunctionImplement(
     override fun onImageButtonFavoriteListener(character: Character) {
         LocalAccount.userAccount.value?.run {
             if (character.favorite) {
-                characterListFunctionManagerRepository.insertFavoriteCharacterFireStore(character.id)
-                characterListFunctionManagerRepository.insertFavoriteCharacterInDatabase(character)
+                functionManagerCharacterRepository.insertFavoriteCharacterFireStore(character.id)
+                functionManagerCharacterRepository.insertFavoriteCharacterInDatabase(character)
                 functionManagerRecyclerAdapter.adapter!!.setFavoriteCharacter(character)
             }
             else {
-                characterListFunctionManagerRepository.deleteFavoriteCharacterFireStore(character.id)
-                characterListFunctionManagerRepository.deleteFavoriteCharacterInDatabase(character)
+                functionManagerCharacterRepository.deleteFavoriteCharacterFireStore(character.id)
+                functionManagerCharacterRepository.deleteFavoriteCharacterInDatabase(character)
                 functionManagerRecyclerAdapter.adapter!!.setNoFavoriteCharacter(character)
             }
             true
@@ -91,7 +89,7 @@ class CharactersListFunctionImplement(
 
     private fun getListCharacters() {
         myOnScrolledListener?.also { functionManagerBinding.recyclerViewCharactersRemoveScrollListener(it)}
-        val characters = searchCharacter?.let { characterListFunctionManagerRepository.getListRepository(searchCharacter!!)}
+        val characters = searchCharacter?.let { functionManagerCharacterRepository.getListRepository(searchCharacter!!)}
         characters.also {
             if (it == null || it.total > it.listCharacters.size)
                 searchListCharacters()
@@ -108,7 +106,7 @@ class CharactersListFunctionImplement(
     private fun setListCharacters(characters: Characters?) {
         val position = myOnScrolledListener?.position
         characters?.also {
-            characterListFunctionManagerRepository.setListTmpCharacters(it)
+            functionManagerCharacterRepository.setListTmpCharacters(it)
             if (it.listCharacters.isNotEmpty())
                 functionManagerRecyclerAdapter.adapter?.addCharacters(it.listCharacters)
         }
@@ -158,13 +156,7 @@ class CharactersListFunctionImplement(
 
     fun errorListener() {
         internalErrorListener()
-        errorsForUserListener()
     }
-
-    private fun errorsForUserListener() {
-        //TODO("Not yet implemented")
-    }
-
     private fun internalErrorListener() =
         functionManagerViewModel.apply {
             setObservesCharactersViewModelError(owner, ::createErrorLog)

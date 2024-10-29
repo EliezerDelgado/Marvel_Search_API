@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.eliezer.marvel_search_api.R
 import com.eliezer.marvel_search_api.core.base.BaseViewModel
 import com.eliezer.marvel_search_api.domain.usecase.GetFavoriteListComicsOnDatabaseUseCase
+import com.eliezer.marvel_search_api.domain.usecase.GetListComicsByCharacterUseCase
 import com.eliezer.marvel_search_api.domain.usecase.GetListComicsByListIdsUseCase
 import com.eliezer.marvel_search_api.domain.usecase.GetListComicsByTitleUseCase
 import com.eliezer.marvel_search_api.models.dataclass.Comic
@@ -17,8 +18,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ComicsViewModel @Inject constructor(
-    private val getComicsUseCase: GetListComicsByTitleUseCase,
+    private val getListComicsByTitleUseCase: GetListComicsByTitleUseCase,
     private val getListComicsByListIdsUseCase: GetListComicsByListIdsUseCase,
+    private val  getListComicsByCharacterUseCase: GetListComicsByCharacterUseCase,
     private val getFavoriteListComicsOnDatabaseUseCase: GetFavoriteListComicsOnDatabaseUseCase
 ) :BaseViewModel() {
     private var _comics = MutableLiveData<Comics>()
@@ -26,7 +28,7 @@ class ComicsViewModel @Inject constructor(
 
     fun searchComicsList(title: String) {
         viewModelScope.launch {
-            getComicsUseCase.invoke(title)
+            getListComicsByTitleUseCase.invoke(title)
                 .onStart { _loading.value = true }
                 .onCompletion { _loading.value = false }
                 .catch {
@@ -39,6 +41,23 @@ class ComicsViewModel @Inject constructor(
                 }
         }
     }
+
+
+    fun searchComicsList(characterId: Int) {
+        viewModelScope.launch {
+            getListComicsByCharacterUseCase.invoke(characterId)
+                .onStart { _loading.value = true }
+                .onCompletion { _loading.value = false }
+                .catch {
+                    _error.value = it
+                }
+                .collect {
+                    it.search = characterId.toString()
+                    _comics.value = it
+                }
+        }
+    }
+
     fun getFavoriteComicsList(ids: ArrayList<Int>) =
         viewModelScope.launch {
             getListComicsByListIdsUseCase.invoke(ids)

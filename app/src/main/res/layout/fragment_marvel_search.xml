@@ -8,8 +8,8 @@
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/marvel_search_image_button_about_me"
-        android:layout_width="@dimen/image_little_width"
-        android:layout_height="@dimen/image_little_height"
+        android:layout_width="@dimen/little_width"
+        android:layout_height="@dimen/little_height"
         android:src="@drawable/img_about_me"
         app:layout_constraintTop_toTopOf="parent"
         style="@style/EliezerMarvel.ImageButton"
@@ -19,8 +19,8 @@
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/marvel_search_image_button_google_sign_in"
-        android:layout_width="@dimen/image_little_width"
-        android:layout_height="@dimen/image_little_height"
+        android:layout_width="@dimen/little_width"
+        android:layout_height="@dimen/little_height"
         android:src="@drawable/img_google_sign_in"
         app:layout_constraintTop_toTopOf="parent"
         style="@style/EliezerMarvel.ImageButton"
@@ -38,8 +38,8 @@
         android:orientation="vertical">
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/marvel_search_image_view_logo"
-            android:layout_height="@dimen/image_big_height"
-            android:layout_width="@dimen/image_biggest_width"
+            android:layout_height="@dimen/medium_big_height"
+            android:layout_width="@dimen/biggest_width"
             android:layout_gravity="center"
             android:src="@drawable/img_marvel_logo"/>
 
@@ -81,8 +81,8 @@
     </LinearLayout>
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/marvel_search_image_button_go_favorite"
-            android:layout_width="@dimen/image_little_width"
-            android:layout_height="@dimen/image_little_height"
+            android:layout_width="@dimen/little_width"
+            android:layout_height="@dimen/little_height"
             android:layout_gravity="center"
             android:layout_marginVertical="@dimen/margin_intermediate"
             style="@style/EliezerMarvel.ImageButton"

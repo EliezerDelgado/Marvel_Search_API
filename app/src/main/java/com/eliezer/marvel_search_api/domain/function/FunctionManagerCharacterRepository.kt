@@ -1,4 +1,4 @@
-package com.eliezer.marvel_search_api.ui.fragments.character_list.functionImp.function
+package com.eliezer.marvel_search_api.domain.function
 
 import com.eliezer.marvel_search_api.data.repository.characters.mock.GetCharactersRepository
 import com.eliezer.marvel_search_api.data.repository.characters.mock.SetCharactersRepository
@@ -7,9 +7,11 @@ import com.eliezer.marvel_search_api.data.repository.firebase.mock.FireStoreInse
 import com.eliezer.marvel_search_api.models.dataclass.Character
 import com.eliezer.marvel_search_api.models.dataclass.Characters
 import javax.inject.Inject
+import javax.inject.Singleton
 
 
-class CharacterListFunctionManagerRepository @Inject constructor(
+@Singleton
+class FunctionManagerCharacterRepository @Inject constructor(
     private val getCharactersRepository: GetCharactersRepository,
     private val setCharactersRepository: SetCharactersRepository,
     private val insertCharacter: FireStoreInsertCharacter,

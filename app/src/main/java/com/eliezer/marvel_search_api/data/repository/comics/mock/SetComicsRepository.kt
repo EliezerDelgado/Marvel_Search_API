@@ -4,7 +4,9 @@ import com.eliezer.marvel_search_api.domain.repository.ComicsRepository
 import com.eliezer.marvel_search_api.models.dataclass.Comic
 import com.eliezer.marvel_search_api.models.dataclass.Comics
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class SetComicsRepository @Inject constructor(
     private val comicsRepository: ComicsRepository,
 ){

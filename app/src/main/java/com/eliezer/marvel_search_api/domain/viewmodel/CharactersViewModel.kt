@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.eliezer.marvel_search_api.R
 import com.eliezer.marvel_search_api.core.base.BaseViewModel
 import com.eliezer.marvel_search_api.domain.usecase.GetFavoriteListCharactersOnDatabaseUseCase
+import com.eliezer.marvel_search_api.domain.usecase.GetListCharactersByComicUseCase
 import com.eliezer.marvel_search_api.domain.usecase.GetListCharactersByListIdsUseCase
 import com.eliezer.marvel_search_api.domain.usecase.GetListCharactersByNameUseCase
 import com.eliezer.marvel_search_api.models.dataclass.Character
@@ -20,6 +21,7 @@ import javax.inject.Singleton
 
 class CharactersViewModel @Inject constructor(
     private val getListCharactersByNameUseCase: GetListCharactersByNameUseCase,
+    private val getListCharactersByComicUseCase: GetListCharactersByComicUseCase,
     private val getListCharactersByListIdsUseCase: GetListCharactersByListIdsUseCase,
     private val getFavoriteListCharactersOnDatabaseUseCase : GetFavoriteListCharactersOnDatabaseUseCase
     ):BaseViewModel(){
@@ -43,6 +45,20 @@ class CharactersViewModel @Inject constructor(
         }
     }
 
+    fun searchCharactersList(comicId: Int) {
+        viewModelScope.launch {
+            getListCharactersByComicUseCase.invoke(comicId)
+                .onStart { _loading.value = true }
+                .onCompletion { _loading.value = false }
+                .catch {
+                    _error.value = it
+                }
+                .collect {
+                    it.search = comicId.toString()
+                    _characters.value = it
+                }
+        }
+    }
     fun getFavoriteCharactersList(ids: ArrayList<Int>) =
         viewModelScope.launch {
             getListCharactersByListIdsUseCase.invoke(ids)
