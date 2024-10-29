@@ -3,9 +3,13 @@ package com.eliezer.marvel_search_api.ui.activity.funtionImp
 import android.content.Context
 import android.util.Log
 import android.view.View
+import androidx.annotation.StringRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.LifecycleOwner
+import com.eliezer.marvel_search_api.R
+import com.eliezer.marvel_search_api.data.expand.isInternetConnected
 import com.eliezer.marvel_search_api.databinding.ActivityMainBinding
+import com.eliezer.marvel_search_api.domain.alert_dialogs.warningDialog
 import com.eliezer.marvel_search_api.domain.function.FunctionLoadingManager
 import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.eliezer.marvel_search_api.models.dataclass.Character
@@ -15,6 +19,9 @@ import com.eliezer.marvel_search_api.models.dataclass.Comics
 import com.eliezer.marvel_search_api.models.dataclass.UserAccount
 import com.eliezer.marvel_search_api.ui.activity.viewmodel.MainActivityViewModel
 import com.google.android.material.appbar.AppBarLayout
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivityFunctionImplement(
     binding: ActivityMainBinding,
@@ -50,7 +57,7 @@ class MainActivityFunctionImplement(
     }
     private fun updateComicDatabase(isClearDatabase : Boolean) {
         functionManagerViewModel.setNoObservesIsComicsDatabaseClear(owner)
-        if(isClearDatabase && LocalAccount.userAccount.value != null )
+        if(context.isInternetConnected  && isClearDatabase && LocalAccount.userAccount.value != null )
         {
             getIdComicsModeFavorite()
             getIdCharactersModeFavorite()
@@ -135,6 +142,14 @@ class MainActivityFunctionImplement(
             setObservesFavoriteIdCharactersViewModelError(owner, ::createErrorLog)
             setObservesFavoriteIdComicsViewModelError(owner, ::createErrorLog)
         }
+    }
+
+    fun showWarningNetworkLost() =  CoroutineScope(Dispatchers.Main).launch {
+        showWarning(R.string.warning_not_network)
+    }
+
+    private fun showWarning(@StringRes idError: Int) {
+        warningDialog(context,context.resources.getString(idError)).show()
     }
 
     private fun createErrorLog(throwable: Throwable) =

@@ -4,8 +4,7 @@ import android.widget.TextView
 import com.eliezer.marvel_search_api.models.SearchEncounter
 import com.eliezer.marvel_search_api.models.SearchTextResult
 
-class SearchTextResultUtils {
-    companion object{
+object SearchTextResultUtils {
         fun createSearchTextResult(search:String,listTextView : List<TextView>,startPosition: Int = 0) : SearchTextResult
         {
             val searchTextResult = SearchTextResult()
@@ -30,35 +29,16 @@ class SearchTextResultUtils {
             }
             return searchTextResult
         }
-        private fun fillOutListSearch(searchTextResult : SearchTextResult ,search: String,textView: TextView, numText : Int) {
-            searchTextResult.apply {
-                var position = textView.text.indexOf(search)
-                var index = 0
-                while (position != -1) {
-                    val scrollPosition = try {
-                        textView.layout.run { getLineTop(getLineForOffset(position)) }
-                    }catch (_:Exception){
-                        null
-                    }
-                    encounter.add(
-                        SearchEncounter(
-                            id = textView.id,
-                            scrollPosition = scrollPosition,
-                            length = textView.text.length,
-                            numText = numText,
-                            position = index++)
-                    )
-                    position = textView.text.indexOf(search,1+position )
-                }
-            }
-        }
+        private fun fillOutListSearch(searchTextResult : SearchTextResult ,search: String,textView: TextView, numText : Int) =
+            fillOutListSearch(searchTextResult,search,textView.id,textView,numText)
+
         private fun fillOutListSearch(searchTextResult : SearchTextResult ,search: String,id : Int,textView: TextView, numText : Int) {
             searchTextResult.apply {
                 var position = textView.text.indexOf(search)
                 var index = 0
                 while (position != -1) {
                     val scrollPosition = try {
-                        textView.layout.run { getLineTop(getLineForOffset(position)) }
+                        textView.layout.run { getLineTop(getLineForOffset(position) +2) }
                     }catch (_:Exception){
                         null
                     }
@@ -75,4 +55,3 @@ class SearchTextResultUtils {
             }
         }
     }
-}

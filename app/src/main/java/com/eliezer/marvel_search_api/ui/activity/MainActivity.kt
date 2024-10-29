@@ -1,11 +1,14 @@
 package com.eliezer.marvel_search_api.ui.activity
 
+import android.net.ConnectivityManager.NetworkCallback
+import android.net.Network
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.eliezer.marvel_search_api.data.expand.registerNetworkCallback
 import com.eliezer.marvel_search_api.databinding.ActivityMainBinding
 import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
 import com.eliezer.marvel_search_api.ui.activity.funtionImp.MainActivityFunctionImplement
@@ -20,6 +23,15 @@ class MainActivity : AppCompatActivity() {
     private var binding : ActivityMainBinding? = null
     private val viewModel: MainActivityViewModel by viewModels()
     private var funImpl : MainActivityFunctionImplement? = null
+    private val networkCallback = object : NetworkCallback() {
+        override fun onAvailable(network: Network) {
+        }
+
+        override fun onLost(network: Network) {
+            // Called when a network is lost
+            funImpl?.showWarningNetworkLost()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +45,7 @@ class MainActivity : AppCompatActivity() {
         }
         _navigationMainActions = NavigationMainActions(binding!!.mainNavHostFragment)
         implementFunctions()
+        this.registerNetworkCallback(networkCallback)
     }
 
     private fun implementFunctions() {

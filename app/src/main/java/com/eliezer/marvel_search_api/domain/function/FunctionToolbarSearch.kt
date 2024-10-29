@@ -33,11 +33,7 @@ class FunctionToolbarSearch(private var textViews : ArrayList<TextView>,
                 adapter.backPosition()
             }
             else
-            {
-                setTextViewsColor()
-                adapter.setPosition(-1)
-                moveToLine(it.numLine)
-            }
+                searchWordTextView(it.numLine)
         }
     }
 
@@ -50,11 +46,7 @@ class FunctionToolbarSearch(private var textViews : ArrayList<TextView>,
                 adapter.nextPosition()
             }
             else
-            {
-                setTextViewsColor()
-                adapter.setPosition(-1)
-                moveToLine(it.numLine)
-            }
+                searchWordTextView(it.numLine)
         }
     }
 
@@ -73,6 +65,13 @@ class FunctionToolbarSearch(private var textViews : ArrayList<TextView>,
         setTextViewsColor()
     }
 
+    private fun  searchWordTextView(numLine: Int)
+    {
+        setTextViewsColor()
+        adapter.setPosition(-1)
+        moveToLine(numLine)
+    }
+
     private fun setTextViewsColor() {
         searchTextViewAdapter?.apply {
             textViews.forEach{
@@ -87,8 +86,8 @@ class FunctionToolbarSearch(private var textViews : ArrayList<TextView>,
         searchTextViewAdapter =
             SearchTexTViewAdapter(
                 SearchTextResultUtils.createSearchTextResult(
-                    text,
-                    textViews
+                    search = text,
+                    listTextView = textViews
                 )
             )
         recycler?.also {
@@ -100,7 +99,9 @@ class FunctionToolbarSearch(private var textViews : ArrayList<TextView>,
         searchTextViewAdapter?.searchText?.apply {
             if(encounter.size>0)
                 encounter[numLine].apply {
-                    scrollView.scrollTo(0,scrollPosition?:0)
+                    val sc  = scrollPosition  ?: 0
+                    val s  =   100  + (scrollPosition ?: 0)
+                    scrollView.scrollTo(0,sc)
                 }
         }
     }

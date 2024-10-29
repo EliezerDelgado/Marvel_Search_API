@@ -114,36 +114,36 @@ class MarvelSearchFunctionImplement(
         CoroutineScope(Dispatchers.Main).launch {
                 functionManagerBinding.setEnableMarvelSearchButtonGoComicsList(false)
                 functionManagerBinding.setEnableMarvelSearchButtonGoCharacterList(false)
-        }
+        }.start()
 
     fun enableSearchButtons() =
         CoroutineScope(Dispatchers.Main).launch {
                 functionManagerBinding.setEnableMarvelSearchButtonGoComicsList(true)
                 functionManagerBinding.setEnableMarvelSearchButtonGoCharacterList(true)
-        }
+        }.start()
 
 
     fun disableGoogleButtons() =
         CoroutineScope(Dispatchers.Main).launch {
                 functionManagerBinding.setEnableMarvelSearchImageButtonGoogleSignIn(false)
                 functionManagerBinding.setDrawableMarvelSearchImageButtonGoogleSignIn(R.drawable.img_google_sign_in_disable)
-        }
+        }.start()
 
     fun enableGoogleButtons() =
         CoroutineScope(Dispatchers.Main).launch {
                 functionManagerBinding.setEnableMarvelSearchImageButtonGoogleSignIn(true)
                 functionManagerBinding.setDrawableMarvelSearchImageButtonGoogleSignIn(R.drawable.img_google_sign_in)
-        }
+        }.start()
 
     fun disableFavoriteButtons() =
         CoroutineScope(Dispatchers.Main).launch {
             functionManagerBinding.setEnableMarvelSearchImageButtonGoFavorite(false)
-        }
+        }.start()
 
     fun enableFavoriteButtons() =
         CoroutineScope(Dispatchers.Main).launch {
             functionManagerBinding.setEnableMarvelSearchImageButtonGoFavorite(true)
-        }
+        }.start()
 
     fun checkFavorite() =  CoroutineScope(Dispatchers.Main).launch {
         LocalAccount.userAccount.value?.also {
@@ -205,9 +205,6 @@ class MarvelSearchFunctionImplement(
             resetCharacters()
             resetComics()
         }
-    }
-    fun showWarningNetworkLost() =  CoroutineScope(Dispatchers.Main).launch {
-        showWarning(R.string.warning_not_network)
     }
 
     fun errorListener() {

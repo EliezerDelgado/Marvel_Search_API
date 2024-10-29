@@ -47,8 +47,6 @@ class MarvelSearchFragment : BaseFragment<FragmentMarvelSearchBinding>(
             funImpl?.apply {
                 disableSearchButtons()
                 disableGoogleButtons()
-                disableFavoriteButtons()
-                showWarningNetworkLost()
             }
         }
     }
@@ -78,10 +76,14 @@ class MarvelSearchFragment : BaseFragment<FragmentMarvelSearchBinding>(
     }
 
     private fun checkInternet() {
-        if (requireContext().isInternetConnected)
+        if (requireContext().isInternetConnected) {
             funImpl?.enableSearchButtons()
-        else
+            funImpl?.enableGoogleButtons()
+        }
+        else {
             funImpl?.disableSearchButtons()
+            funImpl?.disableGoogleButtons()
+        }
     }
 
     private fun functionsListener() {

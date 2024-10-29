@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.annotation.StringRes
 import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_search_api.R
+import com.eliezer.marvel_search_api.data.expand.isInternetConnected
 import com.eliezer.marvel_search_api.databinding.FragmentCharactersListBinding
 import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
 import com.eliezer.marvel_search_api.domain.alert_dialogs.errorDialog
@@ -63,21 +64,31 @@ class CharactersListFunctionImplement(
     }
 
     override fun onImageButtonFavoriteListener(character: Character) {
-        LocalAccount.userAccount.value?.run {
-            if (character.favorite) {
-                functionManagerCharacterRepository.insertFavoriteCharacterFireStore(character.id)
-                functionManagerCharacterRepository.insertFavoriteCharacterInDatabase(character)
-                functionManagerRecyclerAdapter.adapter!!.setFavoriteCharacter(character)
+        if(context.isInternetConnected) {
+            LocalAccount.userAccount.value?.run {
+                if (character.favorite)
+                    insertFavoriteCharacter(character)
+                else
+                    deleteFavoriteCharacter(character)
+                true
+            } ?:  also{
+                showWarning(R.string.warning_user_should_log_in)
             }
-            else {
-                functionManagerCharacterRepository.deleteFavoriteCharacterFireStore(character.id)
-                functionManagerCharacterRepository.deleteFavoriteCharacterInDatabase(character)
-                functionManagerRecyclerAdapter.adapter!!.setNoFavoriteCharacter(character)
-            }
-            true
-        } ?:  also{
-            showWarning(R.string.warning_user_should_log_in)
         }
+        else
+            showError(R.string.error_no_internet)
+    }
+
+    private fun deleteFavoriteCharacter(character: Character) {
+        functionManagerCharacterRepository.deleteFavoriteCharacterFireStore(character.id)
+        functionManagerCharacterRepository.deleteFavoriteCharacterInDatabase(character)
+        functionManagerRecyclerAdapter.adapter!!.setNoFavoriteCharacter(character)
+    }
+
+    private fun insertFavoriteCharacter(character: Character) {
+        functionManagerCharacterRepository.insertFavoriteCharacterFireStore(character.id)
+        functionManagerCharacterRepository.insertFavoriteCharacterInDatabase(character)
+        functionManagerRecyclerAdapter.adapter!!.setFavoriteCharacter(character)
     }
 
 

@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.annotation.StringRes
 import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_search_api.R
+import com.eliezer.marvel_search_api.data.expand.isInternetConnected
 import com.eliezer.marvel_search_api.databinding.FragmentComicsListBinding
 import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
 import com.eliezer.marvel_search_api.domain.alert_dialogs.errorDialog
@@ -65,21 +66,31 @@ class ComicsListFunctionImplement (
     }
 
     override fun onImageButtonFavoriteListener(comic: Comic) {
-        LocalAccount.userAccount.value?.run {
-                if (comic.favorite) {
-                    functionManagerComicRepository.insertFavoriteComicFireStore(comic.id)
-                    functionManagerComicRepository.insertFavoriteComicInDatabase(comic)
-                    functionManagerRecyclerAdapter.adapter!!.setFavoriteComic(comic)
-                }
-                else {
-                    functionManagerComicRepository.deleteFavoriteComicFireStore(comic.id)
-                    functionManagerComicRepository.deleteFavoriteComicInDatabase(comic)
-                    functionManagerRecyclerAdapter.adapter!!.setNoFavoriteComic(comic)
-                }
+        if(context.isInternetConnected) {
+            LocalAccount.userAccount.value?.run {
+                if (comic.favorite)
+                    insertFavoriteComic(comic)
+                else
+                    deleteFavoriteComic(comic)
                 true
-            } ?: also{
-            showWarning(R.string.warning_user_should_log_in)
+            } ?: also {
+                showWarning(R.string.warning_user_should_log_in)
+            }
         }
+        else
+            showError(R.string.error_no_internet)
+    }
+
+    private fun deleteFavoriteComic(comic: Comic) {
+        functionManagerComicRepository.deleteFavoriteComicFireStore(comic.id)
+        functionManagerComicRepository.deleteFavoriteComicInDatabase(comic)
+        functionManagerRecyclerAdapter.adapter!!.setNoFavoriteComic(comic)
+    }
+
+    private fun insertFavoriteComic(comic: Comic) {
+        functionManagerComicRepository.insertFavoriteComicFireStore(comic.id)
+        functionManagerComicRepository.insertFavoriteComicInDatabase(comic)
+        functionManagerRecyclerAdapter.adapter!!.setFavoriteComic(comic)
     }
 
 
@@ -163,11 +174,6 @@ class ComicsListFunctionImplement (
 
     fun errorListener() {
         internalErrorListener()
-        errorsForUserListener()
-    }
-
-    private fun errorsForUserListener() {
-        //TODO("Not yet implemented")
     }
 
     private fun internalErrorListener() =

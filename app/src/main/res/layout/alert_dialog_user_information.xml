@@ -19,7 +19,7 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/alert_dialog_user_information_text_view_name"
         android:layout_height="wrap_content"
-        android:layout_width="@dimen/biggest_width"
+        android:layout_width="@dimen/bigger_width"
         android:layout_gravity="center"
         style="@style/EliezerMarvel.TextView.Title"
         android:textAlignment="center"

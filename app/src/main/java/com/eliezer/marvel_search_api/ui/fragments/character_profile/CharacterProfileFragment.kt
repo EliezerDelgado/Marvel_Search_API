@@ -10,18 +10,10 @@ import com.eliezer.marvel_search_api.data.mappers.mainActivity
 import com.eliezer.marvel_search_api.data.repository.comics.mock.GetComicsRepository
 import com.eliezer.marvel_search_api.data.repository.comics.mock.SetComicsRepository
 import com.eliezer.marvel_search_api.databinding.FragmentCharacterProfileBinding
-import com.eliezer.marvel_search_api.domain.function.FunctionManagerCharacterRepository
-import com.eliezer.marvel_search_api.domain.function.FunctionManagerComicRepository
 import com.eliezer.marvel_search_api.domain.listener.MyMenuProvider
 import com.eliezer.marvel_search_api.domain.listener.MyTextChangedListener
-import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.eliezer.marvel_search_api.ui.fragments.character_profile.functionImp.CharacterProfileFunctionImplement
 import com.eliezer.marvel_search_api.ui.fragments.character_profile.viewmodel.CharacterProfileViewModel
-import com.eliezer.marvel_search_api.ui.fragments.comic_description.functionImp.ComicDescriptionFunctionImplement
-import com.google.firebase.auth.AuthCredential
-import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.EmailAuthCredential
-import com.google.firebase.auth.GoogleAuthCredential
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -69,8 +61,7 @@ class CharacterProfileFragment :
             viewModel = comicsListViewModel,
             getComicsRepository = getComicsRepository,
             setComicsRepository = setComicsRepository,
-            owner = this,
-            context = requireContext()
+            owner = this
         )
         funImpl?.errorListener()
         funImpl?.getIntentExtras(requireArguments())

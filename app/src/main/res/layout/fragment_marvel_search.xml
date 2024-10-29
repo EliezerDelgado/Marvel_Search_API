@@ -39,7 +39,7 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/marvel_search_image_view_logo"
             android:layout_height="@dimen/medium_big_height"
-            android:layout_width="@dimen/biggest_width"
+            android:layout_width="@dimen/bigger_width"
             android:layout_gravity="center"
             android:src="@drawable/img_marvel_logo"/>
 

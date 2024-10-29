@@ -35,14 +35,13 @@ class CharacterProfileFunctionImplement(
     viewModel: CharacterProfileViewModel,
     getComicsRepository : GetComicsRepository,
     setComicsRepository: SetComicsRepository,
-    private val owner : LifecycleOwner,
-    private val context: Context
+    private val owner : LifecycleOwner
 ) : CharacterProfileComicsListAdapter.CharacterProfileComicHolderListener{
     private val myOnScrolledListener = MyOnScrolledListener {
         getListComics()
     }
     private val functionRepository = FunctionRepository(getComicsRepository,setComicsRepository)
-    private val functionManagerBinding =FunctionManagerBinding(binding)
+    private val functionManagerBinding = FunctionManagerBinding(binding)
     private val functionManagerRecyclerAdapter = FunctionManagerRecyclerAdapter(this)
     private val functionManagerViewModel = FunctionManagerViewModel(viewModel)
     private val functionToolbarSearch = FunctionToolbarSearch(
