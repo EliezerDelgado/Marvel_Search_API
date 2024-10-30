@@ -18,51 +18,38 @@
     <string name="about_me_text_view_name__text">Eliezer Delgado Román</string>
     <string name="about_me_image_view_photo__description">Mi Foto</string>
     <string name="about_me_text_view_description__text">
-        EXPERIENCIA&#10;
-Accenture 2 Meses&#10;
-&#10;
-OCT. 2022&#10;
-DIC. 2022&#10;
-Practica no laborales&#10;
-Gestor de base de datos&#10;
-&#10;
-FORMACIÓN ACADÉMICA&#10;
-&#10;
-2023 ENSEÑANZAS DE GRADO SUPERIOR DE FORMACIÓN PROFESIONAL ESPECÍFICA Y EQUIVALENTES, ARTES PLÁSTICAS Y DISEÑO Y DEPORTIVAS - TÉCNICO SUPERIOR EN DESARROLLO DE APLICACIONES&#10;
-MULTIPLATAFORMA&#10;
-&#10;
-EN IES Portada Alta&#10;
-&#10;
-FORMACIÓN COMPLEMENTARIA&#10;
-&#10;
-PROGRAMACIÓN DE APLICACIONES&#10;
-MÓVILES ANDROID TOKIO SCHOOL&#10;
-&#10;
-https://www.tokioschool.com/formaciones/cursos-programacion/android/
-&#10;
-CAPACIDADES Y COMPETENCIAS&#10;
-&#10;
-CONOCIMIENTOS DE INFORMÁTICA:&#10;
-C#,Java, kotlin&#10;
-Lengua(s) extranjera(s):&#10;
-&#10;
-IDIOMAS&#10;
-&#10;
-INGLÉS B1&#10;
-&#10;
-        MI INFORMACION&#10;
-Fecha de Nacimiento: 05/diciembre/2000&#10;
-Correo electrónico: delgadoeliezer05@gmail.com&#10;
-Sexo: Hombre&#10;
-&#10;
-PREFERENCIAS LABORALES&#10;
-Tipo de jornada: INDIFERENTE&#10;
-Android Studio,unity (juegos), intellij, Visual studio 2018 (aplicaccionesWPF,consola),libre office,word, excel xml, html&#10;
-OTRAS HABILIDADES ADQUIRIDAS:&#10;
-Trabajar en equipo, Aprender rápido, Seguir instruccione,&#10;
-Capacidad analítica&#10;
-DISPONIBILIDAD PARA VIAJAR:&#10;
-No posees disponibilidad para viajar&#10;
+        INFORMACION\n
+        Sexo: Hombre\n
+Fecha de Nacimiento: 05/diciembre/2000\n
+Correo electrónico: delgadoeliezer05@gmail.com\n
+Grado de discapacidad superior al 33%:SI\n
+\n
+        EXPERIENCIA\n
+\n
+OCT. 2022 Accenture Practica no laborales\n
+DIC. 2022 Gestor de base de datos\n
+\n
+FORMACIÓN ACADÉMICA\n
+\n
+2023 IES Portada Alta ENSEÑANZAS DE GRADO SUPERIOR DE
+FORMACIÓN PROFESIONAL ESPECÍFICA Y
+EQUIVALENTES, ARTES PLÁSTICAS Y DISEÑO Y
+DEPORTIVAS - TÉCNICO SUPERIOR EN
+DESARROLLO DE APLICACIONES
+MULTIPLATAFORMA  \n
+\n
+FORMACIÓN COMPLEMENTARIA\n
+\n
+PROGRAMACIÓN DE APLICACIONES MÓVILES ANDROID TOKIO SCHOOL\n
+https://www.tokioschool.com/formaciones/cursos-programacion/android/\n
+        IDIOMAS\n
+        \n
+        Lengua(s) materna(s): ESPAÑOL\n
+        \n
+        Lengua(s) extranjera(s):INGLÉS B1 - UMBRAL CAMBRIDGE English B1  Actualmente cerca de un B2\n
+        \n
+        PERMISOS DE CONDUCIR\n
+        Si
     </string>
     <string name="favorite_toolbar_menu_reload__title">Reload</string>
     <string name="alert_dialog_user_information_text_view_name__text">Nombre</string>

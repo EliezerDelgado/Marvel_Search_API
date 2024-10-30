@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.eliezer.marvel_search_api.R
+import com.eliezer.marvel_search_api.data.mappers.mainActivity
 
 class AboutMeFragment : Fragment() {
 
@@ -13,6 +14,7 @@ class AboutMeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        mainActivity(requireActivity()).setToolbarView(false)
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_about_me, container, false)
     }
