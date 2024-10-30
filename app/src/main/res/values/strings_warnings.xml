@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="warning_size_list_search_is_0">No se ha encontrado nada</string>
-    <string name="warning_not_network">No hay conexion a internet</string>
-    <string name="warning_user_should_log_in">Inicie sesion para añadirlo a favorito</string>
+    <string name="warning_size_list_search_is_0">Nothing found</string>
+    <string name="warning_not_network">There is no internet connection</string>
+    <string name="warning_user_should_log_in">Please log in to add to favorites</string>
 </resources>

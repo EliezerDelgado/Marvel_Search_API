@@ -1,39 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="about_me_text_view_name__text">Eliezer Delgado Román</string>
-    <string name="about_me_image_view_photo__description">Mi Foto</string>
+<resources><string name="about_me_text_view_name__text">Eliezer Delgado Román</string>
+    <string name="about_me_image_view_photo__description">My Photo</string>
     <string name="about_me_text_view_description__text">
-        INFORMACION\n
-        Sexo: Hombre\n
-Fecha de Nacimiento: 05/diciembre/2000\n
-Correo electrónico: delgadoeliezer05@gmail.com\n
-Grado de discapacidad superior al 33%:SI\n
+INFORMATION\n
+Sex: Male\n
+Date of Birth: 12/05/2000\n
+Email: delgadoeliezer05@gmail.com\n
+Disability level greater than 33%: YES\n
 \n
-        EXPERIENCIA\n
+EXPERIENCE\n
 \n
-OCT. 2022 Accenture Practica no laborales\n
-DIC. 2022 Gestor de base de datos\n
+OCT. 2022 Accenture Non-work practice\n
+DEC. 2022 Database Manager\n
 \n
-FORMACIÓN ACADÉMICA\n
+ACADEMIC TRAINING\n
 \n
-2023 IES Portada Alta ENSEÑANZAS DE GRADO SUPERIOR DE
-FORMACIÓN PROFESIONAL ESPECÍFICA Y
-EQUIVALENTES, ARTES PLÁSTICAS Y DISEÑO Y
-DEPORTIVAS - TÉCNICO SUPERIOR EN
-DESARROLLO DE APLICACIONES
-MULTIPLATAFORMA  \n
+2023 IES Portada Alta HIGHER EDUCATION IN
+SPECIFIC AND EQUIVALENT PROFESSIONAL TRAINING, PLASTIC ARTS AND DESIGN AND
+SPORTS - HIGHER TECHNICIAN IN
+MULTIPLATFORM
+APPLICATION DEVELOPMENT\n
 \n
-FORMACIÓN COMPLEMENTARIA\n
+COMPLEMENTARY TRAINING\n
 \n
-PROGRAMACIÓN DE APLICACIONES MÓVILES ANDROID TOKIO SCHOOL\n
+ANDROID MOBILE APPLICATION PROGRAMMING TOKIO SCHOOL\n
 https://www.tokioschool.com/formaciones/cursos-programacion/android/\n
-        IDIOMAS\n
-        \n
-        Lengua(s) materna(s): ESPAÑOL\n
-        \n
-        Lengua(s) extranjera(s):INGLÉS B1 - UMBRAL CAMBRIDGE English B1  Actualmente cerca de un B2\n
-        \n
-        PERMISOS DE CONDUCIR\n
-        Si
-    </string>
+LANGUAGES\n
+\n
+Mother tongue(s): SPANISH\n
+\n
+Foreign language(s): ENGLISH B1 - CAMBRIDGE English B1 THRESHOLD Currently close to a B2\n
+\n
+DRIVING LICENCES\n
+Yes
+</string>
 </resources>

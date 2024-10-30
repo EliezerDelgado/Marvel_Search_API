@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="error_empty_search">Por favor no lo dejes vacio</string>
-    <string name="error_no_internet">No hay acceso a  internet</string>
+    <string name="error_empty_search">Please do not leave it empty</string>
+    <string name="error_no_internet">There is no internet access</string>
 </resources>
