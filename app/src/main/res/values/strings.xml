@@ -2,65 +2,24 @@
     <string name="app_name">Marvel Search API</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="marvel_search_text_input_edit_text__hint">Buscar...</string>
-    <string name="marvel_search_button_go_character_list__text">Personajes</string>
+    <string name="marvel_search_text_input_edit_text__hint">Search...</string>
+    <string name="marvel_search_button_go_character_list__text">Characters</string>
     <string name="marvel_search_button_go_comics_list__text">Comics</string>
-    <string name="loading_button_cancel__text">Cancelar</string>
-    <string name="character_profile_text_view_comics_title__text">Lista de comics</string>
-    <string name="comic_description_text_view_comics_title__text">Lista de personajes</string>
-    <string name="marvel_search_image_button_go_favorite__content_description">Va a Favoritos</string>
+    <string name="loading_button_cancel__text"> Cancel</string>
+    <string name="character_profile_text_view_comics_title__text">Comic List</string>
+    <string name="comic_description_text_view_comics_title__text">Character List</string>
+    <string name="marvel_search_image_button_go_favorite__content_description">Go to Favorites</string>
     <string name="main_menu_search__title">Search</string>
-    <string name="main_sub_toolbar_edit_text__hint">Buscar...</string>
+    <string name="main_sub_toolbar_edit_text__hint">Search...</string>
     <string name="main_sub_toolbar_edit_text__text" />
-    <string name="main_sub_toolbar_menu_search__title">Search Barra</string>
-    <string name="main_sub_toolbar_menu_back__title">Anterior palabra de la busqueda</string>
-    <string name="main_sub_toolbar_menu_forward__title">Siguiente palabra de la busqueda</string>
-    <string name="about_me_text_view_name__text">Eliezer Delgado Román</string>
-    <string name="about_me_image_view_photo__description">Mi Foto</string>
-    <string name="about_me_text_view_description__text">
-        INFORMACION\n
-        Sexo: Hombre\n
-Fecha de Nacimiento: 05/diciembre/2000\n
-Correo electrónico: delgadoeliezer05@gmail.com\n
-Grado de discapacidad superior al 33%:SI\n
-\n
-        EXPERIENCIA\n
-\n
-OCT. 2022 Accenture Practica no laborales\n
-DIC. 2022 Gestor de base de datos\n
-\n
-FORMACIÓN ACADÉMICA\n
-\n
-2023 IES Portada Alta ENSEÑANZAS DE GRADO SUPERIOR DE
-FORMACIÓN PROFESIONAL ESPECÍFICA Y
-EQUIVALENTES, ARTES PLÁSTICAS Y DISEÑO Y
-DEPORTIVAS - TÉCNICO SUPERIOR EN
-DESARROLLO DE APLICACIONES
-MULTIPLATAFORMA  \n
-\n
-FORMACIÓN COMPLEMENTARIA\n
-\n
-PROGRAMACIÓN DE APLICACIONES MÓVILES ANDROID TOKIO SCHOOL\n
-https://www.tokioschool.com/formaciones/cursos-programacion/android/\n
-        IDIOMAS\n
-        \n
-        Lengua(s) materna(s): ESPAÑOL\n
-        \n
-        Lengua(s) extranjera(s):INGLÉS B1 - UMBRAL CAMBRIDGE English B1  Actualmente cerca de un B2\n
-        \n
-        PERMISOS DE CONDUCIR\n
-        Si
-    </string>
+    <string name="main_sub_toolbar_menu_search__title">Search Bar</string>
+    <string name="main_sub_toolbar_menu_back__title">Previous search word </string>
+    <string name="main_sub_toolbar_menu_forward__title">Next search word</string>
     <string name="favorite_toolbar_menu_reload__title">Reload</string>
-    <string name="alert_dialog_user_information_text_view_name__text">Nombre</string>
-    <string name="alert_dialog_user_information_text_view_email__text">Correo</string>
-    <string name="alert_dialog_user_information_button_sign_out__text">Cerrar Sesión</string>
+    <string name="alert_dialog_user_information_text_view_name__text">Name</string>
+    <string name ="alert_dialog_user_information_text_view_email__text">Mail</string>
+    <string name="alert_dialog_user_information_button_sign_out__text">Close Session</string>
     <string name="alert_dialog_user_information_button_close__contentDescription">Close Button</string>
-    <string name="alert_dialog_message_text_view_message__text">Mensaje</string>
+    <string name="alert_dialog_message_text_view_message__text">Message</string>
     <string name="positive_button_error_name">Ok</string>
-    <string name="warning_size_list_search_is_0">No se ha encontrado nada</string>
-    <string name="warning_not_network">No hay conexion a internet</string>
-    <string name="error_empty_search">Por favor no lo dejes vacio</string>
-    <string name="warning_user_should_log_in">Inicie sesion para añadirlo a favorito</string>
-    <string name="error_no_internet">No hay acceso a  internet</string>
 </resources>

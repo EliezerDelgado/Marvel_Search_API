@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="about_me_text_view_name__text">Eliezer Delgado Román</string>
+    <string name="about_me_image_view_photo__description">Mi Foto</string>
+    <string name="about_me_text_view_description__text">
+        INFORMACION\n
+        Sexo: Hombre\n
+Fecha de Nacimiento: 05/diciembre/2000\n
+Correo electrónico: delgadoeliezer05@gmail.com\n
+Grado de discapacidad superior al 33%:SI\n
+\n
+        EXPERIENCIA\n
+\n
+OCT. 2022 Accenture Practica no laborales\n
+DIC. 2022 Gestor de base de datos\n
+\n
+FORMACIÓN ACADÉMICA\n
+\n
+2023 IES Portada Alta ENSEÑANZAS DE GRADO SUPERIOR DE
+FORMACIÓN PROFESIONAL ESPECÍFICA Y
+EQUIVALENTES, ARTES PLÁSTICAS Y DISEÑO Y
+DEPORTIVAS - TÉCNICO SUPERIOR EN
+DESARROLLO DE APLICACIONES
+MULTIPLATAFORMA  \n
+\n
+FORMACIÓN COMPLEMENTARIA\n
+\n
+PROGRAMACIÓN DE APLICACIONES MÓVILES ANDROID TOKIO SCHOOL\n
+https://www.tokioschool.com/formaciones/cursos-programacion/android/\n
+        IDIOMAS\n
+        \n
+        Lengua(s) materna(s): ESPAÑOL\n
+        \n
+        Lengua(s) extranjera(s):INGLÉS B1 - UMBRAL CAMBRIDGE English B1  Actualmente cerca de un B2\n
+        \n
+        PERMISOS DE CONDUCIR\n
+        Si
+    </string>
+</resources>

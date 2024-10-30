@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Marvel Search API</string>
+    <string name="hello_blank_fragment">Hola fragmento en blanco</string>
+    <string name="marvel_search_text_input_edit_text__hint">Buscar...</string>
+    <string name="marvel_search_button_go_character_list__text">Personajes</string>
+    <string name="marvel_search_button_go_comics_list__text">Comics</string>
+    <string name="loading_button_cancel__text">Cancelar</string>
+    <string name="character_profile_text_view_comics_title__text">Lista de comics</string>
+    <string name="comic_description_text_view_comics_title__text">Lista de personajes</string>
+    <string name="marvel_search_image_button_go_favorite__content_description">Va a Favoritos</string>
+    <string name="main_menu_search__title">Search</string>
+    <string name="main_sub_toolbar_edit_text__hint">Buscar...</string>
+    <string name="main_sub_toolbar_edit_text__text" />
+    <string name="main_sub_toolbar_menu_search__title">Search Barra</string>
+    <string name="main_sub_toolbar_menu_back__title">Anterior palabra de la busqueda</string>
+    <string name="main_sub_toolbar_menu_forward__title">Siguiente palabra de la busqueda</string>
+    <string name="favorite_toolbar_menu_reload__title">Reload</string>
+    <string name="alert_dialog_user_information_text_view_name__text">Nombre</string>
+    <string name="alert_dialog_user_information_text_view_email__text">Correo</string>
+    <string name="alert_dialog_user_information_button_sign_out__text">Cerrar Sesión</string>
+    <string name="alert_dialog_user_information_button_close__contentDescription">Close Button</string>
+    <string name="alert_dialog_message_text_view_message__text">Mensaje</string>
+    <string name="positive_button_error_name">Ok</string>
+</resources>
