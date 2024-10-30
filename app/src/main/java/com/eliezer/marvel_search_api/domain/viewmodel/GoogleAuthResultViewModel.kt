@@ -1,4 +1,4 @@
-package com.eliezer.marvel_search_api.ui.fragments.marvel_search.viewmodel
+package com.eliezer.marvel_search_api.domain.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.LiveData
@@ -15,8 +15,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class GoogleAuthResultViewModel @Inject constructor(
-    val getGoogleExistingAccountUseCase: GetGoogleExistingAccountUseCase,
-    val getGoogleAddNewAccountUseCase: GetGoogleAddNewAccountUseCase
+    private val getGoogleExistingAccountUseCase: GetGoogleExistingAccountUseCase,
+    private val getGoogleAddNewAccountUseCase: GetGoogleAddNewAccountUseCase
 ) : BaseViewModel() {
     private var _googleAuthResult = MutableLiveData<UserAccount>()
     val googleAuthResult: LiveData<UserAccount> get() = _googleAuthResult
@@ -31,7 +31,7 @@ class GoogleAuthResultViewModel @Inject constructor(
                 }
                 .collect {
                     notifySignInGoogleAccount(
-                        it, context
+                        it
                     )
                 }
         }
@@ -47,7 +47,7 @@ class GoogleAuthResultViewModel @Inject constructor(
                 }
                 .collect {
                     notifySignInGoogleAccount(
-                        it, context
+                        it
                     )
                 }
         }
@@ -55,7 +55,7 @@ class GoogleAuthResultViewModel @Inject constructor(
 
 
     private fun notifySignInGoogleAccount(
-        result: Result<UserAccount>, context: Context?
+        result: Result<UserAccount>
     ) {
         result.fold(
             onSuccess = {

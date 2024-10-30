@@ -1,27 +1,18 @@
 package com.eliezer.marvel_search_api.ui.fragments.character_profile.functionImp
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
-import androidx.annotation.StringRes
 import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_search_api.BR
-import com.eliezer.marvel_search_api.R
 import com.eliezer.marvel_search_api.core.utils.loadImageFromWebOperations
 import com.eliezer.marvel_search_api.data.repository.comics.mock.GetComicsRepository
 import com.eliezer.marvel_search_api.data.repository.comics.mock.SetComicsRepository
 import com.eliezer.marvel_search_api.databinding.FragmentCharacterProfileBinding
-import com.eliezer.marvel_search_api.domain.alert_dialogs.errorDialog
-import com.eliezer.marvel_search_api.domain.alert_dialogs.warningDialog
-import com.eliezer.marvel_search_api.domain.function.FunctionManagerCharacterRepository
-import com.eliezer.marvel_search_api.domain.function.FunctionManagerComicRepository
 import com.eliezer.marvel_search_api.domain.function.FunctionToolbarSearch
 import com.eliezer.marvel_search_api.domain.listener.MyOnScrolledListener
-import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.eliezer.marvel_search_api.models.dataclass.Character
-import com.eliezer.marvel_search_api.models.dataclass.Comic
 import com.eliezer.marvel_search_api.models.dataclass.Comics
 import com.eliezer.marvel_search_api.ui.fragments.character_profile.CharacterProfileFragmentArgs
 import com.eliezer.marvel_search_api.ui.fragments.character_profile.adapter.CharacterProfileComicsListAdapter
@@ -94,7 +85,7 @@ class CharacterProfileFunctionImplement(
         comics?.also {
             functionRepository.setListComics(it)
             setAdapterComics(it)
-            functionManagerBinding.setScrollPosition(myOnScrolledListener.position)
+            functionManagerBinding.setScrollPosition(myOnScrolledListener.positionBefore)
             functionManagerBinding.resetRecyclerView()
         }
         functionManagerViewModel.setNotObservesLitComic(owner)

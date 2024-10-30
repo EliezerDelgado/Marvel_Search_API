@@ -15,6 +15,5 @@ interface FirebaseRepository {
     fun insertFavoriteIdComic(idComic: Int)
     fun deleteFavoriteIdCharacter(idCharacter: Int)
     fun deleteFavoriteIdComic(idComic: Int)
-    fun analytics()
     fun signInWithCredentialsGoogleAccount(credential: Credential): Flow<Result<AuthResult>>
 }

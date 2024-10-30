@@ -20,14 +20,14 @@ fun getImageBitmap(url: String): Bitmap? {
         bis.close()
         `is`.close()
     } catch (e: IOException) {
-        Log.e(TAG, "Error getting bitmap", e)
+        Log.e(TAG, e.message, e)
     }
     return bm
 }
 fun loadImageFromWebOperations(url: String?): Drawable? {
     try {
         val `is` = URL(url).content as InputStream
-        val d =  Drawable.createFromStream(`is`, "src name")
+        val d =  Drawable.createFromStream(`is`, null)
         `is`.close()
         return d
     } catch (ignored: IOException) {

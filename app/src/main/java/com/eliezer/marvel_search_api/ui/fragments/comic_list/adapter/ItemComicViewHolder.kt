@@ -5,8 +5,6 @@ import com.eliezer.marvel_search_api.core.base.BaseItemViewHolder
 import com.eliezer.marvel_search_api.core.utils.loadImageFromWebOperations
 import com.eliezer.marvel_search_api.databinding.ItemComicBinding
 import com.eliezer.marvel_search_api.models.dataclass.Comic
-import com.eliezer.marvel_search_api.models.dataclass.Comics
-import com.eliezer.marvel_search_api.ui.fragments.comic_list.adapter.ComicsListAdapter.ComicHolderListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

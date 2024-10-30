@@ -15,11 +15,11 @@ class CharactersDataSourceImpl @Inject constructor(
 ): CharactersDataSource {
 
     override fun getDataContainer(name :String,offset :Int): Flow<Characters> =
-     marvelController.findCharacters(name,offset).map { it.data?.mapToListCharacter() ?: Characters() }
+     marvelController.findCharacters(name,offset).map { it.data.mapToListCharacter()}
 
     override fun getDataContainer(idComic: Int,offset :Int): Flow<Characters> =
-        marvelController.findComicCharacters(idComic,offset).map { it.data?.mapToListCharacter() ?: Characters()}
+        marvelController.findComicCharacters(idComic,offset).map { it.data.mapToListCharacter()}
 
     override fun getDataContainer(ids: ArrayList<Int>): Flow<Characters> =
-        marvelController.findCharactersByIds(ids).map { it.data?.mapToListCharacter() ?: Characters()}
+        marvelController.findCharactersByIds(ids).map { it.data.mapToListCharacter()}
 }

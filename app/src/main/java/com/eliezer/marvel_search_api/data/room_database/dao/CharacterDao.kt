@@ -11,12 +11,16 @@ interface CharacterDao
 {
     @Query("SELECT * FROM character")
     fun getFavoriteCharacter(): List<Character>
+
     @Insert
     fun insertAll(vararg character: Character) : List<Long>
+
     @Insert
     fun insertAll(character: Character) : Long
+
     @Delete
     fun delete(vararg character: Character)
+
     @Query("DELETE FROM character")
     fun clear()
 }

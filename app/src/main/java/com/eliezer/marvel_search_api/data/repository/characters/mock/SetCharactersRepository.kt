@@ -22,8 +22,4 @@ class SetCharactersRepository @Inject constructor(
     {
             charactersRepository.deleteCharacterInDatabase(*character)
     }
-    fun resetListRepository()
-    {
-        charactersRepository.resetTmpList()
-    }
 }

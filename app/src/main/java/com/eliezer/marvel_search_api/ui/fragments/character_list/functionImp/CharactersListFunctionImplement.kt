@@ -12,13 +12,13 @@ import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
 import com.eliezer.marvel_search_api.domain.alert_dialogs.errorDialog
 import com.eliezer.marvel_search_api.domain.alert_dialogs.warningDialog
 import com.eliezer.marvel_search_api.domain.function.FunctionLoadingManager
+import com.eliezer.marvel_search_api.domain.function.FunctionManagerCharacterRepository
 import com.eliezer.marvel_search_api.domain.listener.MyOnScrolledListener
 import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.eliezer.marvel_search_api.models.dataclass.Character
 import com.eliezer.marvel_search_api.models.dataclass.Characters
 import com.eliezer.marvel_search_api.ui.fragments.character_list.CharactersListFragmentArgs
 import com.eliezer.marvel_search_api.ui.fragments.character_list.adapter.CharactersListAdapter
-import com.eliezer.marvel_search_api.domain.function.FunctionManagerCharacterRepository
 import com.eliezer.marvel_search_api.ui.fragments.character_list.viewmodel.CharactersListViewModel
 
 class CharactersListFunctionImplement(
@@ -115,7 +115,7 @@ class CharactersListFunctionImplement(
     }
 
     private fun setListCharacters(characters: Characters?) {
-        val position = myOnScrolledListener?.position
+        val position = myOnScrolledListener?.positionBefore
         characters?.also {
             functionManagerCharacterRepository.setListTmpCharacters(it)
             if (it.listCharacters.isNotEmpty())

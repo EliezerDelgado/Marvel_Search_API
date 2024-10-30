@@ -2,7 +2,6 @@ package com.eliezer.marvel_search_api.domain.actions
 
 import androidx.fragment.app.FragmentContainerView
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
 import com.eliezer.marvel_search_api.R
 import com.eliezer.marvel_search_api.data.const.SEARCH_ID
 import com.eliezer.marvel_search_api.models.dataclass.Character
@@ -53,5 +52,7 @@ class NavigationMainActions (private val navHostFragment: FragmentContainerView)
         val action = FavoritesFragmentDirections.actionFavoritesFragmentToComicDescriptionFragment(comic)
         navHostFragment.findNavController().navigate(action)
     }
-    fun actionMarvelSearchFragmentToAboutMeFragment()=      navHostFragment.findNavController().navigate(R.id.action_marvelSearchFragment_to_aboutMeFragment)
+
+    fun actionMarvelSearchFragmentToAboutMeFragment() =
+        navHostFragment.findNavController().navigate(R.id.action_marvelSearchFragment_to_aboutMeFragment)
 }

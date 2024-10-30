@@ -17,7 +17,6 @@ interface ComicDao {
     @Insert
     fun insert(comic:Comic) : Long
 
-
     @Delete
     fun delete(vararg comic : Comic)
 

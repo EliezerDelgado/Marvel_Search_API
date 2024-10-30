@@ -8,9 +8,7 @@ import com.eliezer.marvel_search_api.databinding.ItemComicHorizontalBinding
 import com.eliezer.marvel_search_api.domain.SearchRecycler
 import com.eliezer.marvel_search_api.domain.function.RecyclerAdapterSearchText
 import com.eliezer.marvel_search_api.models.SearchTextResult
-import com.eliezer.marvel_search_api.models.dataclass.Character
 import com.eliezer.marvel_search_api.models.dataclass.Comic
-import com.eliezer.marvel_search_api.ui.fragments.character_list.adapter.ItemCharacterViewHolder
 
 class CharacterProfileComicsListAdapter(items : ArrayList<Comic>,private val listener :CharacterProfileComicHolderListener?) : BaseAdapter<Comic, ItemComicHorizontalViewHolder>(
     items = items) ,RecyclerAdapterSearchText {

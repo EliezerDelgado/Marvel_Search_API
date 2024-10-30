@@ -10,7 +10,6 @@ import androidx.credentials.exceptions.NoCredentialException
 import com.eliezer.marvel_search_api.data.firebase.utils.FirebaseCredential
 import com.eliezer.marvel_search_api.data.firebase.utils.FirebaseGoogle
 import com.eliezer.marvel_search_api.data.firebase.utils.FirebaseNonce
-import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
@@ -23,7 +22,6 @@ import javax.inject.Singleton
 
 @Singleton
 class MyFirebaseAuth @Inject constructor() {
-    //https://medium.com/@TonyGnk/streamlining-authentication-using-android-credential-manager-with-firebase-for-google-sign-in-e4e75b6bd97d
     private val firebaseAuth = FirebaseAuth.getInstance()
 
     suspend fun googleSignInAddNewAccount(context: Context): Result<AuthResult> {

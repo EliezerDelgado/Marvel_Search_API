@@ -3,7 +3,6 @@ package com.eliezer.marvel_search_api.data.retrofit.api
 import com.eliezer.marvel_search_api.models.responses.character.CharacterDataWrapper
 import com.eliezer.marvel_search_api.models.responses.character.CharacterResponse
 import com.eliezer.marvel_search_api.models.responses.comic.ComicDataWrapper
-import com.eliezer.marvel_search_api.models.responses.comic.ComicResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

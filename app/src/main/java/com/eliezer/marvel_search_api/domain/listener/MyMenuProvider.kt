@@ -6,7 +6,10 @@ import android.view.MenuItem
 import androidx.annotation.MenuRes
 import androidx.core.view.MenuProvider
 
-class MyMenuProvider(@MenuRes private val menuId : Int, private val onMenuItemSelected : (menuItem : MenuItem) -> Boolean) : MenuProvider {
+class MyMenuProvider(
+    @MenuRes private val menuId : Int,
+    private val onMenuItemSelected : (menuItem : MenuItem) -> Boolean
+) : MenuProvider {
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
         menuInflater.inflate(menuId,menu)
     }

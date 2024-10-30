@@ -8,8 +8,6 @@ import com.eliezer.marvel_search_api.models.dataclass.UserAccount
 import com.eliezer.marvel_search_api.models.responses.character.CharacterDataContainer
 import com.eliezer.marvel_search_api.models.responses.comic.ComicDataContainer
 import com.google.firebase.auth.AuthResult
-import kotlin.io.encoding.Base64
-import kotlin.io.encoding.ExperimentalEncodingApi
 
 fun CharacterDataContainer.mapToListCharacter() : Characters = Characters(
     total = total?:0,
@@ -33,4 +31,9 @@ fun ComicDataContainer.mapToListComic() :Comics = Comics(
             description = it.description ?: ""
         )
     }))
-fun AuthResult.mapToUserAccount() : UserAccount = UserAccount(user?.displayName ?: "",user?.email?: "",user?.photoUrl)
+fun AuthResult.mapToUserAccount() : UserAccount = 
+    UserAccount(
+        name = user?.displayName ?: "",
+        email = user?.email?: "",
+        photoUrl = user?.photoUrl
+    )

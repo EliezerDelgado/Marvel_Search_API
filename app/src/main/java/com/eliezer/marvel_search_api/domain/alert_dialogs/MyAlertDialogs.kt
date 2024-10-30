@@ -1,6 +1,7 @@
 package com.eliezer.marvel_search_api.domain.alert_dialogs
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
 import com.eliezer.marvel_search_api.R
@@ -68,7 +69,7 @@ private fun setUserBindings(
             )
         }
         catch (e: Exception){
-             //ToDO
+             Log.e("***",e.message.toString(),e)
         }
     }
 }

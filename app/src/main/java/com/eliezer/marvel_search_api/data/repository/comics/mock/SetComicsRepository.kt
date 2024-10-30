@@ -21,7 +21,4 @@ class SetComicsRepository @Inject constructor(
     {
             comicsRepository.deleteComicInDatabase(*comic)
     }
-    fun resetListRepository() {
-        comicsRepository.resetTmpList()
-    }
 }

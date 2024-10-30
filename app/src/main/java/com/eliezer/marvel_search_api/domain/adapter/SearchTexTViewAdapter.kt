@@ -18,10 +18,10 @@ class SearchTexTViewAdapter(var searchText : SearchTextResult = SearchTextResult
         _numLine = num
     }
 
-
     fun nextNumLine() {
             ++_numLine
     }
+
     fun backNumLine() {
             --_numLine
         if(_numLine<0)

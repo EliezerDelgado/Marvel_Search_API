@@ -15,11 +15,18 @@ class FirebaseRepositoryImpl @Inject constructor(
     private val datasource: FirebaseDataSource,
 ) : FirebaseRepository {
 
-    override fun signInGoogleExistingAccount(context: Context) : Flow<Result<UserAccount>> = datasource.signInGoogleExistingAccount(context)
-    override fun signInAddGoogleNewAccount(context: Context) : Flow<Result<UserAccount>> = datasource.signInAddGoogleNewAccount(context)
-    override fun getFavoriteIdCharacters(): Flow<Result<ArrayList<Int>>> =  datasource.getFavoriteIdCharacters()
+    override fun signInGoogleExistingAccount(context: Context) : Flow<Result<UserAccount>> =
+        datasource.signInGoogleExistingAccount(context)
 
-    override fun getFavoriteIdComics(): Flow<Result<ArrayList<Int>>> = datasource.getFavoriteIdComics()
+    override fun signInAddGoogleNewAccount(context: Context) : Flow<Result<UserAccount>> =
+        datasource.signInAddGoogleNewAccount(context)
+
+    override fun getFavoriteIdCharacters(): Flow<Result<ArrayList<Int>>> =
+        datasource.getFavoriteIdCharacters()
+
+    override fun getFavoriteIdComics(): Flow<Result<ArrayList<Int>>> =
+        datasource.getFavoriteIdComics()
+
     override fun insertFavoriteIdCharacter(idCharacter: Int) =
         datasource.insertFavoriteIdCharacter(idCharacter)
 
@@ -31,8 +38,6 @@ class FirebaseRepositoryImpl @Inject constructor(
 
     override fun deleteFavoriteIdComic(idComic: Int) =
         datasource.deleteFavoriteIdComic(idComic)
-    override fun analytics() {
-    }
 
     override fun signInWithCredentialsGoogleAccount(credential: Credential): Flow<Result<AuthResult>> =
         datasource.signInWithCredentialsGoogleAccount(credential)

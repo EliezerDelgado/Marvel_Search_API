@@ -9,14 +9,13 @@ import androidx.appcompat.widget.AppCompatImageButton
 import androidx.credentials.exceptions.NoCredentialException
 import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_search_api.R
-import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
-import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
 import com.eliezer.marvel_search_api.databinding.FragmentMarvelSearchBinding
+import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
 import com.eliezer.marvel_search_api.domain.alert_dialogs.errorDialog
-import com.eliezer.marvel_search_api.domain.alert_dialogs.loadingDialog
 import com.eliezer.marvel_search_api.domain.alert_dialogs.userDialog
 import com.eliezer.marvel_search_api.domain.alert_dialogs.warningDialog
 import com.eliezer.marvel_search_api.domain.function.FunctionLoadingManager
+import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.eliezer.marvel_search_api.models.dataclass.Characters
 import com.eliezer.marvel_search_api.models.dataclass.Comics
 import com.eliezer.marvel_search_api.models.dataclass.UserAccount

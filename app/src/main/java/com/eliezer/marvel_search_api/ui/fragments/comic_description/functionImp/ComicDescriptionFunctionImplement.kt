@@ -14,8 +14,6 @@ import com.eliezer.marvel_search_api.data.repository.characters.mock.SetCharacte
 import com.eliezer.marvel_search_api.databinding.FragmentComicDescriptionBinding
 import com.eliezer.marvel_search_api.domain.alert_dialogs.errorDialog
 import com.eliezer.marvel_search_api.domain.alert_dialogs.warningDialog
-import com.eliezer.marvel_search_api.domain.function.FunctionManagerCharacterRepository
-import com.eliezer.marvel_search_api.domain.function.FunctionManagerComicRepository
 import com.eliezer.marvel_search_api.domain.function.FunctionToolbarSearch
 import com.eliezer.marvel_search_api.domain.listener.MyOnScrolledListener
 import com.eliezer.marvel_search_api.models.dataclass.Characters
@@ -86,7 +84,7 @@ class ComicDescriptionFunctionImplement (
         characters?.also {
             functionRepository.setListCharacters(characters)
             setAdapterCharacters(characters)
-            functionManagerBinding.setScrollPosition(myOnScrolledListener.position)
+            functionManagerBinding.setScrollPosition(myOnScrolledListener.positionBefore)
             functionManagerBinding.resetRecyclerView()
         }
         functionManagerViewModel.setNotObservesListCharacter(owner)

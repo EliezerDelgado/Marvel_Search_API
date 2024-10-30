@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     private var funImpl : MainActivityFunctionImplement? = null
     private val networkCallback = object : NetworkCallback() {
         override fun onAvailable(network: Network) {
+            getLocalUser()
         }
 
         override fun onLost(network: Network) {

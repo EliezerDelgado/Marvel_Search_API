@@ -1,11 +1,13 @@
 package com.eliezer.marvel_search_api.core.base
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import com.eliezer.marvel_search_api.domain.alert_dialogs.errorDialog
 
 open class BaseFragment<VB : ViewBinding>(private val bindingInflater: (layoutInflater: LayoutInflater) -> VB) : Fragment() {
 
@@ -26,8 +28,8 @@ open class BaseFragment<VB : ViewBinding>(private val bindingInflater: (layoutIn
         observeViewModels()
     }
 
-    private fun showError(throwable: Throwable?) {
-        //Todo con una ventana que sale mostrando el error con letras rojas ej: no se ha encontrado el servidor
+    private fun showError(throwable: Throwable) {
+        Log.e("***",throwable.message.toString(),throwable)
     }
 
     private fun observeViewModels()

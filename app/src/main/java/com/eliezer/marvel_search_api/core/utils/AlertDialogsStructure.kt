@@ -6,12 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.databinding.library.baseAdapters.BR
 import com.eliezer.marvel_search_api.R
-import com.eliezer.marvel_search_api.databinding.AlertDialogLoadingBinding
 import com.eliezer.marvel_search_api.databinding.AlertDialogMessageBinding
-import com.eliezer.marvel_search_api.databinding.AlertDialogUserInformationBinding
-import com.eliezer.marvel_search_api.models.dataclass.UserAccount
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 

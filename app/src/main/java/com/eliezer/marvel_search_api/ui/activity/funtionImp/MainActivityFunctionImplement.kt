@@ -42,14 +42,15 @@ class MainActivityFunctionImplement(
 
     fun setSubToolbarView(visibility: Boolean) = functionManagerBinding.setSubToolbarView(visibility)
     fun listeningChangesInUserAccount() {
-        functionLoadingManager.showLoadingDialog()
         functionManagerViewModel.setObservesUserAccount(owner, ::updateLocalDatabase)
     }
 
     private fun updateLocalDatabase(userAccount : UserAccount?) {
-        clearDatabase()
+        if(context.isInternetConnected)
+            clearDatabase()
     }
     private fun clearDatabase() {
+        functionLoadingManager.showLoadingDialog()
         functionManagerViewModel.setObservesIsCharactersDatabaseClear(owner,::updateCharacterDatabase)
         functionManagerViewModel.setObservesIsComicsDatabaseClear(owner,::updateComicDatabase)
         functionManagerViewModel.clearComicsList()

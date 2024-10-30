@@ -62,7 +62,7 @@ class ComicsRepositoryImpl @Inject constructor(
 
 
     override fun deleteComicInDatabase(vararg comic: Comic) {
-        Thread{
+        CoroutineScope(Dispatchers.IO).launch {
             comicDao?.delete(*comic)
         }.start()
     }

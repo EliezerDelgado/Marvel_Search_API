@@ -8,8 +8,8 @@ import com.eliezer.marvel_search_api.data.const.FAVORITE_ID
 import com.eliezer.marvel_search_api.data.const.SEARCH_ID
 import com.eliezer.marvel_search_api.data.mappers.mainActivity
 import com.eliezer.marvel_search_api.databinding.FragmentCharactersListBinding
-import com.eliezer.marvel_search_api.ui.fragments.character_list.functionImp.CharactersListFunctionImplement
 import com.eliezer.marvel_search_api.domain.function.FunctionManagerCharacterRepository
+import com.eliezer.marvel_search_api.ui.fragments.character_list.functionImp.CharactersListFunctionImplement
 import com.eliezer.marvel_search_api.ui.fragments.character_list.viewmodel.CharactersListViewModel
 import com.eliezer.marvel_search_api.ui.fragments.favorites.interfaces.FavoriteToolbarButtonsClickAction
 import dagger.hilt.android.AndroidEntryPoint

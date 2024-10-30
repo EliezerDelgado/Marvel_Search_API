@@ -10,9 +10,9 @@ import com.eliezer.marvel_search_api.core.base.BaseViewModel
 import com.eliezer.marvel_search_api.data.expand.isInternetConnected
 import com.eliezer.marvel_search_api.data.expand.registerNetworkCallback
 import com.eliezer.marvel_search_api.data.expand.unregisterNetworkCallback
-import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.eliezer.marvel_search_api.data.mappers.mainActivity
 import com.eliezer.marvel_search_api.databinding.FragmentMarvelSearchBinding
+import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.eliezer.marvel_search_api.models.dataclass.UserAccount
 import com.eliezer.marvel_search_api.ui.fragments.marvel_search.functionImp.MarvelSearchFunctionImplement
 import com.eliezer.marvel_search_api.ui.fragments.marvel_search.functionImp.function.MarvelSearchFunctionRepositoryManager

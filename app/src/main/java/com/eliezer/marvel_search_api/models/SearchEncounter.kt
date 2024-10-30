@@ -1,6 +1,12 @@
 package com.eliezer.marvel_search_api.models
 
-data class SearchEncounter(val id : Int, val length :Int, val numText : Int, val position : Int, val scrollPosition: Int?) {
+data class SearchEncounter(
+    val id : Int,
+    val length :Int,
+    val numText : Int,
+    val position : Int,
+    val scrollPosition: Int?
+) {
     override fun equals(other: Any?): Boolean {
         other as SearchEncounter
         return other.id == id && other.position ==position

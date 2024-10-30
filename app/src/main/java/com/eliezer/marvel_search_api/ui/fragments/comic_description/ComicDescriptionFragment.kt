@@ -10,8 +10,6 @@ import com.eliezer.marvel_search_api.data.mappers.mainActivity
 import com.eliezer.marvel_search_api.data.repository.characters.mock.GetCharactersRepository
 import com.eliezer.marvel_search_api.data.repository.characters.mock.SetCharactersRepository
 import com.eliezer.marvel_search_api.databinding.FragmentComicDescriptionBinding
-import com.eliezer.marvel_search_api.domain.function.FunctionManagerCharacterRepository
-import com.eliezer.marvel_search_api.domain.function.FunctionManagerComicRepository
 import com.eliezer.marvel_search_api.domain.listener.MyMenuProvider
 import com.eliezer.marvel_search_api.domain.listener.MyTextChangedListener
 import com.eliezer.marvel_search_api.ui.fragments.comic_description.functionImp.ComicDescriptionFunctionImplement

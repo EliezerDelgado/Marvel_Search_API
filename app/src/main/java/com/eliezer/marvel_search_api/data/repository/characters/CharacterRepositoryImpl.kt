@@ -51,7 +51,7 @@ class CharacterRepositoryImpl @Inject constructor(
     override fun setListCharacterInDatabase(characters: List<Character>) =  setCharacterInDatabaseFlow(*characters.toTypedArray())
 
     override fun deleteCharacterInDatabase(vararg character: Character) {
-        Thread{
+        CoroutineScope(Dispatchers.IO).launch {
             characterDao?.delete(*character)
         }.start()
     }

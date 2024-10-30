@@ -12,12 +12,12 @@ import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
 import com.eliezer.marvel_search_api.domain.alert_dialogs.errorDialog
 import com.eliezer.marvel_search_api.domain.alert_dialogs.warningDialog
 import com.eliezer.marvel_search_api.domain.function.FunctionLoadingManager
+import com.eliezer.marvel_search_api.domain.function.FunctionManagerComicRepository
 import com.eliezer.marvel_search_api.domain.listener.MyOnScrolledListener
 import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.eliezer.marvel_search_api.models.dataclass.Comic
 import com.eliezer.marvel_search_api.models.dataclass.Comics
 import com.eliezer.marvel_search_api.ui.fragments.character_list.CharactersListFragmentArgs
-import com.eliezer.marvel_search_api.domain.function.FunctionManagerComicRepository
 import com.eliezer.marvel_search_api.ui.fragments.comic_list.ComicsListFragmentArgs
 import com.eliezer.marvel_search_api.ui.fragments.comic_list.adapter.ComicsListAdapter
 import com.eliezer.marvel_search_api.ui.fragments.comic_list.viewmodel.ComicsListViewModel
@@ -120,7 +120,7 @@ class ComicsListFunctionImplement (
     }
 
     private fun setListComics(comics: Comics?) {
-        val position = myOnScrolledListener?.position
+        val position = myOnScrolledListener?.positionBefore
         comics?.also {
             functionManagerComicRepository.setListTmpCharacters(it)
             if (it.listComics.isNotEmpty())

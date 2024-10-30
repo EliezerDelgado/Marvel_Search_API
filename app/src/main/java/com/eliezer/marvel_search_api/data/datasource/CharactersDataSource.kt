@@ -1,8 +1,6 @@
 package com.eliezer.marvel_search_api.data.datasource
 
-import com.eliezer.marvel_search_api.models.dataclass.Character
 import com.eliezer.marvel_search_api.models.dataclass.Characters
-import com.eliezer.marvel_search_api.models.dataclass.Comic
 import kotlinx.coroutines.flow.Flow
 
 interface CharactersDataSource {

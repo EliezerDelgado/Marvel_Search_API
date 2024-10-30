@@ -1,11 +1,7 @@
 package com.eliezer.marvel_search_api.data.firebase.services
 
-import android.content.ContentValues.TAG
-import android.util.Log
 import com.eliezer.marvel_search_api.data.firebase.configuration.FireStoreConfiguration.usersCollection
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.QuerySnapshot
+import com.eliezer.marvel_search_api.data.firebase.structure.FireStoreUsersStructure
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -16,7 +12,7 @@ import javax.inject.Singleton
 class MyFireStoreSelects @Inject constructor() {
     fun getCharactersId(idUser : String) : Flow<Result<ArrayList<Int>>> = callbackFlow {
         usersCollection!!.also {
-            val docRef = it.document(idUser).collection("characters")
+            val docRef = it.document(idUser).collection(FireStoreUsersStructure.TABLE_CHARACTERS)
             docRef.get()
                 .addOnSuccessListener { result ->
                     trySend(
@@ -38,7 +34,7 @@ class MyFireStoreSelects @Inject constructor() {
 
     fun getComicsId(idUser : String) : Flow<Result<ArrayList<Int>>> =    callbackFlow {
             usersCollection!!.also {
-                val docRef = it.document(idUser).collection("comics")
+                val docRef = it.document(idUser).collection(FireStoreUsersStructure.TABLE_COMICS)
                 docRef.get()
                     .addOnSuccessListener { result ->
                         trySend(

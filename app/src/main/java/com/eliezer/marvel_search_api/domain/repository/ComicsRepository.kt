@@ -1,4 +1,5 @@
 package com.eliezer.marvel_search_api.domain.repository
+
 import com.eliezer.marvel_search_api.models.dataclass.Comic
 import com.eliezer.marvel_search_api.models.dataclass.Comics
 import kotlinx.coroutines.flow.Flow

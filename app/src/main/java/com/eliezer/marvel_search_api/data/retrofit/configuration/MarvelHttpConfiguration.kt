@@ -25,5 +25,6 @@ class MarvelHttpConfiguration @Inject constructor() {
         .client(buildClient())
         .build()
 
-    fun marvelHttpService(): ApiMarvelHttpService = buildRetrofit().create(ApiMarvelHttpService::class.java)
+    fun marvelHttpService(): ApiMarvelHttpService =
+        buildRetrofit().create(ApiMarvelHttpService::class.java)
 }

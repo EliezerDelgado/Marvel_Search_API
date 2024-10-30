@@ -1,6 +1,5 @@
 package com.eliezer.marvel_search_api.core.base
 
-import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

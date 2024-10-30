@@ -1,8 +1,6 @@
 package com.eliezer.marvel_search_api.ui.activity.viewmodel
 
 import com.eliezer.marvel_search_api.core.base.BaseViewModel
-import com.eliezer.marvel_search_api.domain.usecase.InsertCharactersInDatabaseUseCase
-import com.eliezer.marvel_search_api.domain.usecase.InsertComicsInDatabaseUseCase
 import com.eliezer.marvel_search_api.domain.viewmodel.CharactersDatabaseViewModel
 import com.eliezer.marvel_search_api.domain.viewmodel.CharactersViewModel
 import com.eliezer.marvel_search_api.domain.viewmodel.ComicsDatabaseViewModel
