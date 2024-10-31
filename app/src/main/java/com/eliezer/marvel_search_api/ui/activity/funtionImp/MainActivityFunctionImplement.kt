@@ -63,7 +63,7 @@ class MainActivityFunctionImplement(
             getIdComicsModeFavorite()
             getIdCharactersModeFavorite()
         }
-        else
+        else if(functionLoadingManager.isShowing())
             functionLoadingManager.stopLoading()
     }
     private fun updateCharacterDatabase(isClearDatabase : Boolean) {
@@ -73,7 +73,7 @@ class MainActivityFunctionImplement(
             getIdComicsModeFavorite()
             getIdCharactersModeFavorite()
         }
-        else
+        else if(functionLoadingManager.isShowing())
             functionLoadingManager.stopLoading()
     }
     //Comics
@@ -90,8 +90,14 @@ class MainActivityFunctionImplement(
 
     private fun setFavoriteListComicsInDatabase(comics: Comics) {
         functionManagerViewModel.setNoObservesListComics(owner)
-        functionManagerViewModel.setObservesInsertListComicsInDatabase(owner,::insertedComicsCompleted)
-        functionManagerViewModel.insertComicsListInDatabase(comics.listComics)
+        functionManagerViewModel.setObservesInsertListComicsInDatabase(
+            owner,
+            ::insertedComicsCompleted
+        )
+        CoroutineScope(Dispatchers.IO).launch {
+            comics.setImageComics()
+            functionManagerViewModel.insertComicsListInDatabase(comics.listComics)
+        }.start()
     }
 
     private fun insertedComicsCompleted(longs: List<Long>) {
@@ -116,7 +122,10 @@ class MainActivityFunctionImplement(
     private fun setFavoriteListCharactersInDatabase(characters: Characters) {
         functionManagerViewModel.setNoObservesListCharacters(owner)
         functionManagerViewModel.setObservesInsertListCharactersInDatabase(owner,::insertedCharactersCompleted)
-        functionManagerViewModel.insertCharactersListInDatabase(characters.listCharacters)
+        CoroutineScope(Dispatchers.IO).launch {
+            characters.setImageCharacters()
+            functionManagerViewModel.insertCharactersListInDatabase(characters.listCharacters)
+        }.start()
     }
 
     private fun insertedCharactersCompleted(longs: List<Long>) {
@@ -153,9 +162,13 @@ class MainActivityFunctionImplement(
         warningDialog(context,context.resources.getString(idError)).show()
     }
 
-    private fun createErrorLog(throwable: Throwable) =
-        Log.e("***",throwable.message,throwable)
+    private fun createErrorLog(throwable: Throwable) {
+        functionLoadingManager.stopLoading()
+        Log.e("***", throwable.message, throwable)
+    }
 
+    fun stopLoading()=
+        functionLoadingManager.stopLoading()
 
     fun stopErrorListener() {
         functionManagerViewModel.setNoObservesError(owner)
@@ -171,14 +184,16 @@ private class FunctionManagerBinding(
         binding.mainToolbar.bringToFront()
         binding.mainSubToolbar.bringToFront()
     }
-    fun setToolbarView(visibility : Boolean)
-    {
-        binding.mainToolbar.visibility = if(visibility) View.VISIBLE else View.GONE
-        getCoordinatorLayoutParams().behavior = if(visibility) AppBarLayout.ScrollingViewBehavior() else null
-        binding.mainSubToolbar.visibility = View.GONE
-        if(!visibility)
-            binding.mainCoordinatorLayout.requestLayout()
-    }
+    fun setToolbarView(visibility : Boolean) =
+        CoroutineScope(Dispatchers.Main).launch {
+            binding.mainToolbar.visibility = if (visibility) View.VISIBLE else View.GONE
+            getCoordinatorLayoutParams().behavior =
+                if (visibility) AppBarLayout.ScrollingViewBehavior() else null
+            binding.mainSubToolbar.visibility = View.GONE
+            if (!visibility)
+                binding.mainCoordinatorLayout.requestLayout()
+        }.start()
+
 
     fun setSubToolbarView(visibility: Boolean)
     {

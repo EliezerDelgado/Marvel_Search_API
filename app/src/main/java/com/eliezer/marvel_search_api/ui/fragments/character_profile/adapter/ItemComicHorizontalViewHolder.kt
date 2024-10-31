@@ -6,6 +6,7 @@ import com.eliezer.marvel_search_api.BR
 import com.eliezer.marvel_search_api.core.base.BaseItemViewHolder
 import com.eliezer.marvel_search_api.core.utils.colorText
 import com.eliezer.marvel_search_api.core.utils.loadImageFromWebOperations
+import com.eliezer.marvel_search_api.core.utils.toBitmap
 import com.eliezer.marvel_search_api.databinding.ItemComicHorizontalBinding
 import com.eliezer.marvel_search_api.domain.SearchTextResultUtils
 import com.eliezer.marvel_search_api.models.SearchTextResult
@@ -16,9 +17,13 @@ import kotlinx.coroutines.launch
 
 class ItemComicHorizontalViewHolder(override var binding: ItemComicHorizontalBinding) : BaseItemViewHolder<Comic>(binding = binding ) {
     override fun onBindMethodCalled(item: Comic) {
-        CoroutineScope(Dispatchers.IO).launch {
-            binding.setVariable(BR.img, loadImageFromWebOperations(item.urlPicture))
-        }.start()
+        item.image?.also {
+            binding.itemComicHorizontalImage.setImageBitmap(it.toBitmap())
+        }?: also {
+            CoroutineScope(Dispatchers.IO).launch {
+                binding.setVariable(BR.img, loadImageFromWebOperations(item.urlPicture))
+            }.start()
+        }
     }
     fun searchWord(idItem:Int,searchWord: String?,startPosition : Int) : SearchTextResult?{
         var searchTextResult : SearchTextResult?= null

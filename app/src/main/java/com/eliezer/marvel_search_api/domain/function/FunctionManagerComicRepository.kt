@@ -22,5 +22,5 @@ class FunctionManagerComicRepository @Inject constructor(
     fun deleteFavoriteComicInDatabase(vararg comic : Comic) = setComicsRepository.deleteInRoomDatabase(*comic)
     fun insertFavoriteComicFireStore(comicId : Int) = insertComic.insertFavoriteComic(comicId)
     fun deleteFavoriteComicFireStore(comicId : Int) = deleteComic.deleteFavoriteComic(comicId)
-    fun setListTmpCharacters(comics: Comics) = setComicsRepository.setListTmpComics(comics.search,comics)
+    fun setListTmpComics(comics: Comics) = setComicsRepository.setListTmpComics(comics.search,comics)
 }

@@ -165,25 +165,37 @@ class MarvelSearchFunctionImplement(
     private fun getSearchComics(comics: Comics)
     {
         functionManagerViewModel.setNoObservesSearchComics(owner)
-        if(comics.total > 0)
-            marvelSearchFunctionRepositoryManager.insertTmpComics(comics)
-        getSizeResultList(comics.total)
+        CoroutineScope(Dispatchers.IO).launch {
+            if (comics.total > 0) {
+                comics.setImageComics()
+                marvelSearchFunctionRepositoryManager.insertTmpComics(comics)
+            }
+            getSizeResultList(comics.total)
+        }
     }
+
     private fun getSearchCharacters(characters: Characters)
     {
-        marvelSearchFunctionRepositoryManager.insertTmpCharacters(characters)
         functionManagerViewModel.setNoObservesSearchCharacters(owner)
-        getSizeResultList(characters.total)
+        CoroutineScope(Dispatchers.IO).launch {
+            if(characters.total>0) {
+                characters.setImageCharacters()
+                marvelSearchFunctionRepositoryManager.insertTmpCharacters(characters)
+            }
+            getSizeResultList(characters.total)
+        }
     }
 
     private fun moveFragment() {
-        functionManagerBinding.apply {
-            when (nameButtonPulse) {
-                idMarvelSearchButtonGoComicsList() -> goComicsListFragment()
-                idMarvelSearchButtonGoCharacterList() -> goCharacterListFragment()
-                idMarvelSearchImageButtonGoFavorite() -> goFavoriteFragment()
+        CoroutineScope(Dispatchers.Main).launch {
+            functionManagerBinding.apply {
+                when (nameButtonPulse) {
+                    idMarvelSearchButtonGoComicsList() -> goComicsListFragment()
+                    idMarvelSearchButtonGoCharacterList() -> goCharacterListFragment()
+                    idMarvelSearchImageButtonGoFavorite() -> goFavoriteFragment()
+                }
+                resetNameButtonPulse()
             }
-            resetNameButtonPulse()
         }
     }
 
@@ -238,6 +250,9 @@ class MarvelSearchFunctionImplement(
             )
         }
     }
+
+    fun stopLoading()=
+        functionLoadingManager.stopLoading()
 
     fun stopErrorListener() {
         functionManagerViewModel.setNoObservesError(owner)

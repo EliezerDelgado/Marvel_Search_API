@@ -21,6 +21,9 @@ import com.eliezer.marvel_search_api.models.dataclass.Comic
 import com.eliezer.marvel_search_api.ui.fragments.comic_description.ComicDescriptionFragmentArgs
 import com.eliezer.marvel_search_api.ui.fragments.comic_description.adapter.ComicDescriptionCharacterListAdapter
 import com.eliezer.marvel_search_api.ui.fragments.comic_description.viewmodel.ComicDescriptionViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ComicDescriptionFunctionImplement (
     binding: FragmentComicDescriptionBinding,
@@ -43,7 +46,9 @@ class ComicDescriptionFunctionImplement (
     )
 
     override fun onScroll(position: Int) {
-        functionManagerBinding.setScrollPosition(position)
+        CoroutineScope(Dispatchers.Main).launch {
+            functionManagerBinding.setScrollPosition(position)
+        }.start()
     }
     fun setBindingVariable() {
         functionManagerBinding.setBindingVariable(functionRepository.comic!!)
@@ -81,14 +86,17 @@ class ComicDescriptionFunctionImplement (
     }
     private fun adapterCharacters(characters: Characters?)
     {
-        characters?.also {
-            functionRepository.setListCharacters(characters)
-            setAdapterCharacters(characters)
-            functionManagerBinding.setScrollPosition(myOnScrolledListener.positionBefore)
-            functionManagerBinding.resetRecyclerView()
-        }
         functionManagerViewModel.setNotObservesListCharacter(owner)
-        functionManagerBinding.recyclerViewComicsAddScrollListener(myOnScrolledListener)
+        CoroutineScope(Dispatchers.IO).launch {
+            characters?.also {
+                it.setImageCharacters()
+                functionRepository.setListTmpCharacters(it)
+                setAdapterCharacters(it)
+                functionManagerBinding.setScrollPosition(myOnScrolledListener.positionBefore)
+                functionManagerBinding.resetRecyclerView()
+            }
+            functionManagerBinding.recyclerViewComicsAddScrollListener(myOnScrolledListener)
+        }.start()
     }
     private fun getCharactersRepository() : Boolean
     {
@@ -206,22 +214,24 @@ private class FunctionManagerBinding(
     {
         binding.comicDescriptionRecyclerViewCharacters.addOnScrollListener(myOnScrolledListener)
     }
-    fun comicsTitleSetVisible()
-    {
+    fun comicsTitleSetVisible()=
+    CoroutineScope(Dispatchers.Main).launch {
         binding.comicDescriptionTextViewComicsTitle.visibility = View.VISIBLE
-    }
+    }.start()
 
-    fun resetRecyclerView() {
-        binding.comicDescriptionRecyclerViewCharacters.requestLayout()
-    }
+    fun resetRecyclerView() =
+        CoroutineScope(Dispatchers.Main).launch {
+            binding.comicDescriptionRecyclerViewCharacters.requestLayout()
+         }.start()
 
     fun setAdapterBinding(adapter: ComicDescriptionCharacterListAdapter) {
         binding.comicDescriptionRecyclerViewCharacters.setHasFixedSize(true)
         binding.comicDescriptionRecyclerViewCharacters.adapter = adapter
     }
-    fun setScrollPosition(position: Int) {
-        binding.comicDescriptionRecyclerViewCharacters.scrollToPosition(position)
-    }
+    fun setScrollPosition(position: Int) =
+        CoroutineScope(Dispatchers.Main).launch {
+            binding.comicDescriptionRecyclerViewCharacters.scrollToPosition(position)
+        }.start()
 }
 private class FunctionRepository(
     private val getCharactersRepository: GetCharactersRepository,
@@ -236,7 +246,7 @@ private class FunctionRepository(
     fun getListCharacters(): Characters?=
         getCharactersRepository.getListRepository(comic?.id.toString())
 
-    fun  setListCharacters(characters: Characters)  =
+    fun  setListTmpCharacters(characters: Characters)  =
         setCharactersRepository.setListTmpCharacters(characters.search,characters)
 }
 

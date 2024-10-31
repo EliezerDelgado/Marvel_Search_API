@@ -6,6 +6,9 @@ import com.eliezer.marvel_search_api.domain.listener.MyOnTabSelectedListened
 import com.eliezer.marvel_search_api.ui.fragments.favorites.adapter.FavoritesPagerAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class FavoritesFunctionImplement(binding: FragmentFavoritesBinding,pagerAdapter: FavoritesPagerAdapter) {
     private val functionPagerAdapter= FunctionPagerAdapter(binding,pagerAdapter)
@@ -31,11 +34,12 @@ private  class FunctionPagerAdapter(
         binding.favoritesViewpager2.setAdapter(pagerAdapter)
     }
 
-    fun createTabLayout(myOnTabSelectedListened :MyOnTabSelectedListened) {
-        tabLayoutMediator()
-        setTabLayout(myOnTabSelectedListened)
-        binding.favoritesTabLayout.requestLayout()
-    }
+    fun createTabLayout(myOnTabSelectedListened :MyOnTabSelectedListened) =
+        CoroutineScope(Dispatchers.Main).launch {
+            tabLayoutMediator()
+            setTabLayout(myOnTabSelectedListened)
+            binding.favoritesTabLayout.requestLayout()
+        }.start()
 
     private fun setTabLayout(myOnTabSelectedListened :MyOnTabSelectedListened) {
         binding.favoritesTabLayout.addOnTabSelectedListener(

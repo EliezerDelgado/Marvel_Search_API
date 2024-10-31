@@ -82,14 +82,17 @@ class CharacterProfileFunctionImplement(
     }
     private fun adapterComics(comics: Comics?)
     {
-        comics?.also {
-            functionRepository.setListComics(it)
-            setAdapterComics(it)
-            functionManagerBinding.setScrollPosition(myOnScrolledListener.positionBefore)
-            functionManagerBinding.resetRecyclerView()
-        }
         functionManagerViewModel.setNotObservesLitComic(owner)
-        functionManagerBinding.recyclerViewComicsAddScrollListener(myOnScrolledListener)
+        CoroutineScope(Dispatchers.IO).launch {
+            comics?.also {
+                it.setImageComics()
+                functionRepository.setListTmpComics(it)
+                setAdapterComics(it)
+                functionManagerBinding.setScrollPosition(myOnScrolledListener.positionBefore)
+                functionManagerBinding.resetRecyclerView()
+            }
+            functionManagerBinding.recyclerViewComicsAddScrollListener(myOnScrolledListener)
+        }.start()
     }
     private fun getComicsRepository() : Boolean
     {
@@ -191,22 +194,24 @@ private class FunctionManagerBinding(
     {
         binding.characterProfileRecyclerViewComics.addOnScrollListener(myOnScrolledListener)
     }
-    fun comicsTitleSetVisible()
-    {
-        binding.characterProfileTextViewComicsTitle.visibility = View.VISIBLE
-    }
+    fun comicsTitleSetVisible() =
+        CoroutineScope(Dispatchers.Main).launch {
+            binding.characterProfileTextViewComicsTitle.visibility = View.VISIBLE
+        }.start()
 
-    fun resetRecyclerView() {
-        binding.characterProfileRecyclerViewComics.requestLayout()
-    }
+    fun resetRecyclerView()  =
+        CoroutineScope(Dispatchers.Main).launch {
+            binding.characterProfileRecyclerViewComics.requestLayout()
+        }.start()
 
     fun setAdapter(adapter: CharacterProfileComicsListAdapter) {
         binding.characterProfileRecyclerViewComics.setHasFixedSize(true)
         binding.characterProfileRecyclerViewComics.adapter = adapter
     }
-    fun setScrollPosition(position: Int) {
-        binding.characterProfileRecyclerViewComics.scrollToPosition(position)
-    }
+    fun setScrollPosition(position: Int)  =
+        CoroutineScope(Dispatchers.Main).launch {
+            binding.characterProfileRecyclerViewComics.scrollToPosition(position)
+        }.start()
 }
 private class FunctionRepository(
     private val getComicsRepository : GetComicsRepository,
@@ -221,6 +226,6 @@ private class FunctionRepository(
     fun getListComics(): Comics?=
         getComicsRepository.getListRepository(character?.id.toString())
 
-    fun setListComics(comics: Comics)=
+    fun setListTmpComics(comics: Comics)=
         setComicsRepository.setListTmpComics(comics.search,comics)
 }

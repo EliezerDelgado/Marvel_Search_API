@@ -20,6 +20,9 @@ import com.eliezer.marvel_search_api.models.dataclass.Characters
 import com.eliezer.marvel_search_api.ui.fragments.character_list.CharactersListFragmentArgs
 import com.eliezer.marvel_search_api.ui.fragments.character_list.adapter.CharactersListAdapter
 import com.eliezer.marvel_search_api.ui.fragments.character_list.viewmodel.CharactersListViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class CharactersListFunctionImplement(
     binding: FragmentCharactersListBinding,
@@ -116,18 +119,22 @@ class CharactersListFunctionImplement(
 
     private fun setListCharacters(characters: Characters?) {
         val position = myOnScrolledListener?.positionBefore
-        characters?.also {
-            functionManagerCharacterRepository.setListTmpCharacters(it)
-            if (it.listCharacters.isNotEmpty())
-                functionManagerRecyclerAdapter.adapter?.addCharacters(it.listCharacters)
-        }
-        myOnScrolledListener?.also { functionManagerBinding.resetRecyclerView(it)}
         functionManagerViewModel.setListCharactersNoObservesVM(owner)
-        position?.also { functionManagerBinding.recyclerViewCharactersScrollToPosition(it)}
-        if(functionLoadingManager.isShowing())
-            functionLoadingManager.stopLoading()
+        CoroutineScope(Dispatchers.IO).launch {
+            characters?.also {
+                if (it.listCharacters.isNotEmpty()) {
+                    functionManagerCharacterRepository.setListTmpCharacters(it)
+                    functionManagerRecyclerAdapter.adapter?.addCharacters(it.listCharacters)
+                }
+            }
+            myOnScrolledListener?.also { functionManagerBinding.resetRecyclerView(it) }
+            position?.also {
+                functionManagerBinding.recyclerViewCharactersScrollToPosition(it)
+            }
+            if (functionLoadingManager.isShowing())
+                functionLoadingManager.stopLoading()
+        }.start()
     }
-
     private fun setFavoriteListCharacters(characters: Characters?) {
         functionManagerViewModel.setListCharactersNoObservesVM(owner)
         setCharacterFavorite(characters)
@@ -173,9 +180,14 @@ class CharactersListFunctionImplement(
             setObservesCharactersViewModelError(owner, ::createErrorLog)
         }
 
-    private fun createErrorLog(throwable: Throwable) =
+    private fun createErrorLog(throwable: Throwable) {
+        functionLoadingManager.stopLoading()
         Log.e("***",throwable.message,throwable)
+    }
 
+
+    fun stopLoading()=
+        functionLoadingManager.stopLoading()
 
     fun stopErrorListener() =
         functionManagerViewModel.setNoObservesCharactersViewModelError(owner)
@@ -194,10 +206,11 @@ private class FunctionManagerBinding(
     private val binding: FragmentCharactersListBinding,
 )
 {
-    fun setAdapter(adapter: CharactersListAdapter) {
+    fun setAdapter(adapter: CharactersListAdapter)  =
+    CoroutineScope(Dispatchers.Main).launch {
         binding.charactersListRecyclerView.setHasFixedSize(true)
         binding.charactersListRecyclerView.adapter = adapter
-    }
+    }.start()
     fun recyclerViewCharactersAddScrollListener(myOnScrolledListener: MyOnScrolledListener) =
         binding.charactersListRecyclerView.addOnScrollListener(myOnScrolledListener)
 
@@ -205,7 +218,9 @@ private class FunctionManagerBinding(
         binding.charactersListRecyclerView.removeOnScrollListener(myOnScrolledListener)
 
     fun recyclerViewCharactersScrollToPosition(position : Int)=
+    CoroutineScope(Dispatchers.Main).launch {
         binding.charactersListRecyclerView.scrollToPosition(position)
+    }.start()
 
     fun resetRecyclerView(myOnScrolledListener: MyOnScrolledListener) =
         binding.charactersListRecyclerView.addOnScrollListener(myOnScrolledListener)

@@ -73,6 +73,7 @@ class CharactersListFragment :
 
     override fun onDestroyView() {
         super.onDestroyView()
+        funImpl?.stopLoading()
         funImpl?.stopErrorListener()
         funImpl = null
     }

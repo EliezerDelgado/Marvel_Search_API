@@ -106,6 +106,7 @@ class MarvelSearchFragment : BaseFragment<FragmentMarvelSearchBinding>(
     override fun onDestroyView() {
         super.onDestroyView()
         requireContext().unregisterNetworkCallback(networkCallback)
+        funImpl?.stopLoading()
         funImpl?.stopErrorListener()
         funImpl = null
     }

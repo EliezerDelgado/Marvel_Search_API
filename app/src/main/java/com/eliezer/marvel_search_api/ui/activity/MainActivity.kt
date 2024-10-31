@@ -11,6 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.eliezer.marvel_search_api.data.expand.registerNetworkCallback
 import com.eliezer.marvel_search_api.databinding.ActivityMainBinding
 import com.eliezer.marvel_search_api.domain.actions.NavigationMainActions
+import com.eliezer.marvel_search_api.domain.local_property.LocalAccount
 import com.eliezer.marvel_search_api.ui.activity.funtionImp.MainActivityFunctionImplement
 import com.eliezer.marvel_search_api.ui.activity.viewmodel.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,7 +26,8 @@ class MainActivity : AppCompatActivity() {
     private var funImpl : MainActivityFunctionImplement? = null
     private val networkCallback = object : NetworkCallback() {
         override fun onAvailable(network: Network) {
-            getLocalUser()
+            if(LocalAccount.userAccount.value == null)
+                getLocalUser()
         }
 
         override fun onLost(network: Network) {
@@ -82,6 +84,7 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         _navigationMainActions = null
+        funImpl?.stopLoading()
         funImpl?.stopErrorListener()
         funImpl = null
         binding = null

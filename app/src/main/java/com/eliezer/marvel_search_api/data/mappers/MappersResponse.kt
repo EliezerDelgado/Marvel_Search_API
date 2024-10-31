@@ -16,6 +16,7 @@ fun CharacterDataContainer.mapToListCharacter() : Characters = Characters(
         Character(
             id = it.id?: -1,
             name = it.name ?: "",
+            image = null,
             urlPicture = it.thumbnail?.path + "." + it.thumbnail?.extension,
             description = it.description?: ""
         )
@@ -27,6 +28,7 @@ fun ComicDataContainer.mapToListComic() :Comics = Comics(
         Comic(
             id = it.id?: -1,
             title = it.title ?: "",
+            image = null,
             urlPicture = it.thumbnail?.path + "." + it.thumbnail?.extension,
             description = it.description ?: ""
         )

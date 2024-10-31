@@ -9,7 +9,7 @@ import androidx.room.TypeConverter
 class MarvelLocalDatabaseConverter {
     @SuppressLint("Recycle")
     @TypeConverter
-    fun bundlesToBase64(bundle: Bundle) : ByteArray
+    fun bundlesToArrayBytes(bundle: Bundle) : ByteArray
     {
         val parcel = Parcel.obtain() //creating empty parcel object
         parcel.writeBundle(bundle) //saving bundle as parcel
@@ -17,11 +17,11 @@ class MarvelLocalDatabaseConverter {
         return byteArray
     }
     @TypeConverter
-    fun base64ToBundle(arrayBytes: ByteArray) : Bundle
+    fun arrayBytesToBundle(arrayBytes: ByteArray) : Bundle
     {
         val parcel = Parcel.obtain() //creating empty parcel object
-        parcel.unmarshall(arrayBytes, 0, arrayBytes.size);
-        parcel.setDataPosition(0);
+        parcel.unmarshall(arrayBytes, 0, arrayBytes.size)
+        parcel.setDataPosition(0)
         val bundle = Bundle.CREATOR.createFromParcel(parcel)
         parcel.recycle()
         return bundle
