@@ -14,6 +14,7 @@ import com.eliezer.marvel_search_api.data.repository.characters.mock.SetCharacte
 import com.eliezer.marvel_search_api.databinding.FragmentComicDescriptionBinding
 import com.eliezer.marvel_search_api.domain.alert_dialogs.errorDialog
 import com.eliezer.marvel_search_api.domain.alert_dialogs.warningDialog
+import com.eliezer.marvel_search_api.domain.function.FunctionLoadingManager
 import com.eliezer.marvel_search_api.domain.function.FunctionToolbarSearch
 import com.eliezer.marvel_search_api.domain.listener.MyOnScrolledListener
 import com.eliezer.marvel_search_api.models.dataclass.Characters
@@ -44,6 +45,7 @@ class ComicDescriptionFunctionImplement (
         functionManagerRecyclerAdapter.adapter,
         binding.comicDescriptionRecyclerViewCharacters
     )
+    private val functionLoadingManager = FunctionLoadingManager(context)
 
     override fun onScroll(position: Int) {
         CoroutineScope(Dispatchers.Main).launch {
@@ -63,6 +65,7 @@ class ComicDescriptionFunctionImplement (
         if(!getCharactersRepository())
         {
             functionManagerViewModel.setObservesListCharacter(owner,::adapterCharacters)
+            functionLoadingManager.showLoadingDialog()
             functionRepository.comic?.also { functionManagerViewModel.searchCharacters(it)}
         }
     }
@@ -96,8 +99,10 @@ class ComicDescriptionFunctionImplement (
                 functionManagerBinding.resetRecyclerView()
             }
             functionManagerBinding.recyclerViewComicsAddScrollListener(myOnScrolledListener)
+            functionLoadingManager.stopLoading()
         }.start()
     }
+
     private fun getCharactersRepository() : Boolean
     {
         val characters =functionRepository.getListCharacters()
@@ -135,6 +140,9 @@ class ComicDescriptionFunctionImplement (
         }
     private fun createErrorLog(throwable: Throwable) =
         Log.e("***",throwable.message,throwable)
+
+    fun stopLoading()=
+        functionLoadingManager.stopLoading()
 
     fun stopErrorListener() =
         functionManagerViewModel.setNoObservesCharactersViewModelError(owner)

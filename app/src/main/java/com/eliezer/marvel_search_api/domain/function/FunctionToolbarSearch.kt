@@ -100,7 +100,6 @@ class FunctionToolbarSearch(private var textViews : ArrayList<TextView>,
             if(encounter.size>0)
                 encounter[numLine].apply {
                     val sc  = scrollPosition  ?: 0
-                    val s  =   100  + (scrollPosition ?: 0)
                     scrollView.scrollTo(0,sc)
                 }
         }

@@ -1,5 +1,6 @@
 package com.eliezer.marvel_search_api.ui.fragments.character_profile.functionImp
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -10,6 +11,7 @@ import com.eliezer.marvel_search_api.core.utils.loadImageFromWebOperations
 import com.eliezer.marvel_search_api.data.repository.comics.mock.GetComicsRepository
 import com.eliezer.marvel_search_api.data.repository.comics.mock.SetComicsRepository
 import com.eliezer.marvel_search_api.databinding.FragmentCharacterProfileBinding
+import com.eliezer.marvel_search_api.domain.function.FunctionLoadingManager
 import com.eliezer.marvel_search_api.domain.function.FunctionToolbarSearch
 import com.eliezer.marvel_search_api.domain.listener.MyOnScrolledListener
 import com.eliezer.marvel_search_api.models.dataclass.Character
@@ -26,7 +28,8 @@ class CharacterProfileFunctionImplement(
     viewModel: CharacterProfileViewModel,
     getComicsRepository : GetComicsRepository,
     setComicsRepository: SetComicsRepository,
-    private val owner : LifecycleOwner
+    private val owner : LifecycleOwner,
+    private val context: Context
 ) : CharacterProfileComicsListAdapter.CharacterProfileComicHolderListener{
     private val myOnScrolledListener = MyOnScrolledListener {
         getListComics()
@@ -41,6 +44,7 @@ class CharacterProfileFunctionImplement(
         functionManagerRecyclerAdapter.adapter,
         binding.characterProfileRecyclerViewComics
     )
+    private val functionLoadingManager = FunctionLoadingManager(context)
 
     override fun onScroll(position: Int) {
         functionManagerBinding.setScrollPosition(position)
@@ -59,6 +63,7 @@ class CharacterProfileFunctionImplement(
         if(!getComicsRepository())
         {
             functionManagerViewModel.setObservesListComic(owner,::adapterComics)
+            functionLoadingManager.showLoadingDialog()
             functionRepository.character?.also { (functionManagerViewModel.searchComics(it))}
         }
     }
@@ -92,6 +97,7 @@ class CharacterProfileFunctionImplement(
                 functionManagerBinding.resetRecyclerView()
             }
             functionManagerBinding.recyclerViewComicsAddScrollListener(myOnScrolledListener)
+            functionLoadingManager.stopLoading()
         }.start()
     }
     private fun getComicsRepository() : Boolean
@@ -126,6 +132,9 @@ class CharacterProfileFunctionImplement(
         }
     private fun createErrorLog(throwable: Throwable) =
         Log.e("***",throwable.message,throwable)
+
+    fun stopLoading()=
+        functionLoadingManager.stopLoading()
 
     fun stopErrorListener() =
         functionManagerViewModel.setNoObservesCharactersViewModelError(owner)

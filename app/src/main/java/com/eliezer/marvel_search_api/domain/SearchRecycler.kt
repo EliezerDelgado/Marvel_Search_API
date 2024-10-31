@@ -10,7 +10,7 @@ class SearchRecycler {
     else
         0
     var index = -1
-    val isInLastPosition get() = itemsContainText.size-1 == index
+    val isInLastPosition get() = itemsContainText.size - 1 == index
     val  isInFirstPosition get() = 0 == index
     val  isNotSetPosition get() = -1 == index
 

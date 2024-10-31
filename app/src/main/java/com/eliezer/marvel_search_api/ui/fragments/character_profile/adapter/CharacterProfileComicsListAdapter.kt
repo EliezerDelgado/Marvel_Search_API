@@ -62,8 +62,10 @@ class CharacterProfileComicsListAdapter(items : ArrayList<Comic>,private val lis
     }
     private fun doScroll()
     {
-        val position = getPositionItem(searchRecycler.itemsContainText[searchRecycler.index].id)
-        listener?.onScroll(position)
+        if(searchRecycler.itemsContainText.isNotEmpty()) {
+            val position = getPositionItem(searchRecycler.itemsContainText[searchRecycler.index].id)
+            listener?.onScroll(position)
+        }
     }
 
     override fun setViewHolder(inflater: LayoutInflater): ItemComicHorizontalViewHolder {

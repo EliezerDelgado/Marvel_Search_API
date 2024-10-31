@@ -61,7 +61,8 @@ class CharacterProfileFragment :
             viewModel = comicsListViewModel,
             getComicsRepository = getComicsRepository,
             setComicsRepository = setComicsRepository,
-            owner = this
+            owner = this,
+            context = requireContext()
         )
         funImpl?.errorListener()
         funImpl?.getIntentExtras(requireArguments())
@@ -98,6 +99,7 @@ class CharacterProfileFragment :
         mainActivity(requireActivity()).getToolBar()?.removeMenuProvider(myToolbarMenuProvider)
         mainActivity(requireActivity()).getSubToolBar()?.removeMenuProvider(mySubToolbarMenuProvider)
         super.onDestroyView()
+        funImpl?.stopLoading()
         funImpl?.stopErrorListener()
         funImpl = null
     }

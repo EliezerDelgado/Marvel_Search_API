@@ -103,6 +103,7 @@ class ComicDescriptionFragment :
         mainActivity(requireActivity()).getToolBar()?.removeMenuProvider(myToolbarMenuProvider)
         mainActivity(requireActivity()).getSubToolBar()?.removeMenuProvider(mySubToolbarMenuProvider)
         super.onDestroyView()
+        funImpl?.stopLoading()
         funImpl?.stopErrorListener()
         funImpl = null
     }
