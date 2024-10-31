@@ -51,6 +51,10 @@ class ComicsListAdapter (items : ArrayList<Comic>,private val listener : ComicHo
                 comic.favorite = true
                 update(items.indexOf(comic),items.indexOf(comic)+1)
             }
+            else if (comic.favorite) {
+                comic.favorite = false
+                update(items.indexOf(comic),items.indexOf(comic)+1)
+            }
         }
     }
     fun setFavoriteComic(comic: Comic) {

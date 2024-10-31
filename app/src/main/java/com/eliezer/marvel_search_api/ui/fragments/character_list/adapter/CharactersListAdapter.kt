@@ -50,6 +50,11 @@ class CharactersListAdapter(items : ArrayList<Character>,private val listener : 
                 character.favorite = true
                 update(items.indexOf(character),items.indexOf(character)+1)
             }
+            else if( character.favorite)
+            {
+                character.favorite = false
+                update(items.indexOf(character),items.indexOf(character)+1)
+            }
         }
     }
     fun setFavoriteCharacter(character: Character) {
