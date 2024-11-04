@@ -98,6 +98,7 @@ class CharacterProfileFragment :
     override fun onDestroyView() {
         mainActivity(requireActivity()).getToolBar()?.removeMenuProvider(myToolbarMenuProvider)
         mainActivity(requireActivity()).getSubToolBar()?.removeMenuProvider(mySubToolbarMenuProvider)
+        mainActivity(requireActivity()).setToolbarView(false)
         super.onDestroyView()
         funImpl?.stopLoading()
         funImpl?.stopErrorListener()

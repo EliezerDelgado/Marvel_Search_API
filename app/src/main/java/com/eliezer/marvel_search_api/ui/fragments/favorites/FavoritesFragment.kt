@@ -54,6 +54,7 @@ class FavoritesFragment :  BaseFragment<FragmentFavoritesBinding>(
     override fun onDestroyView() {
         super.onDestroyView()
         mainActivity(requireActivity()).getToolBar()?.removeMenuProvider(myToolbarMenuProvider)
+        mainActivity(requireActivity()).setToolbarView(false)
         funImpl = null
         pagerAdapter=null
     }

@@ -183,7 +183,7 @@ class MarvelSearchFunctionImplement(
                 marvelSearchFunctionRepositoryManager.insertTmpCharacters(characters)
             }
             getSizeResultList(characters.total)
-        }
+        }.start()
     }
 
     private fun moveFragment() {
@@ -297,14 +297,16 @@ private class FunctionManagerViewModel(
     fun setNoObservesSearchComics(owner: LifecycleOwner)
     {
         viewModel.comicsViewModel.comics.removeObservers(owner)
+        viewModel.comicsViewModel.resetComics()
     }
     fun setObservesSearchCharacters(owner: LifecycleOwner,observe : (Characters)->(Unit))
     {
-        viewModel.charactersViewModel.characters.observe(owner,observe)
+        viewModel.charactersViewModel.characters.observe(owner, observe)
     }
     fun setNoObservesSearchCharacters(owner: LifecycleOwner)
     {
         viewModel.charactersViewModel.characters.removeObservers(owner)
+        viewModel.charactersViewModel.resetCharacters()
     }
 
     fun setObservesCharactersViewModelError(owner: LifecycleOwner,observe: ((Throwable)->(Unit))) =
