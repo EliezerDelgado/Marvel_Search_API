@@ -5,15 +5,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
-import androidx.annotation.StringRes
 import androidx.lifecycle.LifecycleOwner
 import com.eliezer.marvel_search_api.BR
 import com.eliezer.marvel_search_api.core.utils.loadImageFromWebOperations
 import com.eliezer.marvel_search_api.data.repository.characters.mock.GetCharactersRepository
 import com.eliezer.marvel_search_api.data.repository.characters.mock.SetCharactersRepository
 import com.eliezer.marvel_search_api.databinding.FragmentComicDescriptionBinding
-import com.eliezer.marvel_search_api.domain.alert_dialogs.errorDialog
-import com.eliezer.marvel_search_api.domain.alert_dialogs.warningDialog
 import com.eliezer.marvel_search_api.domain.function.FunctionLoadingManager
 import com.eliezer.marvel_search_api.domain.function.FunctionToolbarSearch
 import com.eliezer.marvel_search_api.domain.listener.MyOnScrolledListener
@@ -146,14 +143,6 @@ class ComicDescriptionFunctionImplement (
 
     fun stopErrorListener() =
         functionManagerViewModel.setNoObservesCharactersViewModelError(owner)
-
-
-    private fun showError(@StringRes idError: Int) {
-        errorDialog(context,context.resources.getString(idError)).show()
-    }
-    private fun showWarning(@StringRes idError: Int) {
-        warningDialog(context,context.resources.getString(idError)).show()
-    }
 }
 
 private class FunctionManagerViewModel(

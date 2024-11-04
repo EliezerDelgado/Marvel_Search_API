@@ -193,12 +193,15 @@ class CharactersListFunctionImplement(
         functionManagerViewModel.setNoObservesCharactersViewModelError(owner)
 
 
-    private fun showError(@StringRes idError: Int) {
-        errorDialog(context,context.resources.getString(idError)).show()
-    }
-    private fun showWarning(@StringRes idError: Int) {
-        warningDialog(context,context.resources.getString(idError)).show()
-    }
+    private fun showError(@StringRes idError: Int) =
+        CoroutineScope(Dispatchers.Main).launch {
+            errorDialog(context,context.resources.getString(idError)).show()
+        }.start()
+
+    private fun showWarning(@StringRes idError: Int) =
+        CoroutineScope(Dispatchers.Main).launch {
+            warningDialog(context,context.resources.getString(idError)).show()
+        }.start()
 
 }
 

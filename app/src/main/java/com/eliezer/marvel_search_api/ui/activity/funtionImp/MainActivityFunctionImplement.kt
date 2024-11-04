@@ -158,9 +158,11 @@ class MainActivityFunctionImplement(
         showWarning(R.string.warning_not_network)
     }
 
-    private fun showWarning(@StringRes idError: Int) {
-        warningDialog(context,context.resources.getString(idError)).show()
-    }
+    private fun showWarning(@StringRes idError: Int) =
+        CoroutineScope(Dispatchers.Main).launch {
+            warningDialog(context, context.resources.getString(idError)).show()
+        }.start()
+
 
     private fun createErrorLog(throwable: Throwable) {
         functionLoadingManager.stopLoading()
