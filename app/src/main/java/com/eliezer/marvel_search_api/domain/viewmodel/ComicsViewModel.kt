@@ -36,7 +36,6 @@ class ComicsViewModel @Inject constructor(
                     .onCompletion { _loading.value = false }
                     .catch {
                         _error.value = it
-                        _userErrorMessage.value = R.string.error_empty_search
                     }
                     .collect {
                         it.search = title

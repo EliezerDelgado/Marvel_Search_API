@@ -242,6 +242,7 @@ class MarvelSearchFunctionImplement(
                 ::showErrorToUser
             )
         }
+        if(functionLoadingManager.isShowing()) functionLoadingManager.stopLoading()
     }
 
     private fun internalErrorListener() {
