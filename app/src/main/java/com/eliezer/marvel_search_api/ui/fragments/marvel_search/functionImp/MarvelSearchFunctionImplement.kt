@@ -266,6 +266,8 @@ class MarvelSearchFunctionImplement(
     private fun showErrorToUser(@StringRes idString: Int) {
         functionLoadingManager.stopLoading()
         showError(idString)
+        enableSearchButtons()
+        enableGoogleButtons()
     }
 
     private fun createErrorLog(throwable: Throwable) {
