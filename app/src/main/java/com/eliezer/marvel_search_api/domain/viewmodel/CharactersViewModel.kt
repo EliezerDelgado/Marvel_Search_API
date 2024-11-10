@@ -29,19 +29,21 @@ class CharactersViewModel @Inject constructor(
     val characters: LiveData<Characters> get() = _characters
 
     fun searchCharactersList(name: String) {
-        viewModelScope.launch {
-            getListCharactersByNameUseCase.invoke(name)
-                .onStart { _loading.value = true }
-                .onCompletion { _loading.value = false }
-                .catch {
-                    _error.value = it
-                    _userErrorMessage.value = R.string.error_empty_search
-                }
-                .collect {
-                    it.search = name
-                    _characters.value = it
-                }
-        }
+        if(name.isEmpty())
+            _userErrorMessage.value = R.string.error_empty_search
+        else
+            viewModelScope.launch {
+                getListCharactersByNameUseCase.invoke(name)
+                    .onStart { _loading.value = true }
+                    .onCompletion { _loading.value = false }
+                    .catch {
+                        _error.value = it
+                    }
+                    .collect {
+                      it.search = name
+                      _characters.value = it
+                    }
+            }
     }
 
     fun searchCharactersList(comicId: Int) {
