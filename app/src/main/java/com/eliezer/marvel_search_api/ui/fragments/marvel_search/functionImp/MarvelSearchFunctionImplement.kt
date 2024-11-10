@@ -105,8 +105,8 @@ class MarvelSearchFunctionImplement(
     private fun searchListComics(title: String) {
         disableSearchButtons()
         disableGoogleButtons()
-        functionManagerViewModel.searchComicsList(title)
         functionLoadingManager.showLoadingDialog()
+        functionManagerViewModel.searchComicsList(title)
     }
 
     fun disableSearchButtons() =
@@ -264,7 +264,7 @@ class MarvelSearchFunctionImplement(
     }
 
     private fun showErrorToUser(@StringRes idString: Int) {
-        if(functionLoadingManager.isShowing()) functionLoadingManager.stopLoading()
+        functionLoadingManager.stopLoading()
         showError(idString)
     }
 

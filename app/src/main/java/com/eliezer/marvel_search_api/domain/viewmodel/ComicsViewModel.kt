@@ -27,20 +27,20 @@ class ComicsViewModel @Inject constructor(
     val comics: LiveData<Comics> get() = _comics
 
     fun searchComicsList(title: String) {
-        if(title.isEmpty())
-            _userErrorMessage.value = R.string.error_empty_search
-        else
             viewModelScope.launch {
-                getListComicsByTitleUseCase.invoke(title)
-                    .onStart { _loading.value = true }
-                    .onCompletion { _loading.value = false }
-                    .catch {
-                        _error.value = it
-                    }
-                    .collect {
-                        it.search = title
-                        _comics.value = it
-                    }
+                if(title.isEmpty())
+                    _userErrorMessage.value = R.string.error_empty_search
+                else
+                    getListComicsByTitleUseCase.invoke(title)
+                        .onStart { _loading.value = true }
+                        .onCompletion { _loading.value = false }
+                        .catch {
+                            _error.value = it
+                        }
+                        .collect {
+                            it.search = title
+                            _comics.value = it
+                        }
             }
     }
 

@@ -8,21 +8,29 @@ import kotlinx.coroutines.launch
 
 class FunctionLoadingManager(context: Context) {
     private var  operationsComplete  = 0
+    private var pendingCancel = false
     private val loadingDialog =  loadingDialog(context)
     fun sumOperationsComplete(valor : Int){
         operationsComplete += valor
     }
     fun  showLoadingDialog() =
         CoroutineScope(Dispatchers.Main).launch {
-            loadingDialog.show()
+            if(!pendingCancel)
+                loadingDialog.show()
+            pendingCancel = false
         }.start()
 
     fun stopLoading(condition: Int) {
         if(operationsComplete == condition)
             loadingDialog.cancel()
     }
-    fun stopLoading() =
+    fun stopLoading() {
+        if(loadingDialog.isShowing)
             loadingDialog.cancel()
+        else
+            pendingCancel = true
+    }
 
-    fun isShowing() =loadingDialog.isShowing
+    fun isShowing() =
+            loadingDialog.isShowing
 }
