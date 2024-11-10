@@ -242,7 +242,6 @@ class MarvelSearchFunctionImplement(
                 ::showErrorToUser
             )
         }
-        if(functionLoadingManager.isShowing()) functionLoadingManager.stopLoading()
     }
 
     private fun internalErrorListener() {
@@ -264,8 +263,10 @@ class MarvelSearchFunctionImplement(
         functionManagerViewModel.setNoObservesUserErrorMessage(owner)
     }
 
-    private fun showErrorToUser(@StringRes idString: Int) = showError(idString)
-
+    private fun showErrorToUser(@StringRes idString: Int) {
+        if(functionLoadingManager.isShowing()) functionLoadingManager.stopLoading()
+        showError(idString)
+    }
 
     private fun createErrorLog(throwable: Throwable) {
         if(throwable is NoCredentialException)
