@@ -21,8 +21,10 @@ class FunctionLoadingManager(context: Context) {
         }.start()
 
     fun stopLoading(condition: Int) {
-        if(operationsComplete == condition)
+        if(operationsComplete == condition) {
             loadingDialog.cancel()
+            operationsComplete = 0
+        }
     }
     fun stopLoading() {
         if(loadingDialog.isShowing)
