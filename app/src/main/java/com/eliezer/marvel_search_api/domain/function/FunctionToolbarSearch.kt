@@ -58,7 +58,7 @@ class FunctionToolbarSearch(private var textViews : ArrayList<TextView>,
         setSearchTextViewAdapter(text)
         setTextViewsColor()
         if(text.isNotEmpty()) {
-            moveToLineBack(0)
+            moveToLineForward(searchTextViewAdapter?.numLine?:0)
         }
         adapter.fillItemsContainText(text)
     }
