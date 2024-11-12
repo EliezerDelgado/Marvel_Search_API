@@ -63,7 +63,7 @@ class MainActivityFunctionImplement(
             getIdComicsModeFavorite()
             getIdCharactersModeFavorite()
         }
-        else if(functionLoadingManager.isShowing())
+        else
             functionLoadingManager.stopLoading()
     }
     private fun updateCharacterDatabase(isClearDatabase : Boolean) {
@@ -73,7 +73,7 @@ class MainActivityFunctionImplement(
             getIdComicsModeFavorite()
             getIdCharactersModeFavorite()
         }
-        else if(functionLoadingManager.isShowing())
+        else
             functionLoadingManager.stopLoading()
     }
     //Comics

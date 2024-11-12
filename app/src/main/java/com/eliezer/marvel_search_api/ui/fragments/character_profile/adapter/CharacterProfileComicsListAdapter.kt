@@ -95,7 +95,8 @@ class CharacterProfileComicsListAdapter(items : ArrayList<Comic>,private val lis
     }
 
     private fun paintSearchResult(searchTextResult: SearchTextResult?,holder: ItemComicHorizontalViewHolder,item: Comic) {
-        val idItemIndex = if(searchRecycler.index!=-1) searchRecycler.itemsContainText[searchRecycler.index].id else 0
+        val index = searchRecycler.index
+        val idItemIndex = if(searchRecycler.index!=-1  &&  searchRecycler.itemsContainText.size >  0) searchRecycler.itemsContainText[searchRecycler.index].id else 0
         searchTextResult?.also {
             if(it.encounter.isNotEmpty() && idItemIndex== item.id ) {
                 val index = searchRecycler.run { itemsContainText[index].position }

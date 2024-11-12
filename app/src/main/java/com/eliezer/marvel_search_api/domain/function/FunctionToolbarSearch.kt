@@ -32,8 +32,10 @@ class FunctionToolbarSearch(private var textViews : ArrayList<TextView>,
                 setTextViewsColor()
                 adapter.backPosition()
             }
-            else
-                searchWordTextView(it.numLine)
+            else {
+                searchWordTextView()
+                moveToLineBack(it.numLine)
+            }
         }
     }
 
@@ -45,8 +47,10 @@ class FunctionToolbarSearch(private var textViews : ArrayList<TextView>,
                 setTextViewsColor()
                 adapter.nextPosition()
             }
-            else
-                searchWordTextView(it.numLine)
+            else {
+                searchWordTextView()
+                moveToLineForward(it.numLine)
+            }
         }
     }
 
@@ -54,7 +58,7 @@ class FunctionToolbarSearch(private var textViews : ArrayList<TextView>,
         setSearchTextViewAdapter(text)
         setTextViewsColor()
         if(text.isNotEmpty()) {
-            moveToLine(0)
+            moveToLineBack(0)
         }
         adapter.fillItemsContainText(text)
     }
@@ -65,11 +69,10 @@ class FunctionToolbarSearch(private var textViews : ArrayList<TextView>,
         setTextViewsColor()
     }
 
-    private fun  searchWordTextView(numLine: Int)
+    private fun  searchWordTextView()
     {
         setTextViewsColor()
         adapter.setPosition(-1)
-        moveToLine(numLine)
     }
 
     private fun setTextViewsColor() {
@@ -95,13 +98,28 @@ class FunctionToolbarSearch(private var textViews : ArrayList<TextView>,
         }
     }
 
-    private fun moveToLine(numLine: Int) {
-        searchTextViewAdapter?.searchText?.apply {
-            if(encounter.size>0)
-                encounter[numLine].apply {
-                    val sc  = scrollPosition  ?: 0
-                    scrollView.scrollTo(0,sc)
-                }
+    private fun moveToLineBack(numLine: Int) {
+        try {
+            searchTextViewAdapter?.searchText?.apply {
+                if (encounter.size > 0)
+                    encounter[numLine].apply {
+                        val sc = scrollPosition?.let { it - 80 } ?: 0
+                        scrollView.scrollTo(0, sc)
+                    }
+            }
         }
+            catch (_ :  Exception){}
+    }
+    private fun moveToLineForward(numLine: Int) {
+        try {
+            searchTextViewAdapter?.searchText?.apply {
+                if (encounter.size > 0)
+                    encounter[numLine].apply {
+                        val sc = scrollPosition?.let { it + 80 } ?: 0
+                        scrollView.scrollTo(0, sc)
+                    }
+            }
+        }
+        catch (_ :  Exception){}
     }
 }

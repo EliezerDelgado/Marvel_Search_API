@@ -34,7 +34,9 @@ class CharactersListFunctionImplement(
 ) : CharactersListAdapter.CharacterHolderListener{
 
     private var searchCharacter : String? = null
-    private var myOnScrolledListener : MyOnScrolledListener?  = MyOnScrolledListener { getListCharacters()}
+    private var myOnScrolledListener : MyOnScrolledListener?  = MyOnScrolledListener {
+        getListCharacters()
+    }
     private val functionManagerViewModel = FunctionManagerViewModel(viewModel)
     private val functionManagerRecyclerAdapter = FunctionManagerRecyclerAdapter(this)
     private val functionManagerBinding = FunctionManagerBinding(binding)
@@ -131,8 +133,7 @@ class CharactersListFunctionImplement(
             position?.also {
                 functionManagerBinding.recyclerViewCharactersScrollToPosition(it)
             }
-            if (functionLoadingManager.isShowing())
-                functionLoadingManager.stopLoading()
+            functionLoadingManager.stopLoading()
         }.start()
     }
     private fun setFavoriteListCharacters(characters: Characters?) {

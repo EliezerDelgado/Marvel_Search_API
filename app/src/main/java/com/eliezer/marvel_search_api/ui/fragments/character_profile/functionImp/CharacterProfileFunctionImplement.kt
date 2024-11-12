@@ -29,7 +29,7 @@ class CharacterProfileFunctionImplement(
     getComicsRepository : GetComicsRepository,
     setComicsRepository: SetComicsRepository,
     private val owner : LifecycleOwner,
-    private val context: Context
+    context: Context
 ) : CharacterProfileComicsListAdapter.CharacterProfileComicHolderListener{
     private val myOnScrolledListener = MyOnScrolledListener {
         getListComics()
@@ -219,7 +219,10 @@ private class FunctionManagerBinding(
     }
     fun setScrollPosition(position: Int)  =
         CoroutineScope(Dispatchers.Main).launch {
-            binding.characterProfileRecyclerViewComics.scrollToPosition(position)
+            try {
+                binding.characterProfileRecyclerViewComics.scrollToPosition(position)
+            }
+            catch (_ : Exception){}
         }.start()
 }
 private class FunctionRepository(

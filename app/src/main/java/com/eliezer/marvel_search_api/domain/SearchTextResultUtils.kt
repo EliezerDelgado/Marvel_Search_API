@@ -38,7 +38,7 @@ object SearchTextResultUtils {
                 var index = 0
                 while (position != -1) {
                     val scrollPosition = try {
-                        textView.layout.run { getLineTop(getLineForOffset(position) +2) }
+                        textView.layout.run { getLineTop(getLineForOffset(position))} + 150
                     }catch (_:Exception){
                         null
                     }

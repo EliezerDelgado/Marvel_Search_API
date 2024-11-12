@@ -227,7 +227,10 @@ private class FunctionManagerBinding(
     }
     fun setScrollPosition(position: Int) =
         CoroutineScope(Dispatchers.Main).launch {
-            binding.comicDescriptionRecyclerViewCharacters.scrollToPosition(position)
+            try {
+                binding.comicDescriptionRecyclerViewCharacters.scrollToPosition(position)
+            }
+            catch (_ : Exception){}
         }.start()
 }
 private class FunctionRepository(

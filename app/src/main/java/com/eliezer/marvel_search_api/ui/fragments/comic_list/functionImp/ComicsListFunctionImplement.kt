@@ -137,8 +137,7 @@ class ComicsListFunctionImplement (
             position?.also {
                 functionManagerBinding.recyclerViewComicsScrollToPosition(it)
             }
-            if (functionLoadingManager.isShowing())
-                functionLoadingManager.stopLoading()
+            functionLoadingManager.stopLoading()
         }.start()
     }
     private fun setFavoriteListComics(comics: Comics?) {
